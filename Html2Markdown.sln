@@ -1,7 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Html2Markdown", "src\Html2Markdown\Html2Markdown.csproj", "{541EC8D3-72E5-453F-8CAD-6A0D4A47974F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Html2Markdown.Test", "test\Html2Markdown.Test\Html2Markdown.Test.csproj", "{635183C6-1038-467C-94D8-0FCBDBAC5729}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{541EC8D3-72E5-453F-8CAD-6A0D4A47974F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{541EC8D3-72E5-453F-8CAD-6A0D4A47974F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{541EC8D3-72E5-453F-8CAD-6A0D4A47974F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{541EC8D3-72E5-453F-8CAD-6A0D4A47974F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{635183C6-1038-467C-94D8-0FCBDBAC5729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{635183C6-1038-467C-94D8-0FCBDBAC5729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{635183C6-1038-467C-94D8-0FCBDBAC5729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{635183C6-1038-467C-94D8-0FCBDBAC5729}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
