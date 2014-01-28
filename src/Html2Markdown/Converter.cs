@@ -58,11 +58,11 @@ namespace Html2Markdown
 				},
                 new Element{
                     Pattern = @"<blockquote>",
-                    Replacement = @">"
+                    Replacement = System.Environment.NewLine + System.Environment.NewLine + @">"
                 },
                 new Element{
                     Pattern = @"</?blockquote>",
-                    Replacement = ""
+                    Replacement = System.Environment.NewLine + System.Environment.NewLine
                 }
 			};
 

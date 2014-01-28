@@ -166,10 +166,14 @@ Convert it.";
 		}
 
         [Test]
-        public void Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownHeader()
+        public void Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
         {
-            const string html = @"This code has a <blockquote>header</blockquote>. Convert it.";
-            const string expected = @"This code has a >header. Convert it.";
+            const string html = @"This code has a <blockquote>blockquote</blockquote>. Convert it.";
+            const string expected = @"This code has a 
+
+>blockquote
+
+. Convert it.";
 
             CheckConversion(html, expected);
         }
