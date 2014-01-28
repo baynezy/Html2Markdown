@@ -55,7 +55,16 @@ namespace Html2Markdown
 				new Element{
 					Pattern = @"<h6>",
 					Replacement = System.Environment.NewLine + System.Environment.NewLine + "###### "
+				},
+				new Element{
+					Pattern = @"</blockquote>",
+					Replacement = ""
+				},
+				new Element{
+					Pattern = @"<blockquote>",
+					Replacement = ""
 				}
+				
 			};
 
 		public string Convert(string html)
