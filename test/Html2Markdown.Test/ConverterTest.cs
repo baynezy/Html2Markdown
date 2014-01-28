@@ -165,6 +165,15 @@ Convert it.";
 			CheckConversion(html, expected);
 		}
 
+        [Test]
+        public void Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownHeader()
+        {
+            const string html = @"This code has a <blockquote>header</blockquote>. Convert it.";
+            const string expected = @"This code has a >header. Convert it.";
+
+            CheckConversion(html, expected);
+        }
+
 		private static void CheckConversion(string html, string expected)
 		{
 			var converter = new Converter();
