@@ -6,7 +6,7 @@ namespace Html2Markdown
 {
 	public class Converter
 	{
-		private readonly IList<Element> _elements = new List<Element>
+		private readonly IList<IReplacer> _replacers = new List<IReplacer>
 			{
 				new Element
 				{
@@ -97,21 +97,25 @@ namespace Html2Markdown
 
 		public string Convert(string html)
 		{
-			return _elements.Aggregate(html, (current, element) => ReplacePattern(current, element.Pattern, element.Replacement));
-		}
-
-		private static string ReplacePattern(string html, string pattern, string replacement)
-		{
-			var regex = new Regex(pattern);
-
-			return regex.Replace(html, replacement);
+			return _replacers.Aggregate(html, (current, element) => element.Replace(current));
 		}
 	}
 
-	internal class Element
+	internal class Element : IReplacer
 	{
 		public string Pattern { get; set; }
 
 		public string Replacement { get; set; }
+		public string Replace(string html)
+		{
+			var regex = new Regex(Pattern);
+
+			return regex.Replace(html, Replacement);
+		}
+	}
+
+	internal interface IReplacer
+	{
+		string Replace(string html);
 	}
 }
