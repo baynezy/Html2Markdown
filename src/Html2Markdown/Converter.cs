@@ -8,60 +8,74 @@ namespace Html2Markdown
 	{
 		private readonly IList<Element> _elements = new List<Element>
 			{
-				new Element{
+				new Element
+				{
 					Pattern = @"<a.+?href\s*=\s*['""]([^'""]+)['""]>([^<]+)</a>",
 					Replacement = @"[$2]($1)"
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"</?(strong|b)>",
 					Replacement = @"**"
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"</?(em|i)>",
 					Replacement = @"*"
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<br\s/>",
 					Replacement = @"  " + System.Environment.NewLine
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"</?code>",
 					Replacement = @"`"
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"</h[1-6]>",
 					Replacement = System.Environment.NewLine + System.Environment.NewLine
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h1>",
 					Replacement = System.Environment.NewLine + System.Environment.NewLine + "# "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h2>",
 					Replacement = System.Environment.NewLine + System.Environment.NewLine + "## "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h3>",
 					Replacement = System.Environment.NewLine + System.Environment.NewLine + "### "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h4>",
 					Replacement = System.Environment.NewLine + System.Environment.NewLine + "#### "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h5>",
 					Replacement = System.Environment.NewLine + System.Environment.NewLine + "##### "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h6>",
 					Replacement = System.Environment.NewLine + System.Environment.NewLine + "###### "
 				},
-                new Element{
+                new Element
+				{
                     Pattern = @"<blockquote>",
                     Replacement = System.Environment.NewLine + System.Environment.NewLine + @">"
                 },
-                new Element{
-                    Pattern = @"</?blockquote>",
+                new Element
+				{
+                    Pattern = @"</blockquote>",
                     Replacement = System.Environment.NewLine + System.Environment.NewLine
                 },
 				new Element
@@ -73,6 +87,11 @@ namespace Html2Markdown
 				{
 					Pattern = @"</p>",
 					Replacement = System.Environment.NewLine
+				},
+				new Element
+				{
+					Pattern = @"<hr/>",
+					Replacement = System.Environment.NewLine + System.Environment.NewLine + "* * *" + System.Environment.NewLine
 				}
 			};
 

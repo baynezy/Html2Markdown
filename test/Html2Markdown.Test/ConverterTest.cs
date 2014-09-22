@@ -190,6 +190,18 @@ Convert it!";
 			CheckConversion(html, expected);
 		}
 
+		[Test]
+		public void Convert_WhenThereAreHorizontalRuleTags_ThenReplaceWithMarkDownHorizontalRule()
+		{
+			const string html = @"This code is seperated by a horizonrtal rule.<hr/>Convert it!";
+			const string expected = @"This code is seperated by a horizonrtal rule.
+
+* * *
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
 		private static void CheckConversion(string html, string expected)
 		{
 			var converter = new Converter();
