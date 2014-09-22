@@ -63,7 +63,17 @@ namespace Html2Markdown
                 new Element{
                     Pattern = @"</?blockquote>",
                     Replacement = System.Environment.NewLine + System.Environment.NewLine
-                }
+                },
+				new Element
+				{
+					Pattern = @"<p>",
+					Replacement = System.Environment.NewLine + System.Environment.NewLine
+				},
+				new Element
+				{
+					Pattern = @"</p>",
+					Replacement = System.Environment.NewLine
+				}
 			};
 
 		public string Convert(string html)

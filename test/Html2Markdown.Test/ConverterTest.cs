@@ -178,6 +178,18 @@ Convert it.";
             CheckConversion(html, expected);
         }
 
+		[Test]
+		public void Convert_WhenThereAreParagraphTags_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
+		{
+			const string html = @"This code has no markup.<p>This code is in a paragraph.</p>Convert it!";
+			const string expected = @"This code has no markup.
+
+This code is in a paragraph.
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
 		private static void CheckConversion(string html, string expected)
 		{
 			var converter = new Converter();
