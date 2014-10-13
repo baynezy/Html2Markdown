@@ -96,11 +96,41 @@ namespace Html2Markdown
 				},
 				new CustomReplacer
 				{
-					CustomAction = FormatImage
+					CustomAction = ReplaceImg
+				},
+				new CustomReplacer
+				{
+					CustomAction = ReplacePre
 				}
 			};
 
-		private static string FormatImage(string html)
+		private static string ReplacePre(string html)
+		{
+			var preTags = new Regex(@"<pre\b[^>]*>([\s\S]*)<\/pre>").Matches(html);
+
+			return preTags.Cast<Match>().Aggregate(html, ConvertPre);
+		}
+
+		private static string ConvertPre(string html, Match preTag)
+		{
+			var tag = preTag.Groups[1].Value;
+			tag = TabsToSpaces(tag);
+			tag = IndentNewLines(tag);
+			html = html.Replace(preTag.Value, Environment.NewLine + Environment.NewLine + tag + Environment.NewLine);
+			return html;
+		}
+
+		private static string IndentNewLines(string tag)
+		{
+			return tag.Replace(Environment.NewLine, Environment.NewLine + "    ");
+		}
+
+		private static string TabsToSpaces(string tag)
+		{
+			return tag.Replace("\t", "    ");
+		}
+
+		private static string ReplaceImg(string html)
 		{
 			var originalImages = new Regex(@"<img([^>]+)>").Matches(html);
 

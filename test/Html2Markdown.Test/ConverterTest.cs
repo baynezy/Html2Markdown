@@ -214,8 +214,22 @@ Convert it!";
 		[Test]
 		public void Convert_WhenThereAreImgTagsWithoutATitle_ThenReplaceWithMarkdownImage()
 		{
-			const string html = @"This code is with and image <img alt=""something"" src=""https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif"" /> Convert it!";
-			const string expected = @"This code is with and image ![something](https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif) Convert it!";
+			const string html = @"This code is with an image <img alt=""something"" src=""https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif"" /> Convert it!";
+			const string expected = @"This code is with an image ![something](https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif) Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereArePreTags_ThenReplaceWithMarkdownPre()
+		{
+			const string html = @"This code is with a pre tag <pre>
+	Predefined text</pre>";
+			const string expected = @"This code is with a pre tag 
+
+
+        Predefined text
+";
 
 			CheckConversion(html, expected);
 		}
