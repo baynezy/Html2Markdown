@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,83 +7,154 @@ namespace Html2Markdown
 {
 	public class Converter
 	{
-		private readonly IList<Element> _elements = new List<Element>
+		private readonly IList<IReplacer> _replacers = new List<IReplacer>
 			{
-				new Element{
+				new Element
+				{
 					Pattern = @"<a.+?href\s*=\s*['""]([^'""]+)['""]>([^<]+)</a>",
 					Replacement = @"[$2]($1)"
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"</?(strong|b)>",
 					Replacement = @"**"
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"</?(em|i)>",
 					Replacement = @"*"
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<br\s/>",
-					Replacement = @"  " + System.Environment.NewLine
+					Replacement = @"  " + Environment.NewLine
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"</?code>",
 					Replacement = @"`"
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"</h[1-6]>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine
+					Replacement = Environment.NewLine + Environment.NewLine
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h1>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "# "
+					Replacement = Environment.NewLine + Environment.NewLine + "# "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h2>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "## "
+					Replacement = Environment.NewLine + Environment.NewLine + "## "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h3>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "### "
+					Replacement = Environment.NewLine + Environment.NewLine + "### "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h4>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "#### "
+					Replacement = Environment.NewLine + Environment.NewLine + "#### "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h5>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "##### "
+					Replacement = Environment.NewLine + Environment.NewLine + "##### "
 				},
-				new Element{
+				new Element
+				{
 					Pattern = @"<h6>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "###### "
+					Replacement = Environment.NewLine + Environment.NewLine + "###### "
 				},
-                new Element{
+                new Element
+				{
                     Pattern = @"<blockquote>",
-                    Replacement = System.Environment.NewLine + System.Environment.NewLine + @">"
+                    Replacement = Environment.NewLine + Environment.NewLine + @">"
                 },
-                new Element{
-                    Pattern = @"</?blockquote>",
-                    Replacement = System.Environment.NewLine + System.Environment.NewLine
-                }
+                new Element
+				{
+                    Pattern = @"</blockquote>",
+                    Replacement = Environment.NewLine + Environment.NewLine
+                },
+				new Element
+				{
+					Pattern = @"<p>",
+					Replacement = Environment.NewLine + Environment.NewLine
+				},
+				new Element
+				{
+					Pattern = @"</p>",
+					Replacement = Environment.NewLine
+				},
+				new Element
+				{
+					Pattern = @"<hr/>",
+					Replacement = Environment.NewLine + Environment.NewLine + "* * *" + Environment.NewLine
+				},
+				new CustomReplacer
+				{
+					CustomAction = FormatImage
+				}
 			};
+
+		private static string FormatImage(string html)
+		{
+			var originalImages = new Regex(@"<img([^>]+)>").Matches(html);
+
+			foreach (Match image in originalImages)
+			{
+				var img = image.Value;
+				var src = AttributeParser(img, "src");
+				var alt = AttributeParser(img, "alt");
+				var title = AttributeParser(img, "title");
+
+				html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
+			}
+
+			return html;
+		}
+
+		private static string AttributeParser(string html, string attribute)
+		{
+			var match = Regex.Match(html, string.Format(@"{0}\s*=\s*[""\']?([^""\']*)[""\']?", attribute));
+			var groups = match.Groups;
+			return groups[1].Value;
+		}
 
 		public string Convert(string html)
 		{
-			return _elements.Aggregate(html, (current, element) => ReplacePattern(current, element.Pattern, element.Replacement));
-		}
-
-		private static string ReplacePattern(string html, string pattern, string replacement)
-		{
-			var regex = new Regex(pattern);
-
-			return regex.Replace(html, replacement);
+			return _replacers.Aggregate(html, (current, element) => element.Replace(current));
 		}
 	}
 
-	internal class Element
+	internal class CustomReplacer : IReplacer
+	{
+		public string Replace(string html)
+		{
+			return CustomAction.Invoke(html);
+		}
+
+		public Func<string, string> CustomAction { get; set; }
+	}
+
+	internal class Element : IReplacer
 	{
 		public string Pattern { get; set; }
 
 		public string Replacement { get; set; }
+		public string Replace(string html)
+		{
+			var regex = new Regex(Pattern);
+
+			return regex.Replace(html, Replacement);
+		}
+	}
+
+	internal interface IReplacer
+	{
+		string Replace(string html);
 	}
 }
