@@ -19,6 +19,7 @@ This project will currently convert the following HTML tags:-
 - h4
 - h5
 - h6
+- blockquote
 
 ## Contributing
 
