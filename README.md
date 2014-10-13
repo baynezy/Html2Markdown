@@ -20,6 +20,12 @@ This project will currently convert the following HTML tags:-
 - h5
 - h6
 - blockquote
+- img
+- hr
+- p
+- pre
+- ul
+- ol
 
 ## Contributing
 
