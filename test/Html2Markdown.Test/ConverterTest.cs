@@ -214,8 +214,72 @@ Convert it!";
 		[Test]
 		public void Convert_WhenThereAreImgTagsWithoutATitle_ThenReplaceWithMarkdownImage()
 		{
-			const string html = @"This code is with and image <img alt=""something"" src=""https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif"" /> Convert it!";
-			const string expected = @"This code is with and image ![something](https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif) Convert it!";
+			const string html = @"This code is with an image <img alt=""something"" src=""https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif"" /> Convert it!";
+			const string expected = @"This code is with an image ![something](https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif) Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereArePreTags_ThenReplaceWithMarkdownPre()
+		{
+			const string html = @"This code is with a pre tag <pre>
+	Predefined text</pre>";
+			const string expected = @"This code is with a pre tag 
+
+
+        Predefined text
+";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreUnorderedLists_ThenReplaceWithMarkdownLists()
+		{
+			const string html = @"This code is with an unordered list.<ul><li>Yes</li><li>No</li></ul>";
+			const string expected = @"This code is with an unordered list.
+
+*   Yes
+*   No";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreOrderedLists_ThenReplaceWithMarkdownLists()
+		{
+			const string html = @"This code is with an unordered list.<ol><li>Yes</li><li>No</li></ol>";
+			const string expected = @"This code is with an unordered list.
+
+1.  Yes
+2.  No";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAnUnorderedListWithANestedOrderList_ThenReplaceWithMarkdownLists()
+		{
+			const string html = @"This code is with an unordered list.<ul><li>Yes</li><li><ol><li>No</li><li>Maybe</li></ol></li></ul>";
+			const string expected = @"This code is with an unordered list.
+
+*   Yes
+*   1.  No
+    2.  Maybe";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAnOrderedListWithANestedUnorderList_ThenReplaceWithMarkdownLists()
+		{
+			const string html = @"This code is with an unordered list.<ol><li>Yes</li><li><ul><li>No</li><li>Maybe</li></ul></li></ol>";
+			const string expected = @"This code is with an unordered list.
+
+1.  Yes
+2.  *   No
+    *   Maybe";
 
 			CheckConversion(html, expected);
 		}
