@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -26,7 +27,7 @@ namespace Html2Markdown
 				new Element
 				{
 					Pattern = @"<br\s/>",
-					Replacement = @"  " + System.Environment.NewLine
+					Replacement = @"  " + Environment.NewLine
 				},
 				new Element
 				{
@@ -36,69 +37,107 @@ namespace Html2Markdown
 				new Element
 				{
 					Pattern = @"</h[1-6]>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine
+					Replacement = Environment.NewLine + Environment.NewLine
 				},
 				new Element
 				{
 					Pattern = @"<h1>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "# "
+					Replacement = Environment.NewLine + Environment.NewLine + "# "
 				},
 				new Element
 				{
 					Pattern = @"<h2>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "## "
+					Replacement = Environment.NewLine + Environment.NewLine + "## "
 				},
 				new Element
 				{
 					Pattern = @"<h3>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "### "
+					Replacement = Environment.NewLine + Environment.NewLine + "### "
 				},
 				new Element
 				{
 					Pattern = @"<h4>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "#### "
+					Replacement = Environment.NewLine + Environment.NewLine + "#### "
 				},
 				new Element
 				{
 					Pattern = @"<h5>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "##### "
+					Replacement = Environment.NewLine + Environment.NewLine + "##### "
 				},
 				new Element
 				{
 					Pattern = @"<h6>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "###### "
+					Replacement = Environment.NewLine + Environment.NewLine + "###### "
 				},
                 new Element
 				{
                     Pattern = @"<blockquote>",
-                    Replacement = System.Environment.NewLine + System.Environment.NewLine + @">"
+                    Replacement = Environment.NewLine + Environment.NewLine + @">"
                 },
                 new Element
 				{
                     Pattern = @"</blockquote>",
-                    Replacement = System.Environment.NewLine + System.Environment.NewLine
+                    Replacement = Environment.NewLine + Environment.NewLine
                 },
 				new Element
 				{
 					Pattern = @"<p>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine
+					Replacement = Environment.NewLine + Environment.NewLine
 				},
 				new Element
 				{
 					Pattern = @"</p>",
-					Replacement = System.Environment.NewLine
+					Replacement = Environment.NewLine
 				},
 				new Element
 				{
 					Pattern = @"<hr/>",
-					Replacement = System.Environment.NewLine + System.Environment.NewLine + "* * *" + System.Environment.NewLine
+					Replacement = Environment.NewLine + Environment.NewLine + "* * *" + Environment.NewLine
+				},
+				new CustomReplacer
+				{
+					CustomAction = FormatImage
 				}
 			};
+
+		private static string FormatImage(string html)
+		{
+			var originalImages = new Regex(@"<img([^>]+)>").Matches(html);
+
+			foreach (Match image in originalImages)
+			{
+				var img = image.Value;
+				var src = AttributeParser(img, "src");
+				var alt = AttributeParser(img, "alt");
+				var title = AttributeParser(img, "title");
+
+				html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
+			}
+
+			return html;
+		}
+
+		private static string AttributeParser(string html, string attribute)
+		{
+			var match = Regex.Match(html, string.Format(@"{0}\s*=\s*[""\']?([^""\']*)[""\']?", attribute));
+			var groups = match.Groups;
+			return groups[1].Value;
+		}
 
 		public string Convert(string html)
 		{
 			return _replacers.Aggregate(html, (current, element) => element.Replace(current));
 		}
+	}
+
+	internal class CustomReplacer : IReplacer
+	{
+		public string Replace(string html)
+		{
+			return CustomAction.Invoke(html);
+		}
+
+		public Func<string, string> CustomAction { get; set; }
 	}
 
 	internal class Element : IReplacer

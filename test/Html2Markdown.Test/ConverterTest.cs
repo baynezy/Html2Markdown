@@ -202,6 +202,24 @@ Convert it!";
 			CheckConversion(html, expected);
 		}
 
+		[Test]
+		public void Convert_WhenThereAreImgTags_ThenReplaceWithMarkdownImage()
+		{
+			const string html = @"This code is with and image <img alt=""something"" title=""convert"" src=""https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif"" /> Convert it!";
+			const string expected = @"This code is with and image ![something](https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif ""convert"") Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreImgTagsWithoutATitle_ThenReplaceWithMarkdownImage()
+		{
+			const string html = @"This code is with and image <img alt=""something"" src=""https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif"" /> Convert it!";
+			const string expected = @"This code is with and image ![something](https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif) Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
 		private static void CheckConversion(string html, string expected)
 		{
 			var converter = new Converter();
