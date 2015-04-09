@@ -225,7 +225,7 @@ namespace Html2Markdown
 				var alt = AttributeParser(img, "alt");
 				var title = AttributeParser(img, "title");
 
-				html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", (object) title) : ""));
+				html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
 			}
 
 			return html;
