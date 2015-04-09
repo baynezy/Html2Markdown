@@ -100,6 +100,7 @@ Convert it.";
 			CheckConversion(html, expected);
 		}
 
+
 		[Test]
 		public void Convert_WhenThereAreH2Tags_ThenReplaceWithMarkDownHeader()
 		{
