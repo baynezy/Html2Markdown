@@ -15,6 +15,42 @@ namespace Html2Markdown.Test
 		}
 
 		[Test]
+		public void Convert_WhenThereAreHtmlLinksWithAttributesAfterTheHref_ThenConvertToMarkDownLink()
+		{
+			const string html = @"So this is <a href=""http://www.simonbaynes.com/"" alt=""example"">a link</a>. Convert it";
+			const string expected = @"So this is [a link](http://www.simonbaynes.com/). Convert it";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreHtmlLinksWithAttributesBeforeTheHref_ThenConvertToMarkDownLink()
+		{
+			const string html = @"So this is <a alt=""example"" href=""http://www.simonbaynes.com/"">a link</a>. Convert it";
+			const string expected = @"So this is [a link](http://www.simonbaynes.com/). Convert it";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreHtmlLinksWithTitleAttributeAfterTheHref_ThenConvertToMarkDownLink()
+		{
+			const string html = @"So this is <a href=""http://www.simonbaynes.com/"" title=""example"">a link</a>. Convert it";
+			const string expected = @"So this is [a link](http://www.simonbaynes.com/ ""example""). Convert it";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreHtmlLinksWithTitleAttributeBeforeTheHref_ThenConvertToMarkDownLink()
+		{
+			const string html = @"So this is <a title=""example"" href=""http://www.simonbaynes.com/"">a link</a>. Convert it";
+			const string expected = @"So this is [a link](http://www.simonbaynes.com/ ""example""). Convert it";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreMultipleHtmlLinks_ThenConvertThemToMarkDownLinks()
 		{
 			const string html = @"So this is <a href=""http://www.simonbaynes.com/"">a link</a> and so is <a href=""http://www.google.com/"">this</a>. Convert them";
@@ -99,6 +135,7 @@ Convert it.";
 
 			CheckConversion(html, expected);
 		}
+
 
 		[Test]
 		public void Convert_WhenThereAreH2Tags_ThenReplaceWithMarkDownHeader()

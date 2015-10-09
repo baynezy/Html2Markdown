@@ -11,11 +11,6 @@ namespace Html2Markdown
 			{
 				new Element
 				{
-					Pattern = @"<a.+?href\s*=\s*['""]([^'""]+)['""]>([^<]+)</a>",
-					Replacement = @"[$2]($1)"
-				},
-				new Element
-				{
 					Pattern = @"</?(strong|b)>",
 					Replacement = @"**"
 				},
@@ -105,6 +100,10 @@ namespace Html2Markdown
 				new CustomReplacer
 				{
 					CustomAction = HtmlParser.ReplaceLists
+				},
+				new CustomReplacer
+				{
+					CustomAction = HtmlParser.ReplaceAnchor
 				}
 			};
 
@@ -230,6 +229,30 @@ namespace Html2Markdown
 
 			return html;
 		}
+
+		public static string ReplaceAnchor(string html)
+		{
+			var originalAnchors = new Regex(@"<a[^>]+>[^<]+</a>").Matches(html);
+
+			foreach (Match anchor in originalAnchors)
+			{
+				var a = anchor.Value;
+				var linkText = GetLinkText(a);
+				var href = AttributeParser(a, "href");
+				var title = AttributeParser(a, "title");
+
+                html = html.Replace(a, string.Format(@"[{0}]({1}{2})", linkText, href, (title.Length > 0) ? string.Format(" \"{0}\"", (object) title) : ""));
+			}
+
+            return html;
+		}
+
+        private static string GetLinkText(string link)
+        {
+            var match = Regex.Match(link, @"<a[^>]+>([^<]+)</a>");
+            var groups = match.Groups;
+            return groups[1].Value;
+        }
 
 		private static string AttributeParser(string html, string attribute)
 		{
