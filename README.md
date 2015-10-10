@@ -2,6 +2,8 @@
 
 Converts HTML to Markdown (http://daringfireball.net/projects/markdown/syntax)
 
+[![NuGet version](https://badge.fury.io/nu/Html2Markdown.svg)](http://badge.fury.io/nu/Html2Markdown) ![Build Status](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n?svg=true) 
+
 ## Support
 
 This project will currently convert the following HTML tags:-
