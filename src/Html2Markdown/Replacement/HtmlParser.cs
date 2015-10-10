@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Html2Markdown
+namespace Html2Markdown.Replacement
 {
 	internal static class HtmlParser
 	{

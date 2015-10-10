@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Html2Markdown
+namespace Html2Markdown.Replacement
 {
 	internal class PatternReplacer : IReplacer
 	{
