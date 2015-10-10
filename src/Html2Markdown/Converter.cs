@@ -224,7 +224,7 @@ namespace Html2Markdown
 				var alt = AttributeParser(img, "alt");
 				var title = AttributeParser(img, "title");
 
-				html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", (object) title) : ""));
+				html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
 			}
 
 			return html;
@@ -241,7 +241,7 @@ namespace Html2Markdown
 				var href = AttributeParser(a, "href");
 				var title = AttributeParser(a, "title");
 
-                html = html.Replace(a, string.Format(@"[{0}]({1}{2})", linkText, href, (title.Length > 0) ? string.Format(" \"{0}\"", (object) title) : ""));
+                html = html.Replace(a, string.Format(@"[{0}]({1}{2})", linkText, href, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
 			}
 
             return html;
