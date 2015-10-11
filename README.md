@@ -1,6 +1,6 @@
 # HTML2Markdown
 
-Converts HTML to Markdown (http://daringfireball.net/projects/markdown/syntax)
+Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax)
 
 [![NuGet version](https://badge.fury.io/nu/Html2Markdown.svg)](http://badge.fury.io/nu/Html2Markdown) ![Build Status](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n?svg=true) 
 
@@ -29,8 +29,12 @@ This project will currently convert the following HTML tags:-
 - ul
 - ol
 
+## Usage
+    var converter = new Converter();
+    var result = converter.Convert(html);
+
 ## Contributing
 
 ### Pull Requests
 
-After forking the repository please create a pull request before creating the fix. This way we can talk about how the fix will be implemeted. This will greatly increase your chance of your patch getting merged into the code base.
+After forking the repository please create a pull request before creating the fix. This way we can talk about how the fix will be implemented. This will greatly increase your chance of your patch getting merged into the code base.
