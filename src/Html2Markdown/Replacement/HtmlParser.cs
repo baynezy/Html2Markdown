@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using LinqExtensions;
 
 namespace Html2Markdown.Replacement
 {
@@ -29,19 +30,19 @@ namespace Html2Markdown.Replacement
 
 			var counter = 0;
 			var markdownList = new List<string>();
-			foreach (var listItem in listItems)
-			{
-				var listPrefix = (listType.Equals("ol")) ? string.Format("{0}.  ", ++counter) : "*   ";
-				var finalList = Regex.Replace(listItem, @"<li[^>]*>", string.Empty);
+			listItems.Each(listItem =>
+				{
+					var listPrefix = (listType.Equals("ol")) ? string.Format("{0}.  ", ++counter) : "*   ";
+					var finalList = Regex.Replace(listItem, @"<li[^>]*>", string.Empty);
 
-				if (finalList.Trim().Length == 0) continue;
+					if (finalList.Trim().Length == 0) return;
 
-				finalList = Regex.Replace(finalList, @"^\s+", string.Empty);
-				finalList = Regex.Replace(finalList, @"\n{2}", string.Format("{0}{1}    ", Environment.NewLine, Environment.NewLine));
-				// indent nested lists
-				finalList = Regex.Replace(finalList, @"\n([ ]*)+(\*|\d+\.)", string.Format("{0}$1    $2", "\n"));
-				markdownList.Add(string.Format("{0}{1}", listPrefix, finalList));
-			}
+					finalList = Regex.Replace(finalList, @"^\s+", string.Empty);
+					finalList = Regex.Replace(finalList, @"\n{2}", string.Format("{0}{1}    ", Environment.NewLine, Environment.NewLine));
+					// indent nested lists
+					finalList = Regex.Replace(finalList, @"\n([ ]*)+(\*|\d+\.)", string.Format("{0}$1    $2", "\n"));
+					markdownList.Add(string.Format("{0}{1}", listPrefix, finalList));
+				});
 
 			return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) => current + Environment.NewLine + item);
 		}
@@ -80,16 +81,15 @@ namespace Html2Markdown.Replacement
 		internal static string ReplaceImg(string html)
 		{
 			var originalImages = new Regex(@"<img([^>]+)>").Matches(html);
+			originalImages.Cast<Match>().Each(image =>
+				{
+					var img = image.Value;
+					var src = AttributeParser(img, "src");
+					var alt = AttributeParser(img, "alt");
+					var title = AttributeParser(img, "title");
 
-			foreach (Match image in originalImages)
-			{
-				var img = image.Value;
-				var src = AttributeParser(img, "src");
-				var alt = AttributeParser(img, "alt");
-				var title = AttributeParser(img, "title");
-
-				html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
-			}
+					html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
+				});
 
 			return html;
 		}
@@ -97,16 +97,15 @@ namespace Html2Markdown.Replacement
 		public static string ReplaceAnchor(string html)
 		{
 			var originalAnchors = new Regex(@"<a[^>]+>[^<]+</a>").Matches(html);
+			originalAnchors.Cast<Match>().Each(anchor =>
+				{
+					var a = anchor.Value;
+					var linkText = GetLinkText(a);
+					var href = AttributeParser(a, "href");
+					var title = AttributeParser(a, "title");
 
-			foreach (Match anchor in originalAnchors)
-			{
-				var a = anchor.Value;
-				var linkText = GetLinkText(a);
-				var href = AttributeParser(a, "href");
-				var title = AttributeParser(a, "title");
-
-				html = html.Replace(a, string.Format(@"[{0}]({1}{2})", linkText, href, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
-			}
+					html = html.Replace(a, string.Format(@"[{0}]({1}{2})", linkText, href, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
+				});
 
 			return html;
 		}
