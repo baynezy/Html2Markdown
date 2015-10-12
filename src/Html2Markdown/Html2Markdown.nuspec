@@ -11,5 +11,8 @@
     <description>$description$</description>
     <copyright>Copyright 2013</copyright>
     <tags>Markdown Html Convert</tags>
+		<dependencies>
+			<dependency id="LinqExtensions" />
+		</dependencies>
   </metadata>
 </package>
