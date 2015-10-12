@@ -24,23 +24,23 @@ namespace Html2Markdown.Replacement
 		private static string ReplaceList(string html)
 		{
 			var list = Regex.Match(html, @"<(ul|ol)\b[^>]*>([\s\S]*?)<\/\1>");
-			var type = list.Groups[1].Value;
-			var lis = list.Groups[2].Value.Split(new[] { "</li>" }, StringSplitOptions.None);
+			var listType = list.Groups[1].Value;
+			var listItems = list.Groups[2].Value.Split(new[] { "</li>" }, StringSplitOptions.None);
 
 			var counter = 0;
 			var markdownList = new List<string>();
-			foreach (var li in lis)
+			foreach (var listItem in listItems)
 			{
-				var prefix = (type.Equals("ol")) ? string.Format("{0}.  ", ++counter) : "*   ";
-				var final = Regex.Replace(li, @"<li[^>]*>", string.Empty);
+				var listPrefix = (listType.Equals("ol")) ? string.Format("{0}.  ", ++counter) : "*   ";
+				var finalList = Regex.Replace(listItem, @"<li[^>]*>", string.Empty);
 
-				if (final.Trim().Length == 0) continue;
+				if (finalList.Trim().Length == 0) continue;
 
-				final = Regex.Replace(final, @"^\s+", string.Empty);
-				final = Regex.Replace(final, @"\n{2}", string.Format("{0}{1}    ", Environment.NewLine, Environment.NewLine));
+				finalList = Regex.Replace(finalList, @"^\s+", string.Empty);
+				finalList = Regex.Replace(finalList, @"\n{2}", string.Format("{0}{1}    ", Environment.NewLine, Environment.NewLine));
 				// indent nested lists
-				final = Regex.Replace(final, @"\n([ ]*)+(\*|\d+\.)", string.Format("{0}$1    $2", "\n"));
-				markdownList.Add(string.Format("{0}{1}", prefix, final));
+				finalList = Regex.Replace(finalList, @"\n([ ]*)+(\*|\d+\.)", string.Format("{0}$1    $2", "\n"));
+				markdownList.Add(string.Format("{0}{1}", listPrefix, finalList));
 			}
 
 			return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) => current + Environment.NewLine + item);
