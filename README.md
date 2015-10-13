@@ -29,6 +29,10 @@ This project will currently convert the following HTML tags:-
 - ul
 - ol
 
+## Installing via NuGet
+
+    Install-Package Html2Markdown
+
 ## Usage
     var converter = new Converter();
     var result = converter.Convert(html);
