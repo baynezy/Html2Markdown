@@ -12,7 +12,7 @@
     <copyright>Copyright 2013</copyright>
     <tags>Markdown Html Convert</tags>
 		<dependencies>
-			<dependency id="LinqExtensions" />
+			<dependency id="LinqExtensions" version="0.0.1.14396" />
 		</dependencies>
   </metadata>
 </package>
