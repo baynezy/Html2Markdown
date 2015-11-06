@@ -2,7 +2,7 @@
 
 Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax)
 
-[![NuGet version](https://badge.fury.io/nu/Html2Markdown.svg)](http://badge.fury.io/nu/Html2Markdown) ![Build Status](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n?svg=true) 
+[![NuGet version](https://badge.fury.io/nu/Html2Markdown.svg)](http://badge.fury.io/nu/Html2Markdown) [![Build Status](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n?svg=true)](https://ci.appveyor.com/project/baynezy/html2markdown) 
 
 ## Support
 
