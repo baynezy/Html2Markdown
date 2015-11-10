@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using LinqExtensions;
 
@@ -113,6 +115,48 @@ namespace Html2Markdown.Replacement
 		private static string GetLinkText(string link)
 		{
 			var match = Regex.Match(link, @"<a[^>]+>([^<]+)</a>");
+			var groups = match.Groups;
+			return groups[1].Value;
+		}
+
+		public static string ReplaceCode(string html)
+		{
+			var singleLineCodeBlocks = new Regex(@"<code>([^\n]*?)</code>").Matches(html);
+			singleLineCodeBlocks.Cast<Match>().Each(block =>
+				{
+					var code = block.Value;
+					var content = GetCodeContent(code);
+					html = html.Replace(code, string.Format("`{0}`", content));
+				});
+
+			var multiLineCodeBlocks = new Regex(@"<code>([^>]*?)</code>").Matches(html);
+			multiLineCodeBlocks.Cast<Match>().Each(block =>
+				{
+					var code = block.Value;
+					var content = GetCodeContent(code);
+					content = IndentLines(content).TrimEnd() + Environment.NewLine + Environment.NewLine;
+					html = html.Replace(code, string.Format("{0}    {1}", Environment.NewLine, TabsToSpaces(content)));
+				});
+
+			return html;
+		}
+
+		private static string IndentLines(string content)
+		{
+			var lines = content.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+
+			return lines.Aggregate("", (current, line) => current + IndentLine(line));
+		}
+
+		private static string IndentLine(string line)
+		{
+			if (line.Trim().Equals(string.Empty)) return "";
+			return line + Environment.NewLine + "    ";
+		}
+
+		private static string GetCodeContent(string code)
+		{
+			var match = Regex.Match(code, @"<code[^>]*?>([^<]*?)</code>");
 			var groups = match.Groups;
 			return groups[1].Value;
 		}

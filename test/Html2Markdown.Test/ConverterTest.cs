@@ -124,6 +124,45 @@ Convert it.";
 		}
 
 		[Test]
+		public void Convert_WhenThereMultilineCodeTags_ThenReplaceWithMultilineMarkdownBlock001()
+		{
+			const string html = @"So this text has multiline code.
+<code>
+&lt;p&gt;
+	Some code we are looking at
+&lt;/p&gt;
+</code>";
+			const string expected = @"So this text has multiline code.
+
+    &lt;p&gt;
+        Some code we are looking at
+    &lt;/p&gt;
+
+";
+
+		}
+
+		[Test]
+		public void Convert_WhenThereMultilineCodeTags_ThenReplaceWithMultilineMarkdownBlock002()
+		{
+			const string html = @"So this text has multiline code.
+<code>
+	&lt;p&gt;
+		Some code we are looking at
+	&lt;/p&gt;
+</code>";
+			const string expected = @"So this text has multiline code.
+
+        &lt;p&gt;
+            Some code we are looking at
+        &lt;/p&gt;
+
+";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreH1Tags_ThenReplaceWithMarkDownHeader()
 		{
 			const string html = @"This code has a <h1>header</h1>. Convert it.";
