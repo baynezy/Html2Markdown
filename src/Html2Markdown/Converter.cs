@@ -90,10 +90,6 @@ namespace Html2Markdown
 			},
 			new CustomReplacer
 			{
-				CustomAction = HtmlParser.ReplacePre
-			},
-			new CustomReplacer
-			{
 				CustomAction = HtmlParser.ReplaceLists
 			},
 			new CustomReplacer
@@ -103,6 +99,10 @@ namespace Html2Markdown
 			new CustomReplacer
 			{
 				CustomAction = HtmlParser.ReplaceCode
+			},
+			new CustomReplacer
+			{
+				CustomAction = HtmlParser.ReplacePre
 			}
 		};
 
