@@ -56,7 +56,7 @@ namespace Html2Markdown.Replacement
 
 		internal static string ReplacePre(string html)
 		{
-			var preTags = new Regex(@"<pre\b[^>]*>([\s\S]*)<\/pre>").Matches(html);
+			var preTags = new Regex(@"<pre\b[^>]*>([\s\S]*?)<\/pre>").Matches(html);
 
 			return preTags.Cast<Match>().Aggregate(html, ConvertPre);
 		}

@@ -311,6 +311,67 @@ Convert it!";
 		}
 
 		[Test]
+		public void Convert_WhenThereAreOtherTagsNestedInThePreTag_ThenReplaceWithMarkdownPre()
+		{
+			const string html = @"<pre><code>Install-Package Html2Markdown
+</code></pre>";
+			const string expected = @"
+
+
+        Install-Package Html2Markdown
+    
+    
+";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreMultiplePreTags_ThenReplaceWithMarkdownPre()
+		{
+			const string html = @"<h2>Installing via NuGet</h2>
+
+<pre><code>Install-Package Html2Markdown
+</code></pre>
+
+<h2>Usage</h2>
+
+<pre><code>var converter = new Converter();
+var result = converter.Convert(html);
+</code></pre>";
+			const string expected = @"
+
+## Installing via NuGet
+
+
+
+
+
+
+        Install-Package Html2Markdown
+    
+    
+
+
+
+
+## Usage
+
+
+
+
+
+
+        var converter = new Converter();
+        var result = converter.Convert(html);
+    
+    
+";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreUnorderedLists_ThenReplaceWithMarkdownLists()
 		{
 			const string html = @"This code is with an unordered list.<ul><li>Yes</li><li>No</li></ul>";
