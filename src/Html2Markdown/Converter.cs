@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Html2Markdown.Replacement;
 
 namespace Html2Markdown
@@ -108,7 +109,13 @@ namespace Html2Markdown
 
 		public string Convert(string html)
 		{
-			return _replacers.Aggregate(html, (current, element) => element.Replace(current));
+			return CleanWhiteSpace(_replacers.Aggregate(html, (current, element) => element.Replace(current)));
+		}
+
+		private static string CleanWhiteSpace(string markdown)
+		{
+			var cleaned = Regex.Replace(markdown, @"\r\n\s+\r\n", "\r\n\r\n");
+			return Regex.Replace(cleaned, @"(?:\r\n){3,}", "\r\n\r\n");
 		}
 	}
 }

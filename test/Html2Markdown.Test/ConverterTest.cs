@@ -140,6 +140,7 @@ Convert it.";
 
 ";
 
+			CheckConversion(html, expected);
 		}
 
 		[Test]
@@ -303,7 +304,6 @@ Convert it!";
 	Predefined text</pre>";
 			const string expected = @"This code is with a pre tag 
 
-
         Predefined text
 ";
 
@@ -317,10 +317,8 @@ Convert it!";
 </code></pre>";
 			const string expected = @"
 
-
         Install-Package Html2Markdown
-    
-    
+
 ";
 
 			CheckConversion(html, expected);
@@ -343,29 +341,13 @@ var result = converter.Convert(html);
 
 ## Installing via NuGet
 
-
-
-
-
-
         Install-Package Html2Markdown
-    
-    
-
-
-
 
 ## Usage
 
-
-
-
-
-
         var converter = new Converter();
         var result = converter.Convert(html);
-    
-    
+
 ";
 
 			CheckConversion(html, expected);
