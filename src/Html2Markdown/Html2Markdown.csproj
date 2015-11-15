@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converter.cs" />
+    <Compile Include="HtmlAgilityPackExtensions.cs" />
     <Compile Include="Replacement\CustomReplacer.cs" />
     <Compile Include="Replacement\HtmlParser.cs" />
     <Compile Include="Replacement\IReplacer.cs" />

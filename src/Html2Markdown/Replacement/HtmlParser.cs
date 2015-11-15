@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 using LinqExtensions;
 
 namespace Html2Markdown.Replacement
@@ -98,19 +99,32 @@ namespace Html2Markdown.Replacement
 
 		public static string ReplaceAnchor(string html)
 		{
-			var originalAnchors = new Regex(@"<a[^>]+>[^<]+</a>").Matches(html);
-			originalAnchors.Cast<Match>().Each(anchor =>
-				{
-					var a = anchor.Value;
-					var linkText = GetLinkText(a);
-					var href = AttributeParser(a, "href");
-					var title = AttributeParser(a, "title");
+			var doc = new HtmlDocument();
+			doc.LoadHtml(html);
+			var nodes = doc.DocumentNode.SelectNodes("//a");
+			if (nodes == null) return html;
 
-					html = html.Replace(a, string.Format(@"[{0}]({1}{2})", linkText, href, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
-				});
+			foreach (var node in doc.DocumentNode.SelectNodes("//a").ToList())
+			{
+				var linkText = node.InnerHtml;
+				var href = node.Attributes.GetAttributeOrEmpty("href");
+				var title = node.Attributes.GetAttributeOrEmpty("title");
 
-			return html;
+				var markdown = string.Format(@"[{0}]({1}{2})", linkText, href,
+				                             (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
+
+				ReplaceNode(node, markdown);
+			}
+
+			return doc.DocumentNode.OuterHtml;
 		}
+
+		private static void ReplaceNode(HtmlNode node, string markdown)
+		{
+			var markdownNode = HtmlNode.CreateNode(markdown);
+			node.ParentNode.ReplaceChild(markdownNode.ParentNode, node);
+		}
+
 
 		private static string GetLinkText(string link)
 		{
