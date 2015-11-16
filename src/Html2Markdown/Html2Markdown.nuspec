@@ -13,6 +13,7 @@
     <tags>Markdown Html Convert</tags>
 		<dependencies>
 			<dependency id="LinqExtensions" version="0.0.1.14396" />
+			<dependency id="HtmlAgilityPack" version="1.4.9"></dependency>
 		</dependencies>
   </metadata>
 </package>
