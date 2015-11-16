@@ -6,6 +6,9 @@ using Html2Markdown.Replacement;
 
 namespace Html2Markdown
 {
+	/// <summary>
+	/// An Html to Markdown converter.
+	/// </summary>
 	public class Converter
 	{
 		private readonly IList<IReplacer> _replacers = new List<IReplacer>
@@ -107,6 +110,11 @@ namespace Html2Markdown
 			}
 		};
 
+		/// <summary>
+		/// Converts an Html string to a Markdown string
+		/// </summary>
+		/// <param name="html">The Html string you wish to convert</param>
+		/// <returns>A Markdown representation of the passed in Html</returns>
 		public string Convert(string html)
 		{
 			return CleanWhiteSpace(_replacers.Aggregate(html, (current, element) => element.Replace(current)));

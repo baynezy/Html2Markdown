@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 using LinqExtensions;
 
 namespace Html2Markdown.Replacement
@@ -56,18 +55,26 @@ namespace Html2Markdown.Replacement
 
 		internal static string ReplacePre(string html)
 		{
-			var preTags = new Regex(@"<pre\b[^>]*>([\s\S]*?)<\/pre>").Matches(html);
+			var doc = GetHtmlDocument(html);
+			var nodes = doc.DocumentNode.SelectNodes("//pre");
+			if (nodes == null) return html;
 
-			return preTags.Cast<Match>().Aggregate(html, ConvertPre);
+			nodes.Each(node =>
+				{
+					var tagContents = node.InnerHtml;
+					var markdown = ConvertPre(tagContents);
+
+					ReplaceNode(node, markdown);
+				});
+
+			return doc.DocumentNode.OuterHtml;
 		}
 
-		private static string ConvertPre(string html, Match preTag)
+		private static string ConvertPre(string html)
 		{
-			var tag = preTag.Groups[1].Value;
-			tag = TabsToSpaces(tag);
+			var tag = TabsToSpaces(html);
 			tag = IndentNewLines(tag);
-			html = html.Replace(preTag.Value, Environment.NewLine + Environment.NewLine + tag + Environment.NewLine);
-			return html;
+			return Environment.NewLine + Environment.NewLine + tag + Environment.NewLine;
 		}
 
 		private static string IndentNewLines(string tag)
@@ -82,41 +89,56 @@ namespace Html2Markdown.Replacement
 
 		internal static string ReplaceImg(string html)
 		{
-			var originalImages = new Regex(@"<img([^>]+)>").Matches(html);
-			originalImages.Cast<Match>().Each(image =>
-				{
-					var img = image.Value;
-					var src = AttributeParser(img, "src");
-					var alt = AttributeParser(img, "alt");
-					var title = AttributeParser(img, "title");
+			var doc = GetHtmlDocument(html);
+			var nodes = doc.DocumentNode.SelectNodes("//img");
+			if (nodes == null) return html;
 
-					html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
+			nodes.Each(node =>
+				{
+					var src = node.Attributes.GetAttributeOrEmpty("src");
+					var alt = node.Attributes.GetAttributeOrEmpty("alt");
+					var title = node.Attributes.GetAttributeOrEmpty("title");
+
+					var markdown = string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
+
+					ReplaceNode(node, markdown);
 				});
 
-			return html;
+			return doc.DocumentNode.OuterHtml;
 		}
 
 		public static string ReplaceAnchor(string html)
 		{
-			var originalAnchors = new Regex(@"<a[^>]+>[^<]+</a>").Matches(html);
-			originalAnchors.Cast<Match>().Each(anchor =>
-				{
-					var a = anchor.Value;
-					var linkText = GetLinkText(a);
-					var href = AttributeParser(a, "href");
-					var title = AttributeParser(a, "title");
+			var doc = GetHtmlDocument(html);
+			var nodes = doc.DocumentNode.SelectNodes("//a");
+			if (nodes == null) return html;
 
-					html = html.Replace(a, string.Format(@"[{0}]({1}{2})", linkText, href, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
+			nodes.Each(node =>
+				{
+					var linkText = node.InnerHtml;
+					var href = node.Attributes.GetAttributeOrEmpty("href");
+					var title = node.Attributes.GetAttributeOrEmpty("title");
+
+					var markdown = string.Format(@"[{0}]({1}{2})", linkText, href,
+												 (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
+
+					ReplaceNode(node, markdown);
 				});
 
-			return html;
+			return doc.DocumentNode.OuterHtml;
 		}
 
-		private static string GetLinkText(string link)
+		private static HtmlDocument GetHtmlDocument(string html)
 		{
-			var match = Regex.Match(link, @"<a[^>]+>([^<]+)</a>");
-			var groups = match.Groups;
-			return groups[1].Value;
+			var doc = new HtmlDocument();
+			doc.LoadHtml(html);
+			return doc;
+		}
+
+		private static void ReplaceNode(HtmlNode node, string markdown)
+		{
+			var markdownNode = HtmlNode.CreateNode(markdown);
+			node.ParentNode.ReplaceChild(markdownNode.ParentNode, node);
 		}
 
 		public static string ReplaceCode(string html)
@@ -157,13 +179,6 @@ namespace Html2Markdown.Replacement
 		private static string GetCodeContent(string code)
 		{
 			var match = Regex.Match(code, @"<code[^>]*?>([^<]*?)</code>");
-			var groups = match.Groups;
-			return groups[1].Value;
-		}
-
-		private static string AttributeParser(string html, string attribute)
-		{
-			var match = Regex.Match(html, string.Format(@"{0}\s*=\s*[""\']?([^""\']*)[""\']?", attribute));
 			var groups = match.Groups;
 			return groups[1].Value;
 		}
