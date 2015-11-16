@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Html2Markdown.Replacement;
@@ -109,6 +110,20 @@ namespace Html2Markdown
 				CustomAction = HtmlParser.ReplacePre
 			}
 		};
+
+		/// <summary>
+		/// Converts Html contained in a file to a Markdown string
+		/// </summary>
+		/// <param name="path">The path to the file which is being converted</param>
+		/// <returns>A Markdown representation of the passed in Html</returns>
+		public string ConvertFile(string path)
+		{
+			using (var reader = new StreamReader(path))
+			{
+				var html = reader.ReadToEnd();
+				return Convert(html);
+			}
+		}
 
 		/// <summary>
 		/// Converts an Html string to a Markdown string
