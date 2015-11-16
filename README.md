@@ -34,8 +34,18 @@ This project will currently convert the following HTML tags:-
     Install-Package Html2Markdown
 
 ## Usage
+
+### Strings
+
+    var html = "Something to <strong>convert</strong>";
     var converter = new Converter();
-    var result = converter.Convert(html);
+    var markdown = converter.Convert(html);
+
+### Files
+
+    var path = "file.html";
+    var converter = new Converter();
+    var markdown = converter.ConvertFile(path);
 
 ## Contributing
 

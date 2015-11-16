@@ -1,0 +1,10 @@
+﻿<h2>Installing via NuGet</h2>
+
+<pre><code>Install-Package Html2Markdown
+</code></pre>
+
+<h2>Usage</h2>
+
+<pre><code>var converter = new Converter();
+var result = converter.Convert(html);
+</code></pre>
