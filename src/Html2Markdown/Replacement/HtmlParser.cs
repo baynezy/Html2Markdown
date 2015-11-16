@@ -91,18 +91,23 @@ namespace Html2Markdown.Replacement
 
 		internal static string ReplaceImg(string html)
 		{
-			var originalImages = new Regex(@"<img([^>]+)>").Matches(html);
-			originalImages.Cast<Match>().Each(image =>
-				{
-					var img = image.Value;
-					var src = AttributeParser(img, "src");
-					var alt = AttributeParser(img, "alt");
-					var title = AttributeParser(img, "title");
+			var doc = GetHtmlDocument(html);
+			var nodes = doc.DocumentNode.SelectNodes("//img");
+			if (nodes == null) return html;
 
-					html = html.Replace(img, string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : ""));
-				});
+			foreach (var node in nodes)
+			{
+				var img = node.InnerHtml;
+				var src = node.Attributes.GetAttributeOrEmpty("src");
+				var alt = node.Attributes.GetAttributeOrEmpty("alt");
+				var title = node.Attributes.GetAttributeOrEmpty("title");
 
-			return html;
+				var markdown = string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
+
+				ReplaceNode(node, markdown);
+			}
+
+			return doc.DocumentNode.OuterHtml;
 		}
 
 		public static string ReplaceAnchor(string html)
