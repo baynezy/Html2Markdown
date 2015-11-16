@@ -403,6 +403,35 @@ var result = converter.Convert(html);
 			CheckConversion(html, expected);
 		}
 
+		[Test]
+		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
+		{
+			const string sourcePath = @"..\..\Files\TestHtml.txt";
+			const string expected = @"
+
+## Installing via NuGet
+
+        Install-Package Html2Markdown
+
+## Usage
+
+        var converter = new Converter();
+        var result = converter.Convert(html);
+
+";
+
+			CheckFileConversion(sourcePath, expected);
+		}
+
+		private static void CheckFileConversion(string path, string expected)
+		{
+			var converter = new Converter();
+
+			var result = converter.ConvertFile(path);
+
+			Assert.That(result, Is.EqualTo(expected));
+		}
+
 		private static void CheckConversion(string html, string expected)
 		{
 			var converter = new Converter();
