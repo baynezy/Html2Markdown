@@ -57,18 +57,26 @@ namespace Html2Markdown.Replacement
 
 		internal static string ReplacePre(string html)
 		{
-			var preTags = new Regex(@"<pre\b[^>]*>([\s\S]*?)<\/pre>").Matches(html);
+			var doc = GetHtmlDocument(html);
+			var nodes = doc.DocumentNode.SelectNodes("//pre");
+			if (nodes == null) return html;
 
-			return preTags.Cast<Match>().Aggregate(html, ConvertPre);
+			foreach (var node in nodes)
+			{
+				var tagContents = node.InnerHtml;
+				var markdown = ConvertPre(tagContents);
+
+				ReplaceNode(node, markdown);
+			}
+
+			return doc.DocumentNode.OuterHtml;
 		}
 
-		private static string ConvertPre(string html, Match preTag)
+		private static string ConvertPre(string html)
 		{
-			var tag = preTag.Groups[1].Value;
-			tag = TabsToSpaces(tag);
+			var tag = TabsToSpaces(html);
 			tag = IndentNewLines(tag);
-			html = html.Replace(preTag.Value, Environment.NewLine + Environment.NewLine + tag + Environment.NewLine);
-			return html;
+			return Environment.NewLine + Environment.NewLine + tag + Environment.NewLine;
 		}
 
 		private static string IndentNewLines(string tag)
@@ -99,8 +107,7 @@ namespace Html2Markdown.Replacement
 
 		public static string ReplaceAnchor(string html)
 		{
-			var doc = new HtmlDocument();
-			doc.LoadHtml(html);
+			var doc = GetHtmlDocument(html);
 			var nodes = doc.DocumentNode.SelectNodes("//a");
 			if (nodes == null) return html;
 
@@ -117,6 +124,13 @@ namespace Html2Markdown.Replacement
 			}
 
 			return doc.DocumentNode.OuterHtml;
+		}
+
+		private static HtmlDocument GetHtmlDocument(string html)
+		{
+			var doc = new HtmlDocument();
+			doc.LoadHtml(html);
+			return doc;
 		}
 
 		private static void ReplaceNode(HtmlNode node, string markdown)
