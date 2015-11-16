@@ -121,8 +121,14 @@ namespace Html2Markdown
 			using (var reader = new StreamReader(path))
 			{
 				var html = reader.ReadToEnd();
+				html = StandardiseWhitespace(html);
 				return Convert(html);
 			}
+		}
+
+		private static string StandardiseWhitespace(string html)
+		{
+			return Regex.Replace(html, @"([^\r])\n", "$1\r\n");
 		}
 
 		/// <summary>
