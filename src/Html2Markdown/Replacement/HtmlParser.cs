@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using LinqExtensions;
@@ -61,13 +59,13 @@ namespace Html2Markdown.Replacement
 			var nodes = doc.DocumentNode.SelectNodes("//pre");
 			if (nodes == null) return html;
 
-			foreach (var node in nodes)
-			{
-				var tagContents = node.InnerHtml;
-				var markdown = ConvertPre(tagContents);
+			nodes.Each(node =>
+				{
+					var tagContents = node.InnerHtml;
+					var markdown = ConvertPre(tagContents);
 
-				ReplaceNode(node, markdown);
-			}
+					ReplaceNode(node, markdown);
+				});
 
 			return doc.DocumentNode.OuterHtml;
 		}
@@ -95,17 +93,16 @@ namespace Html2Markdown.Replacement
 			var nodes = doc.DocumentNode.SelectNodes("//img");
 			if (nodes == null) return html;
 
-			foreach (var node in nodes)
-			{
-				var img = node.InnerHtml;
-				var src = node.Attributes.GetAttributeOrEmpty("src");
-				var alt = node.Attributes.GetAttributeOrEmpty("alt");
-				var title = node.Attributes.GetAttributeOrEmpty("title");
+			nodes.Each(node =>
+				{
+					var src = node.Attributes.GetAttributeOrEmpty("src");
+					var alt = node.Attributes.GetAttributeOrEmpty("alt");
+					var title = node.Attributes.GetAttributeOrEmpty("title");
 
-				var markdown = string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
+					var markdown = string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
 
-				ReplaceNode(node, markdown);
-			}
+					ReplaceNode(node, markdown);
+				});
 
 			return doc.DocumentNode.OuterHtml;
 		}
@@ -116,17 +113,17 @@ namespace Html2Markdown.Replacement
 			var nodes = doc.DocumentNode.SelectNodes("//a");
 			if (nodes == null) return html;
 
-			foreach (var node in doc.DocumentNode.SelectNodes("//a").ToList())
-			{
-				var linkText = node.InnerHtml;
-				var href = node.Attributes.GetAttributeOrEmpty("href");
-				var title = node.Attributes.GetAttributeOrEmpty("title");
+			nodes.Each(node =>
+				{
+					var linkText = node.InnerHtml;
+					var href = node.Attributes.GetAttributeOrEmpty("href");
+					var title = node.Attributes.GetAttributeOrEmpty("title");
 
-				var markdown = string.Format(@"[{0}]({1}{2})", linkText, href,
-				                             (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
+					var markdown = string.Format(@"[{0}]({1}{2})", linkText, href,
+												 (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
 
-				ReplaceNode(node, markdown);
-			}
+					ReplaceNode(node, markdown);
+				});
 
 			return doc.DocumentNode.OuterHtml;
 		}
@@ -142,14 +139,6 @@ namespace Html2Markdown.Replacement
 		{
 			var markdownNode = HtmlNode.CreateNode(markdown);
 			node.ParentNode.ReplaceChild(markdownNode.ParentNode, node);
-		}
-
-
-		private static string GetLinkText(string link)
-		{
-			var match = Regex.Match(link, @"<a[^>]+>([^<]+)</a>");
-			var groups = match.Groups;
-			return groups[1].Value;
 		}
 
 		public static string ReplaceCode(string html)
@@ -190,13 +179,6 @@ namespace Html2Markdown.Replacement
 		private static string GetCodeContent(string code)
 		{
 			var match = Regex.Match(code, @"<code[^>]*?>([^<]*?)</code>");
-			var groups = match.Groups;
-			return groups[1].Value;
-		}
-
-		private static string AttributeParser(string html, string attribute)
-		{
-			var match = Regex.Match(html, string.Format(@"{0}\s*=\s*[""\']?([^""\']*)[""\']?", attribute));
 			var groups = match.Groups;
 			return groups[1].Value;
 		}
