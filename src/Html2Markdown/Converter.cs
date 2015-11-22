@@ -36,32 +36,32 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<h1>",
+				Pattern = @"<h1[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + "# "
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<h2>",
+				Pattern = @"<h2[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + "## "
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<h3>",
+				Pattern = @"<h3[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + "### "
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<h4>",
+				Pattern = @"<h4[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + "#### "
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<h5>",
+				Pattern = @"<h5[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + "##### "
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<h6>",
+				Pattern = @"<h6[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + "###### "
 			},
 			new PatternReplacer
