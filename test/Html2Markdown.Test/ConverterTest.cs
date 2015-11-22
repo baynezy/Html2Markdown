@@ -242,6 +242,85 @@ Convert it.";
 			CheckConversion(html, expected);
 		}
 
+		[Test]
+		public void Convert_WhenThereAreH1TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+		{
+			const string html = @"This code has a <h1 title=""header"">header</h1>. Convert it.";
+			const string expected = @"This code has a 
+
+# header
+
+. Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+
+		[Test]
+		public void Convert_WhenThereAreH2TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+		{
+			const string html = @"This code has a <h2 title=""header"">header</h2>. Convert it.";
+			const string expected = @"This code has a 
+
+## header
+
+. Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreH3TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+		{
+			const string html = @"This code has a <h3 title=""header"">header</h3>. Convert it.";
+			const string expected = @"This code has a 
+
+### header
+
+. Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreH4TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+		{
+			const string html = @"This code has a <h4 title=""header"">header</h4>. Convert it.";
+			const string expected = @"This code has a 
+
+#### header
+
+. Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreH5TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+		{
+			const string html = @"This code has a <h5 title=""header"">header</h5>. Convert it.";
+			const string expected = @"This code has a 
+
+##### header
+
+. Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreH6TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+		{
+			const string html = @"This code has a <h6 title=""header"">header</h6>. Convert it.";
+			const string expected = @"This code has a 
+
+###### header
+
+. Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
         [Test]
         public void Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
         {
