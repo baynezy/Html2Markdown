@@ -4,6 +4,8 @@ Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax)
 
 [![NuGet version](https://badge.fury.io/nu/Html2Markdown.svg)](http://badge.fury.io/nu/Html2Markdown) [![Build Status](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n?svg=true)](https://ci.appveyor.com/project/baynezy/html2markdown) 
 
+![Html2Markdown](https://cloud.githubusercontent.com/assets/1049999/11505182/0480ad76-9841-11e5-8a62-126d4b7c03be.png)
+
 ## Support
 
 This project will currently convert the following HTML tags:-
@@ -46,6 +48,10 @@ This project will currently convert the following HTML tags:-
     var path = "file.html";
     var converter = new Converter();
     var markdown = converter.ConvertFile(path);
+
+## Try it
+
+This library is showcased at [http://html2markdown.bayn.es](http://html2markdown.bayn.es).
 
 ## Contributing
 
