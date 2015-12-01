@@ -10,26 +10,26 @@ Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax)
 
 This project will currently convert the following HTML tags:-
 
-- a
-- strong
-- b
-- em
-- i
-- br
-- code
-- h1
-- h2
-- h3
-- h4
-- h5
-- h6
-- blockquote
-- img
-- hr
-- p
-- pre
-- ul
-- ol
+- `<a>`
+- `<strong>`
+- `<b>`
+- `<em>`
+- `<i>`
+- `<br>`
+- `<code>`
+- `<h1>`
+- `<h2>`
+- `<h3>`
+- `<h4>`
+- `<h5>`
+- `<h6>`
+- `<blockquote>`
+- `<img>`
+- `<hr>`
+- `<p>`
+- `<pre>`
+- `<ul>`
+- `<ol>`
 
 ## Installing via NuGet
 
