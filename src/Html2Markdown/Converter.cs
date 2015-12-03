@@ -101,6 +101,11 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
+				Pattern = @"</?head[^>]*>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
 				Pattern = @"<!--[^-]+-->",
 				Replacement = ""
 			},

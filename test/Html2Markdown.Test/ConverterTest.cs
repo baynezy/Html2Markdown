@@ -524,6 +524,28 @@ a comment
 		}
 
 		[Test]
+		public void Convert_WhenThereIsAHeadTag_ThenRemoveFromResult()
+		{
+			const string html = @"<head>
+<p>HTML tags should be removed</p>
+</head>";
+			const string expected = @"HTML tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAHeadTagWithAttributes_ThenRemoveFromResult()
+		{
+			const string html = @"<head id=""something"">
+<p>HTML tags should be removed</p>
+</head>";
+			const string expected = @"HTML tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
 			const string sourcePath = @"..\..\Files\TestHtml.txt";
