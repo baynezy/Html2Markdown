@@ -556,6 +556,16 @@ a comment
 		}
 
 		[Test]
+		public void Convert_WhenThereIsATitleTag_ThenRemoveFromResult()
+		{
+			const string html = @"<title>emove me</title>
+<p>Meta tags should be removed</p>";
+			const string expected = @"Meta tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
 			const string sourcePath = @"..\..\Files\TestHtml.txt";

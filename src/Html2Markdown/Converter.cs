@@ -106,6 +106,11 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
+				Pattern = @"<title>.*?</title>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
 				Pattern = @"<meta[^>]*>",
 				Replacement = ""
 			},
