@@ -60,6 +60,15 @@ namespace Html2Markdown.Test
 		}
 
 		[Test]
+		public void Convert_WhenThereAreEmptyLinks_ThenRemoveThemFromResult()
+		{
+			const string html = @"So this is <a name=""curio""></a> and so is <a href=""http://www.google.com/"">this</a>. Convert them";
+			const string expected = @"So this is  and so is [this](http://www.google.com/). Convert them";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreStrongTags_ThenConvertToMarkDownDoubleAsterisks()
 		{
 			const string html = @"So this text is <strong>bold</strong>. Convert it.";

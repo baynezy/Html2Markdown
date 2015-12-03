@@ -119,13 +119,24 @@ namespace Html2Markdown.Replacement
 					var href = node.Attributes.GetAttributeOrEmpty("href");
 					var title = node.Attributes.GetAttributeOrEmpty("title");
 
-					var markdown = string.Format(@"[{0}]({1}{2})", linkText, href,
+					string markdown = "";
+
+					if (!IsEmptyLink(linkText, href))
+					{
+						markdown = string.Format(@"[{0}]({1}{2})", linkText, href,
 												 (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
+					}
 
 					ReplaceNode(node, markdown);
 				});
 
 			return doc.DocumentNode.OuterHtml;
+		}
+
+		private static bool IsEmptyLink(string linkText, string href)
+		{
+			var length = linkText.Length + href.Length;
+			return length == 0;
 		}
 
 		private static HtmlDocument GetHtmlDocument(string html)
@@ -138,7 +149,15 @@ namespace Html2Markdown.Replacement
 		private static void ReplaceNode(HtmlNode node, string markdown)
 		{
 			var markdownNode = HtmlNode.CreateNode(markdown);
-			node.ParentNode.ReplaceChild(markdownNode.ParentNode, node);
+			if (string.IsNullOrEmpty(markdown))
+			{
+				node.ParentNode.RemoveChild(node);
+			}
+			else
+			{
+				node.ParentNode.ReplaceChild(markdownNode.ParentNode, node);
+			}
+			
 		}
 
 		public static string ReplaceCode(string html)
