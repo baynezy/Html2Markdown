@@ -89,6 +89,11 @@ namespace Html2Markdown
 				Pattern = @"<hr/>",
 				Replacement = Environment.NewLine + Environment.NewLine + "* * *" + Environment.NewLine
 			},
+			new PatternReplacer
+			{
+				Pattern = @"<!DOCTYPE[^>]*>",
+				Replacement = ""
+			},
 			new CustomReplacer
 			{
 				CustomAction = HtmlParser.ReplaceImg

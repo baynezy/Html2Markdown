@@ -470,6 +470,16 @@ var result = converter.Convert(html);
 		}
 
 		[Test]
+		public void Convert_WhenThereIsAnHtmlDoctype_ThenRemoveFromResult()
+		{
+			const string html = @"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">
+Doctypes should be removed";
+			const string expected = @"Doctypes should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
 			const string sourcePath = @"..\..\Files\TestHtml.txt";
