@@ -60,6 +60,15 @@ namespace Html2Markdown.Test
 		}
 
 		[Test]
+		public void Convert_WhenThereAreEmptyLinks_ThenRemoveThemFromResult()
+		{
+			const string html = @"So this is <a name=""curio""></a> and so is <a href=""http://www.google.com/"">this</a>. Convert them";
+			const string expected = @"So this is  and so is [this](http://www.google.com/). Convert them";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreStrongTags_ThenConvertToMarkDownDoubleAsterisks()
 		{
 			const string html = @"So this text is <strong>bold</strong>. Convert it.";
@@ -465,6 +474,134 @@ var result = converter.Convert(html);
 1.  Yes
 2.  *   No
     *   Maybe";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAnHtmlDoctype_ThenRemoveFromResult()
+		{
+			const string html = @"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">
+Doctypes should be removed";
+			const string expected = @"Doctypes should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAnHtmlTag_ThenRemoveFromResult()
+		{
+			const string html = @"<html>
+<p>HTML tags should be removed</p>
+</html>";
+			const string expected = @"HTML tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAnHtmlTagWithAttributes_ThenRemoveFromResult()
+		{
+			const string html = @"<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""pt-br"">
+<p>HTML tags should be removed</p>
+</html>";
+			const string expected = @"HTML tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsASingleLineComment_ThenRemoveFromResult()
+		{
+			const string html = @"<!-- a comment -->
+<p>Comments should be removed</p>";
+			const string expected = @"Comments should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAMultiLineComment_ThenRemoveFromResult()
+		{
+			const string html = @"<!-- 
+a comment
+-->
+<p>Comments should be removed</p>";
+			const string expected = @"Comments should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAHeadTag_ThenRemoveFromResult()
+		{
+			const string html = @"<head>
+<p>HTML tags should be removed</p>
+</head>";
+			const string expected = @"HTML tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAHeadTagWithAttributes_ThenRemoveFromResult()
+		{
+			const string html = @"<head id=""something"">
+<p>HTML tags should be removed</p>
+</head>";
+			const string expected = @"HTML tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAMetaTag_ThenRemoveFromResult()
+		{
+			const string html = @"<meta name=""language"" content=""pt-br"">
+<p>Meta tags should be removed</p>";
+			const string expected = @"Meta tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsATitleTag_ThenRemoveFromResult()
+		{
+			const string html = @"<title>Remove me</title>
+<p>Title tags should be removed</p>";
+			const string expected = @"Title tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsALinkTag_ThenRemoveFromResult()
+		{
+			const string html = @"<link type=""text/css"" rel=""stylesheet"" href=""https://dl.dropboxusercontent.com/u/28729896/modelo-similar-blog-ss-para-sublime-text.css"">
+<p>Link tags should be removed</p>";
+			const string expected = @"Link tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsABodyTag_ThenRemoveFromResult()
+		{
+			const string html = @"<body>
+<p>Body tags should be removed</p>
+</body>";
+			const string expected = @"Body tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsABodyTagWithAttributes_ThenRemoveFromResult()
+		{
+			const string html = @"<body id=""something"">
+<p>Body tags should be removed</p>
+</body>";
+			const string expected = @"Body tags should be removed";
 
 			CheckConversion(html, expected);
 		}

@@ -89,6 +89,46 @@ namespace Html2Markdown
 				Pattern = @"<hr/>",
 				Replacement = Environment.NewLine + Environment.NewLine + "* * *" + Environment.NewLine
 			},
+			new PatternReplacer
+			{
+				Pattern = @"<!DOCTYPE[^>]*>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
+				Pattern = @"</?html[^>]*>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
+				Pattern = @"</?head[^>]*>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
+				Pattern = @"</?body[^>]*>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
+				Pattern = @"<title>.*?</title>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
+				Pattern = @"<meta[^>]*>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
+				Pattern = @"<link[^>]*>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
+				Pattern = @"<!--[^-]+-->",
+				Replacement = ""
+			},
 			new CustomReplacer
 			{
 				CustomAction = HtmlParser.ReplaceImg
