@@ -546,6 +546,16 @@ a comment
 		}
 
 		[Test]
+		public void Convert_WhenThereIsAMetaTag_ThenRemoveFromResult()
+		{
+			const string html = @"<meta name=""language"" content=""pt-br"">
+<p>Meta tags should be removed</p>";
+			const string expected = @"Meta tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
 			const string sourcePath = @"..\..\Files\TestHtml.txt";
