@@ -502,6 +502,28 @@ Doctypes should be removed";
 		}
 
 		[Test]
+		public void Convert_WhenThereIsASingleLineComment_ThenRemoveFromResult()
+		{
+			const string html = @"<!-- a comment -->
+<p>Comments should be removed</p>";
+			const string expected = @"Comments should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAMultiLineComment_ThenRemoveFromResult()
+		{
+			const string html = @"<!-- 
+a comment
+-->
+<p>Comments should be removed</p>";
+			const string expected = @"Comments should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
 			const string sourcePath = @"..\..\Files\TestHtml.txt";
