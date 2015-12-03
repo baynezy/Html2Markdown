@@ -352,6 +352,18 @@ Convert it!";
 		}
 
 		[Test]
+		public void Convert_WhenThereAreParagraphTagsWithAttributes_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
+		{
+			const string html = @"This code has no markup.<p class=""something"">This code is in a paragraph.</p>Convert it!";
+			const string expected = @"This code has no markup.
+
+This code is in a paragraph.
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreHorizontalRuleTags_ThenReplaceWithMarkDownHorizontalRule()
 		{
 			const string html = @"This code is seperated by a horizonrtal rule.<hr/>Convert it!";
