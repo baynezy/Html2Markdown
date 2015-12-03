@@ -576,6 +576,28 @@ a comment
 		}
 
 		[Test]
+		public void Convert_WhenThereIsABodyTag_ThenRemoveFromResult()
+		{
+			const string html = @"<body>
+<p>Body tags should be removed</p>
+</body>";
+			const string expected = @"Body tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsABodyTagWithAttributes_ThenRemoveFromResult()
+		{
+			const string html = @"<body id=""something"">
+<p>Body tags should be removed</p>
+</body>";
+			const string expected = @"Body tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
 			const string sourcePath = @"..\..\Files\TestHtml.txt";
