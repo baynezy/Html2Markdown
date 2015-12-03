@@ -116,6 +116,11 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
+				Pattern = @"<link[^>]*>",
+				Replacement = ""
+			},
+			new PatternReplacer
+			{
 				Pattern = @"<!--[^-]+-->",
 				Replacement = ""
 			},

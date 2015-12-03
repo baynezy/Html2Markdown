@@ -558,9 +558,19 @@ a comment
 		[Test]
 		public void Convert_WhenThereIsATitleTag_ThenRemoveFromResult()
 		{
-			const string html = @"<title>emove me</title>
-<p>Meta tags should be removed</p>";
-			const string expected = @"Meta tags should be removed";
+			const string html = @"<title>Remove me</title>
+<p>Title tags should be removed</p>";
+			const string expected = @"Title tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsALinkTag_ThenRemoveFromResult()
+		{
+			const string html = @"<link type=""text/css"" rel=""stylesheet"" href=""https://dl.dropboxusercontent.com/u/28729896/modelo-similar-blog-ss-para-sublime-text.css"">
+<p>Link tags should be removed</p>";
+			const string expected = @"Link tags should be removed";
 
 			CheckConversion(html, expected);
 		}
