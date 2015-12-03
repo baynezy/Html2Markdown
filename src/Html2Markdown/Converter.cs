@@ -94,6 +94,11 @@ namespace Html2Markdown
 				Pattern = @"<!DOCTYPE[^>]*>",
 				Replacement = ""
 			},
+			new PatternReplacer
+			{
+				Pattern = @"</?html[^>]*>",
+				Replacement = ""
+			},
 			new CustomReplacer
 			{
 				CustomAction = HtmlParser.ReplaceImg

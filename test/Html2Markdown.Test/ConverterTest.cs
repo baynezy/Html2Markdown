@@ -480,6 +480,28 @@ Doctypes should be removed";
 		}
 
 		[Test]
+		public void Convert_WhenThereIsAnHtmlTag_ThenRemoveFromResult()
+		{
+			const string html = @"<html>
+<p>HTML tags should be removed</p>
+</html>";
+			const string expected = @"HTML tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAnHtmlTagWithAttributes_ThenRemoveFromResult()
+		{
+			const string html = @"<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""pt-br"">
+<p>HTML tags should be removed</p>
+</html>";
+			const string expected = @"HTML tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
 			const string sourcePath = @"..\..\Files\TestHtml.txt";
