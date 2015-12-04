@@ -116,7 +116,27 @@ namespace Html2Markdown.Test
 		[Test]
 		public void Convert_WhenThereAreBreakTags_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
 		{
+			const string html = @"So this text has a break.<br/>Convert it.";
+			const string expected = @"So this text has a break.  
+Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreBreakTagsWithWhitespace_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
+		{
 			const string html = @"So this text has a break.<br />Convert it.";
+			const string expected = @"So this text has a break.  
+Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreBreakTagsThatAreNotSelfClosing_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
+		{
+			const string html = @"So this text has a break.<br>Convert it.";
 			const string expected = @"So this text has a break.  
 Convert it.";
 
@@ -143,9 +163,9 @@ Convert it.";
 </code>";
 			const string expected = @"So this text has multiline code.
 
-    &lt;p&gt;
+    <p>
         Some code we are looking at
-    &lt;/p&gt;";
+    </p>";
 
 			CheckConversion(html, expected);
 		}
@@ -161,9 +181,9 @@ Convert it.";
 </code>";
 			const string expected = @"So this text has multiline code.
 
-        &lt;p&gt;
+        <p>
             Some code we are looking at
-        &lt;/p&gt;";
+        </p>";
 
 			CheckConversion(html, expected);
 		}
@@ -326,18 +346,31 @@ Convert it.";
 			CheckConversion(html, expected);
 		}
 
-        [Test]
-        public void Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
-        {
-            const string html = @"This code has a <blockquote>blockquote</blockquote>. Convert it.";
-            const string expected = @"This code has a 
+		[Test]
+		public void Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
+		{
+			const string html = @"This code has a <blockquote>blockquote</blockquote>. Convert it.";
+			const string expected = @"This code has a 
 
 >blockquote
 
 . Convert it.";
 
-            CheckConversion(html, expected);
-        }
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsABlockquoteTagWithAttributes_ThenReplaceWithMarkDownBlockQuote()
+		{
+			const string html = @"This code has a <blockquote id=""thing"">blockquote</blockquote>. Convert it.";
+			const string expected = @"This code has a 
+
+>blockquote
+
+. Convert it.";
+
+			CheckConversion(html, expected);
+		}
 
 		[Test]
 		public void Convert_WhenThereAreParagraphTags_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
@@ -352,9 +385,57 @@ Convert it!";
 		}
 
 		[Test]
+		public void Convert_WhenThereAreParagraphTagsWithAttributes_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
+		{
+			const string html = @"This code has no markup.<p class=""something"">This code is in a paragraph.</p>Convert it!";
+			const string expected = @"This code has no markup.
+
+This code is in a paragraph.
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreHorizontalRuleTags_ThenReplaceWithMarkDownHorizontalRule()
 		{
 			const string html = @"This code is seperated by a horizonrtal rule.<hr/>Convert it!";
+			const string expected = @"This code is seperated by a horizonrtal rule.
+
+* * *
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreHorizontalRuleTagsWithWhiteSpace_ThenReplaceWithMarkDownHorizontalRule()
+		{
+			const string html = @"This code is seperated by a horizonrtal rule.<hr />Convert it!";
+			const string expected = @"This code is seperated by a horizonrtal rule.
+
+* * *
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreHorizontalRuleTagsWithAttributes_ThenReplaceWithMarkDownHorizontalRule()
+		{
+			const string html = @"This code is seperated by a horizonrtal rule.<hr class=""something"" />Convert it!";
+			const string expected = @"This code is seperated by a horizonrtal rule.
+
+* * *
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreHorizontalRuleTagsThatAreNonSelfClosing_ThenReplaceWithMarkDownHorizontalRule()
+		{
+			const string html = @"This code is seperated by a horizonrtal rule.<hr>Convert it!";
 			const string expected = @"This code is seperated by a horizonrtal rule.
 
 * * *
@@ -575,6 +656,16 @@ a comment
 		}
 
 		[Test]
+		public void Convert_WhenThereIsATitleTagWithAttributes_ThenRemoveFromResult()
+		{
+			const string html = @"<title id=""something"">Remove me</title>
+<p>Title tags should be removed</p>";
+			const string expected = @"Title tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereIsALinkTag_ThenRemoveFromResult()
 		{
 			const string html = @"<link type=""text/css"" rel=""stylesheet"" href=""https://dl.dropboxusercontent.com/u/28729896/modelo-similar-blog-ss-para-sublime-text.css"">
@@ -602,6 +693,42 @@ a comment
 <p>Body tags should be removed</p>
 </body>";
 			const string expected = @"Body tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAnAmpersandEntity_ThenReplaceWithActualCharacter()
+		{
+			const string html = @"<p>Enties like &amp; should be converted</p>";
+			const string expected = @"Enties like & should be converted";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAnLessThanEntity_ThenReplaceWithActualCharacter()
+		{
+			const string html = @"<p>Enties like &lt; should be converted</p>";
+			const string expected = @"Enties like < should be converted";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAGreaterThanEntity_ThenReplaceWithActualCharacter()
+		{
+			const string html = @"<p>Enties like &gt; should be converted</p>";
+			const string expected = @"Enties like > should be converted";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsABulletEntity_ThenReplaceWithActualCharacter()
+		{
+			const string html = @"<p>Enties like &#8226; should be converted</p>";
+			const string expected = @"Enties like • should be converted";
 
 			CheckConversion(html, expected);
 		}
@@ -668,7 +795,7 @@ We need to update the ServerEvent object to support having an `id` for an event.
         };
         ServerEvent.prototype.addData = function(data) {
             var lines = data.split(/\n/);
-            for (var i = 0; i &lt; lines.length; i++) {
+            for (var i = 0; i < lines.length; i++) {
                 var element = lines[i];
                 this.data += ""data:"" + element + ""\n"";
             }
@@ -732,7 +859,7 @@ When an `EventSource` reconnects after a disconnection it passes a special heade
         function replaySSEs(req, res) {
             var lastId = req.headers[""last-event-id""];
             eventStorage.findEventsSince(lastId).then(function(docs) {
-                for (var index = 0; index &lt; docs.length; index++) {
+                for (var index = 0; index < docs.length; index++) {
                     var doc = docs[index];
                     var messageEvent = new ServerEvent(doc.timestamp);
                     messageEvent.addData(doc.update);

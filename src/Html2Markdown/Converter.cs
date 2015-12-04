@@ -26,7 +26,7 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<br\s/>",
+				Pattern = @"<br[^>]*>",
 				Replacement = @"  " + Environment.NewLine
 			},
 			new PatternReplacer
@@ -66,7 +66,7 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<blockquote>",
+				Pattern = @"<blockquote[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + @">"
 			},
 			new PatternReplacer
@@ -76,17 +76,7 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<p>",
-				Replacement = Environment.NewLine + Environment.NewLine
-			},
-			new PatternReplacer
-			{
-				Pattern = @"</p>",
-				Replacement = Environment.NewLine
-			},
-			new PatternReplacer
-			{
-				Pattern = @"<hr/>",
+				Pattern = @"<hr[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + "* * *" + Environment.NewLine
 			},
 			new PatternReplacer
@@ -111,7 +101,7 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<title>.*?</title>",
+				Pattern = @"<title[^>]*>.*?</title>",
 				Replacement = ""
 			},
 			new PatternReplacer
@@ -148,6 +138,20 @@ namespace Html2Markdown
 			new CustomReplacer
 			{
 				CustomAction = HtmlParser.ReplacePre
+			},
+			new PatternReplacer
+			{
+				Pattern = @"<p[^>]*>",
+				Replacement = Environment.NewLine + Environment.NewLine
+			},
+			new PatternReplacer
+			{
+				Pattern = @"</p>",
+				Replacement = Environment.NewLine
+			},
+			new CustomReplacer
+			{
+				CustomAction = HtmlParser.ReplaceEntites
 			}
 		};
 

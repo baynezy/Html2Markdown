@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using LinqExtensions;
@@ -180,6 +181,11 @@ namespace Html2Markdown.Replacement
 				});
 
 			return html;
+		}
+
+		public static string ReplaceEntites(string html)
+		{
+			return WebUtility.HtmlDecode(html);
 		}
 
 		private static string IndentLines(string content)
