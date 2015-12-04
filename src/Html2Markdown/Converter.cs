@@ -26,7 +26,7 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<br\s/>",
+				Pattern = @"<br[^>]*>",
 				Replacement = @"  " + Environment.NewLine
 			},
 			new PatternReplacer
@@ -101,7 +101,7 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<title>.*?</title>",
+				Pattern = @"<title[^>]*>.*?</title>",
 				Replacement = ""
 			},
 			new PatternReplacer

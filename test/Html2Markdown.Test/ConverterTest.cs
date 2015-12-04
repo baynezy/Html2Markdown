@@ -116,7 +116,27 @@ namespace Html2Markdown.Test
 		[Test]
 		public void Convert_WhenThereAreBreakTags_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
 		{
+			const string html = @"So this text has a break.<br/>Convert it.";
+			const string expected = @"So this text has a break.  
+Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreBreakTagsWithWhitespace_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
+		{
 			const string html = @"So this text has a break.<br />Convert it.";
+			const string expected = @"So this text has a break.  
+Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreBreakTagsThatAreNotSelfClosing_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
+		{
+			const string html = @"So this text has a break.<br>Convert it.";
 			const string expected = @"So this text has a break.  
 Convert it.";
 
@@ -629,6 +649,16 @@ a comment
 		public void Convert_WhenThereIsATitleTag_ThenRemoveFromResult()
 		{
 			const string html = @"<title>Remove me</title>
+<p>Title tags should be removed</p>";
+			const string expected = @"Title tags should be removed";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsATitleTagWithAttributes_ThenRemoveFromResult()
+		{
+			const string html = @"<title id=""something"">Remove me</title>
 <p>Title tags should be removed</p>";
 			const string expected = @"Title tags should be removed";
 
