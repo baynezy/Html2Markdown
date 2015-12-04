@@ -148,6 +148,10 @@ namespace Html2Markdown
 			{
 				Pattern = @"</p>",
 				Replacement = Environment.NewLine
+			},
+			new CustomReplacer
+			{
+				CustomAction = HtmlParser.ReplaceEntites
 			}
 		};
 

@@ -163,9 +163,9 @@ Convert it.";
 </code>";
 			const string expected = @"So this text has multiline code.
 
-    &lt;p&gt;
+    <p>
         Some code we are looking at
-    &lt;/p&gt;";
+    </p>";
 
 			CheckConversion(html, expected);
 		}
@@ -181,9 +181,9 @@ Convert it.";
 </code>";
 			const string expected = @"So this text has multiline code.
 
-        &lt;p&gt;
+        <p>
             Some code we are looking at
-        &lt;/p&gt;";
+        </p>";
 
 			CheckConversion(html, expected);
 		}
@@ -698,6 +698,42 @@ a comment
 		}
 
 		[Test]
+		public void Convert_WhenThereIsAnAmpersandEntity_ThenReplaceWithActualCharacter()
+		{
+			const string html = @"<p>Enties like &amp; should be converted</p>";
+			const string expected = @"Enties like & should be converted";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAnLessThanEntity_ThenReplaceWithActualCharacter()
+		{
+			const string html = @"<p>Enties like &lt; should be converted</p>";
+			const string expected = @"Enties like < should be converted";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAGreaterThanEntity_ThenReplaceWithActualCharacter()
+		{
+			const string html = @"<p>Enties like &gt; should be converted</p>";
+			const string expected = @"Enties like > should be converted";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsABulletEntity_ThenReplaceWithActualCharacter()
+		{
+			const string html = @"<p>Enties like &#8226; should be converted</p>";
+			const string expected = @"Enties like • should be converted";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
 			const string sourcePath = @"..\..\Files\TestHtml.txt";
@@ -759,7 +795,7 @@ We need to update the ServerEvent object to support having an `id` for an event.
         };
         ServerEvent.prototype.addData = function(data) {
             var lines = data.split(/\n/);
-            for (var i = 0; i &lt; lines.length; i++) {
+            for (var i = 0; i < lines.length; i++) {
                 var element = lines[i];
                 this.data += ""data:"" + element + ""\n"";
             }
@@ -823,7 +859,7 @@ When an `EventSource` reconnects after a disconnection it passes a special heade
         function replaySSEs(req, res) {
             var lastId = req.headers[""last-event-id""];
             eventStorage.findEventsSince(lastId).then(function(docs) {
-                for (var index = 0; index &lt; docs.length; index++) {
+                for (var index = 0; index < docs.length; index++) {
                     var doc = docs[index];
                     var messageEvent = new ServerEvent(doc.timestamp);
                     messageEvent.addData(doc.update);
