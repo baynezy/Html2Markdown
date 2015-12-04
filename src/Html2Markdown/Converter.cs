@@ -66,7 +66,7 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<blockquote>",
+				Pattern = @"<blockquote[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + @">"
 			},
 			new PatternReplacer

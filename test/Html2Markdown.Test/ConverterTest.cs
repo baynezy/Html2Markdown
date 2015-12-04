@@ -326,18 +326,31 @@ Convert it.";
 			CheckConversion(html, expected);
 		}
 
-        [Test]
-        public void Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
-        {
-            const string html = @"This code has a <blockquote>blockquote</blockquote>. Convert it.";
-            const string expected = @"This code has a 
+		[Test]
+		public void Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
+		{
+			const string html = @"This code has a <blockquote>blockquote</blockquote>. Convert it.";
+			const string expected = @"This code has a 
 
 >blockquote
 
 . Convert it.";
 
-            CheckConversion(html, expected);
-        }
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsABlockquoteTagWithAttributes_ThenReplaceWithMarkDownBlockQuote()
+		{
+			const string html = @"This code has a <blockquote id=""thing"">blockquote</blockquote>. Convert it.";
+			const string expected = @"This code has a 
+
+>blockquote
+
+. Convert it.";
+
+			CheckConversion(html, expected);
+		}
 
 		[Test]
 		public void Convert_WhenThereAreParagraphTags_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
