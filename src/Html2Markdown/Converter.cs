@@ -76,7 +76,7 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<hr/>",
+				Pattern = @"<hr[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + "* * *" + Environment.NewLine
 			},
 			new PatternReplacer

@@ -389,6 +389,42 @@ Convert it!";
 		}
 
 		[Test]
+		public void Convert_WhenThereAreHorizontalRuleTagsWithWhiteSpace_ThenReplaceWithMarkDownHorizontalRule()
+		{
+			const string html = @"This code is seperated by a horizonrtal rule.<hr />Convert it!";
+			const string expected = @"This code is seperated by a horizonrtal rule.
+
+* * *
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreHorizontalRuleTagsWithAttributes_ThenReplaceWithMarkDownHorizontalRule()
+		{
+			const string html = @"This code is seperated by a horizonrtal rule.<hr class=""something"" />Convert it!";
+			const string expected = @"This code is seperated by a horizonrtal rule.
+
+* * *
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreHorizontalRuleTagsThatAreNonSelfClosing_ThenReplaceWithMarkDownHorizontalRule()
+		{
+			const string html = @"This code is seperated by a horizonrtal rule.<hr>Convert it!";
+			const string expected = @"This code is seperated by a horizonrtal rule.
+
+* * *
+Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreImgTags_ThenReplaceWithMarkdownImage()
 		{
 			const string html = @"This code is with and image <img alt=""something"" title=""convert"" src=""https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif"" /> Convert it!";
