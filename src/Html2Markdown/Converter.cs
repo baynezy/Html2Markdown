@@ -66,16 +66,6 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<blockquote[^>]*>",
-				Replacement = Environment.NewLine + Environment.NewLine + @">"
-			},
-			new PatternReplacer
-			{
-				Pattern = @"</blockquote>",
-				Replacement = Environment.NewLine + Environment.NewLine
-			},
-			new PatternReplacer
-			{
 				Pattern = @"<hr[^>]*>",
 				Replacement = Environment.NewLine + Environment.NewLine + "* * *" + Environment.NewLine
 			},
@@ -148,6 +138,10 @@ namespace Html2Markdown
 			{
 				Pattern = @"</p>",
 				Replacement = Environment.NewLine
+			},
+			new CustomReplacer
+			{
+				CustomAction = HtmlParser.ReplaceBlockquote
 			},
 			new CustomReplacer
 			{

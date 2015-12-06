@@ -120,7 +120,7 @@ namespace Html2Markdown.Replacement
 					var href = node.Attributes.GetAttributeOrEmpty("href");
 					var title = node.Attributes.GetAttributeOrEmpty("title");
 
-					string markdown = "";
+					var markdown = "";
 
 					if (!IsEmptyLink(linkText, href))
 					{
@@ -132,6 +132,58 @@ namespace Html2Markdown.Replacement
 				});
 
 			return doc.DocumentNode.OuterHtml;
+		}
+
+		public static string ReplaceCode(string html)
+		{
+			var singleLineCodeBlocks = new Regex(@"<code>([^\n]*?)</code>").Matches(html);
+			singleLineCodeBlocks.Cast<Match>().Each(block =>
+			{
+				var code = block.Value;
+				var content = GetCodeContent(code);
+				html = html.Replace(code, string.Format("`{0}`", content));
+			});
+
+			var multiLineCodeBlocks = new Regex(@"<code>([^>]*?)</code>").Matches(html);
+			multiLineCodeBlocks.Cast<Match>().Each(block =>
+			{
+				var code = block.Value;
+				var content = GetCodeContent(code);
+				content = IndentLines(content).TrimEnd() + Environment.NewLine + Environment.NewLine;
+				html = html.Replace(code, string.Format("{0}    {1}", Environment.NewLine, TabsToSpaces(content)));
+			});
+
+			return html;
+		}
+
+		public static string ReplaceBlockquote(string html)
+		{
+			var doc = GetHtmlDocument(html);
+			var nodes = doc.DocumentNode.SelectNodes("//blockquote");
+			if (nodes == null) return html;
+
+			nodes.Each(node =>
+				{
+					var quote = node.InnerHtml;
+					var lines = quote.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+					var markdown = "";
+
+					lines.Each(line =>
+						{
+							markdown += string.Format("> {0}{1}", line, Environment.NewLine);
+						});
+
+					markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine + Environment.NewLine;
+
+					ReplaceNode(node, markdown);
+				});
+
+			return doc.DocumentNode.OuterHtml;
+		}
+
+		public static string ReplaceEntites(string html)
+		{
+			return WebUtility.HtmlDecode(html);
 		}
 
 		private static bool IsEmptyLink(string linkText, string href)
@@ -159,33 +211,6 @@ namespace Html2Markdown.Replacement
 				node.ParentNode.ReplaceChild(markdownNode.ParentNode, node);
 			}
 			
-		}
-
-		public static string ReplaceCode(string html)
-		{
-			var singleLineCodeBlocks = new Regex(@"<code>([^\n]*?)</code>").Matches(html);
-			singleLineCodeBlocks.Cast<Match>().Each(block =>
-				{
-					var code = block.Value;
-					var content = GetCodeContent(code);
-					html = html.Replace(code, string.Format("`{0}`", content));
-				});
-
-			var multiLineCodeBlocks = new Regex(@"<code>([^>]*?)</code>").Matches(html);
-			multiLineCodeBlocks.Cast<Match>().Each(block =>
-				{
-					var code = block.Value;
-					var content = GetCodeContent(code);
-					content = IndentLines(content).TrimEnd() + Environment.NewLine + Environment.NewLine;
-					html = html.Replace(code, string.Format("{0}    {1}", Environment.NewLine, TabsToSpaces(content)));
-				});
-
-			return html;
-		}
-
-		public static string ReplaceEntites(string html)
-		{
-			return WebUtility.HtmlDecode(html);
 		}
 
 		private static string IndentLines(string content)

@@ -352,9 +352,21 @@ Convert it.";
 			const string html = @"This code has a <blockquote>blockquote</blockquote>. Convert it.";
 			const string expected = @"This code has a 
 
->blockquote
+> blockquote
 
 . Convert it.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAMultilineBlockquoteTag_ThenReplaceWithMarkDownBlockQuote()
+		{
+			const string html = @"<blockquote><em>“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.<br />Ouse fazer, e o poder lhe será dado!”</em><br /><strong>— Johann Wolfgang von Goethe</strong></blockquote>";
+
+			const string expected = @"> *“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.  
+> Ouse fazer, e o poder lhe será dado!”*  
+> **— Johann Wolfgang von Goethe**";
 
 			CheckConversion(html, expected);
 		}
@@ -365,7 +377,7 @@ Convert it.";
 			const string html = @"This code has a <blockquote id=""thing"">blockquote</blockquote>. Convert it.";
 			const string expected = @"This code has a 
 
->blockquote
+> blockquote
 
 . Convert it.";
 
@@ -913,6 +925,29 @@ A possible improvement would be to render the events from MongoDB server-side wh
 ### Download
 
 If you want to play with this application you can fork or browse it on [GitHub](https://github.com/baynezy/RealtimeDemo/tree/part-2).";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_ComplexTest_002()
+		{
+			const string html = @"<p>Some other HTML</p>
+
+<blockquote>
+<p class=""right"" align=""right""><em>“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.<br />Ouse fazer, e o poder lhe será dado!”</em><br /><strong>— Johann Wolfgang von Goethe</strong></p>
+</blockquote>";
+
+			const string expected = @"Some other HTML
+
+> 
+> 
+> 
+> *“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.  
+> Ouse fazer, e o poder lhe será dado!”*  
+> **— Johann Wolfgang von Goethe**
+> 
+> ";
 
 			CheckConversion(html, expected);
 		}
