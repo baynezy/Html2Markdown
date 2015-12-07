@@ -364,8 +364,8 @@ Convert it.";
 		{
 			const string html = @"<blockquote><em>“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.<br />Ouse fazer, e o poder lhe será dado!”</em><br /><strong>— Johann Wolfgang von Goethe</strong></blockquote>";
 
-			const string expected = @"> *“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.  
-> Ouse fazer, e o poder lhe será dado!”*  
+			const string expected = @"> *“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.
+> Ouse fazer, e o poder lhe será dado!”*
 > **— Johann Wolfgang von Goethe**";
 
 			CheckConversion(html, expected);
