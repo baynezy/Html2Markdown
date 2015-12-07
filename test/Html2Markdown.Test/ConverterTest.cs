@@ -941,12 +941,9 @@ If you want to play with this application you can fork or browse it on [GitHub](
 			const string expected = @"Some other HTML
 
 > 
-> 
-> 
 > *“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.  
 > Ouse fazer, e o poder lhe será dado!”*  
 > **— Johann Wolfgang von Goethe**
-> 
 > ";
 
 			CheckConversion(html, expected);
