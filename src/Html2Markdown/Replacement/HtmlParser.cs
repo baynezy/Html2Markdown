@@ -165,13 +165,15 @@ namespace Html2Markdown.Replacement
 			nodes.Each(node =>
 				{
 					var quote = node.InnerHtml;
-					var lines = quote.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+					var lines = quote.TrimStart().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 					var markdown = "";
 
 					lines.Each(line =>
 						{
-							markdown += string.Format("> {0}{1}", line, Environment.NewLine);
+							markdown += string.Format("> {0}{1}", line.TrimEnd(), Environment.NewLine);
 						});
+
+					markdown = Regex.Replace(markdown, @"(>\s\r\n)+$", "");
 
 					markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine + Environment.NewLine;
 

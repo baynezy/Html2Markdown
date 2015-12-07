@@ -360,13 +360,28 @@ Convert it.";
 		}
 
 		[Test]
-		public void Convert_WhenThereIsAMultilineBlockquoteTag_ThenReplaceWithMarkDownBlockQuote()
+		public void Convert_WhenThereIsABlockquoteTagWithNestedHtml_ThenReplaceWithMarkDownBlockQuote()
 		{
 			const string html = @"<blockquote><em>“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.<br />Ouse fazer, e o poder lhe será dado!”</em><br /><strong>— Johann Wolfgang von Goethe</strong></blockquote>";
 
-			const string expected = @"> *“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.  
-> Ouse fazer, e o poder lhe será dado!”*  
+			const string expected = @"> *“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.
+> Ouse fazer, e o poder lhe será dado!”*
 > **— Johann Wolfgang von Goethe**";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereIsAMultilineBlockquoteTag_ThenReplaceWithMarkDownBlockQuote()
+		{
+			const string html = @"<blockquote>
+    <p class=""right"" align=""right""><em>“Ao estipular seus objetivos, mire na Lua; pois mesmo que aconteça de você não alcançá-los, ainda estará entre as estrelas!”</em><br />
+    <strong>— Dr. Lair Ribeiro</strong></p>
+  </blockquote>";
+
+			const string expected = @"> *“Ao estipular seus objetivos, mire na Lua; pois mesmo que aconteça de você não alcançá-los, ainda estará entre as estrelas!”*
+> 
+>     **— Dr. Lair Ribeiro**";
 
 			CheckConversion(html, expected);
 		}
@@ -940,11 +955,9 @@ If you want to play with this application you can fork or browse it on [GitHub](
 
 			const string expected = @"Some other HTML
 
-> 
-> *“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.  
-> Ouse fazer, e o poder lhe será dado!”*  
-> **— Johann Wolfgang von Goethe**
-> ";
+> *“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.
+> Ouse fazer, e o poder lhe será dado!”*
+> **— Johann Wolfgang von Goethe**";
 
 			CheckConversion(html, expected);
 		}
