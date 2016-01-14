@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
-using LinqExtensions;
 
 namespace Html2Markdown.Replacement
 {
@@ -32,7 +31,7 @@ namespace Html2Markdown.Replacement
 
 			var counter = 0;
 			var markdownList = new List<string>();
-			listItems.Each(listItem =>
+			listItems.ToList().ForEach(listItem =>
 				{
 					var listPrefix = (listType.Equals("ol")) ? string.Format("{0}.  ", ++counter) : "*   ";
 					var finalList = Regex.Replace(listItem, @"<li[^>]*>", string.Empty);
@@ -60,7 +59,7 @@ namespace Html2Markdown.Replacement
 			var nodes = doc.DocumentNode.SelectNodes("//pre");
 			if (nodes == null) return html;
 
-			nodes.Each(node =>
+			nodes.ToList().ForEach(node =>
 				{
 					var tagContents = node.InnerHtml;
 					var markdown = ConvertPre(tagContents);
@@ -94,7 +93,7 @@ namespace Html2Markdown.Replacement
 			var nodes = doc.DocumentNode.SelectNodes("//img");
 			if (nodes == null) return html;
 
-			nodes.Each(node =>
+			nodes.ToList().ForEach(node =>
 				{
 					var src = node.Attributes.GetAttributeOrEmpty("src");
 					var alt = node.Attributes.GetAttributeOrEmpty("alt");
@@ -114,7 +113,7 @@ namespace Html2Markdown.Replacement
 			var nodes = doc.DocumentNode.SelectNodes("//a");
 			if (nodes == null) return html;
 
-			nodes.Each(node =>
+			nodes.ToList().ForEach(node =>
 				{
 					var linkText = node.InnerHtml;
 					var href = node.Attributes.GetAttributeOrEmpty("href");
@@ -137,7 +136,7 @@ namespace Html2Markdown.Replacement
 		public static string ReplaceCode(string html)
 		{
 			var singleLineCodeBlocks = new Regex(@"<code>([^\n]*?)</code>").Matches(html);
-			singleLineCodeBlocks.Cast<Match>().Each(block =>
+			singleLineCodeBlocks.Cast<Match>().ToList().ForEach(block =>
 			{
 				var code = block.Value;
 				var content = GetCodeContent(code);
@@ -145,7 +144,7 @@ namespace Html2Markdown.Replacement
 			});
 
 			var multiLineCodeBlocks = new Regex(@"<code>([^>]*?)</code>").Matches(html);
-			multiLineCodeBlocks.Cast<Match>().Each(block =>
+			multiLineCodeBlocks.Cast<Match>().ToList().ForEach(block =>
 			{
 				var code = block.Value;
 				var content = GetCodeContent(code);
@@ -162,13 +161,13 @@ namespace Html2Markdown.Replacement
 			var nodes = doc.DocumentNode.SelectNodes("//blockquote");
 			if (nodes == null) return html;
 
-			nodes.Each(node =>
+			nodes.ToList().ForEach(node =>
 				{
 					var quote = node.InnerHtml;
 					var lines = quote.TrimStart().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 					var markdown = "";
 
-					lines.Each(line =>
+					lines.ToList().ForEach(line =>
 						{
 							markdown += string.Format("> {0}{1}", line.TrimEnd(), Environment.NewLine);
 						});
