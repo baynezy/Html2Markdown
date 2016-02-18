@@ -763,7 +763,7 @@ a comment
 		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
-			const string sourcePath = @"..\..\Files\TestHtml.txt";
+			var sourcePath = TestRoute() + "TestHtml.txt";
 			const string expected = @"## Installing via NuGet
 
         Install-Package Html2Markdown
@@ -978,6 +978,14 @@ If you want to play with this application you can fork or browse it on [GitHub](
 			var result = converter.Convert(html);
 
 			Assert.That(result, Is.EqualTo(expected));
+		}
+
+		private static string TestRoute()
+		{
+			var route = @"..\..\Files\";
+			var environmentPath = System.Environment.GetEnvironmentVariable("Test.Path");
+
+			return environmentPath ?? route;
 		}
 	}
 }
