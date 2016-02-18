@@ -5,6 +5,13 @@ namespace Html2Markdown.Test
 	[TestFixture]
 	class ConverterTest
 	{
+		private string _testPath;
+
+		[SetUp]
+		public void SetUp() {
+			_testPath = TestPath();
+		}
+
 		[Test]
 		public void Convert_WhenThereAreHtmlLinks_ThenConvertToMarkDownLinks()
 		{
@@ -763,7 +770,7 @@ a comment
 		[Test]
 		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
-			var sourcePath = TestRoute() + "TestHtml.txt";
+			var sourcePath = _testPath + "TestHtml.txt";
 			const string expected = @"## Installing via NuGet
 
         Install-Package Html2Markdown
@@ -980,7 +987,7 @@ If you want to play with this application you can fork or browse it on [GitHub](
 			Assert.That(result, Is.EqualTo(expected));
 		}
 
-		private static string TestRoute()
+		private static string TestPath()
 		{
 			var route = @"..\..\Files\";
 			var environmentPath = System.Environment.GetEnvironmentVariable("Test.Path");
