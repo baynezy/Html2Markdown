@@ -1,11 +1,14 @@
 # HTML2Markdown
 
-Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax)
+Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax).
+
+[![Stories in Ready](https://badge.waffle.io/baynezy/Html2Markdown.svg?label=ready&title=Stories%20in%20Ready)](http://waffle.io/baynezy/Html2Markdown)
+
+---
 
 ![Html2Markdown](https://cloud.githubusercontent.com/assets/1049999/11505182/0480ad76-9841-11e5-8a62-126d4b7c03be.png)
 
 ## Build Status
-
 <table>
     <tr>
         <th>master</th>
@@ -71,3 +74,6 @@ This library is showcased at [http://html2markdown.bayn.es](http://html2markdown
 ### Pull Requests
 
 After forking the repository please create a pull request before creating the fix. This way we can talk about how the fix will be implemented. This will greatly increase your chance of your patch getting merged into the code base.
+
+## License
+This project is licensed under [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
