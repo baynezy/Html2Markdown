@@ -5,9 +5,18 @@ build:
   verbosity: minimal
 environment:
   Test.Path: C:\projects\html2markdown\test\Html2Markdown.Test\Files\
+  GithubEmail: baynezy@gmail.com
+  GithubUsername: baynezy
+  GithubPersonalAccessToken:
+    secure: 9EkZYUVbHPWlMZLyUqjY79llLHc6DghntcHAodFfiMyOsIc4pbCNNEMv/lTi0SvJ
 deploy:
 - provider: NuGet
   api_key:
     secure: mqfd5QXj3a2N+D2EP9avxupQJRBJFEKT9kjF7Tipl1OCkUvPBsKjfiZMQHpnwVKq
   on:
     branch: master
+install:
+  - choco install doxygen.portable
+after_test:
+  - ps: C:/ProgramData/chocolatey/lib/doxygen.portable/tools/doxygen.exe doxygen.config
+  - ps: ./pushDocumentation.ps1 $env:APPVEYOR_BUILD_FOLDER $env:GithubEmail $env:GithubUsername $env:GithubPersonalAccessToken $env:appveyor_repo_branch

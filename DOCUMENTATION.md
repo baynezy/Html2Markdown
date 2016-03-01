@@ -2,23 +2,7 @@
 
 Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax).
 
-[![Stories in Ready](https://badge.waffle.io/baynezy/Html2Markdown.svg?label=ready&title=Stories%20in%20Ready)](http://waffle.io/baynezy/Html2Markdown)
-
----
-
 ![Html2Markdown](https://cloud.githubusercontent.com/assets/1049999/11505182/0480ad76-9841-11e5-8a62-126d4b7c03be.png)
-
-## Build Status
-<table>
-    <tr>
-        <th>master</th>
-		<td><a href="https://ci.appveyor.com/project/baynezy/html2markdown"><img src="https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/master?svg=true" alt="master" title="master" /></a></td>
-    </tr>
-    <tr>
-        <th>develop</th>
-		<td><a href="https://ci.appveyor.com/project/baynezy/html2markdown"><img src="https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/develop?svg=true" alt="develop" title="develop" /></a></td>
-    </tr>
-</table>
 
 ## Documentation
 Fully navigable documentation available on [GitHub Pages](http://baynezy.github.io/Html2Markdown/)
@@ -49,8 +33,6 @@ This project will currently convert the following HTML tags:-
 - `<ol>`
 
 ## Installing via NuGet
-
-[![NuGet version](https://badge.fury.io/nu/Html2Markdown.svg)](http://badge.fury.io/nu/Html2Markdown)
 
     Install-Package Html2Markdown
 
