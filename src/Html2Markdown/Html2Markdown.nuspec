@@ -7,7 +7,8 @@
     <authors>$author$</authors>
     <owners>$author$</owners>
     <projectUrl>https://github.com/baynezy/Html2Markdown</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright 2013</copyright>
     <tags>Markdown Html Convert</tags>
