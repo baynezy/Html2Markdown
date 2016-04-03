@@ -20,3 +20,8 @@ install:
 after_test:
   - ps: C:/ProgramData/chocolatey/lib/doxygen.portable/tools/doxygen.exe doxygen.config
   - ps: ./pushDocumentation.ps1 $env:APPVEYOR_BUILD_FOLDER $env:GithubEmail $env:GithubUsername $env:GithubPersonalAccessToken $env:appveyor_repo_branch
+notifications:
+  - provider: Slack
+    auth_token:
+      secure: xLrYwFJVzehV+sdSJsDp52X1TSPeSGJrr56LI2GQDvrmkpjcrwX1rmPwdH+i14H8lijQDcWbUt9jl81saehgRA==
+    channel: '#build'
