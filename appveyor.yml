@@ -1,5 +1,6 @@
 version: 1.0.{build}
 skip_tags: true
+configuration: Release
 build:
   publish_nuget: true
   verbosity: minimal
