@@ -387,8 +387,7 @@ Convert it.";
   </blockquote>";
 
 			const string expected = @"> *“Ao estipular seus objetivos, mire na Lua; pois mesmo que aconteça de você não alcançá-los, ainda estará entre as estrelas!”*
-> 
->     **— Dr. Lair Ribeiro**";
+>  **— Dr. Lair Ribeiro**";
 
 			CheckConversion(html, expected);
 		}
@@ -426,6 +425,19 @@ Convert it!";
 
 This code is in a paragraph.
 Convert it!";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreParagraphTagsWithNewLinesInThem_ThenReplaceWithMarkdownParagraphButNoBreakTags()
+		{
+			const string html = @"<p>
+  text
+  text
+  text
+</p>";
+			const string expected = @" text text text ";
 
 			CheckConversion(html, expected);
 		}
@@ -989,7 +1001,7 @@ If you want to play with this application you can fork or browse it on [GitHub](
 
 		private static string TestPath()
 		{
-			var route = @"..\..\Files\";
+			const string route = @"..\..\Files\";
 			var environmentPath = System.Environment.GetEnvironmentVariable("Test.Path");
 
 			return environmentPath ?? route;

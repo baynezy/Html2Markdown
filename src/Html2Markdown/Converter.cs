@@ -26,11 +26,6 @@ namespace Html2Markdown
 			},
 			new PatternReplacer
 			{
-				Pattern = @"<br[^>]*>",
-				Replacement = @"  " + Environment.NewLine
-			},
-			new PatternReplacer
-			{
 				Pattern = @"</h[1-6]>",
 				Replacement = Environment.NewLine + Environment.NewLine
 			},
@@ -129,15 +124,14 @@ namespace Html2Markdown
 			{
 				CustomAction = HtmlParser.ReplacePre
 			},
-			new PatternReplacer
+			new CustomReplacer
 			{
-				Pattern = @"<p[^>]*>",
-				Replacement = Environment.NewLine + Environment.NewLine
+				CustomAction = HtmlParser.ReplaceParagraph
 			},
 			new PatternReplacer
 			{
-				Pattern = @"</p>",
-				Replacement = Environment.NewLine
+				Pattern = @"<br[^>]*>",
+				Replacement = @"  " + Environment.NewLine
 			},
 			new CustomReplacer
 			{
