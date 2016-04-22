@@ -27,7 +27,7 @@ namespace Html2Markdown
 			new PatternReplacer
 			{
 				Pattern = @"<br[^>]*>",
-				Replacement = @"  " + Environment.NewLine
+				Replacement = Environment.NewLine + Environment.NewLine
 			},
 			new PatternReplacer
 			{
