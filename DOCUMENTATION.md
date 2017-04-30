@@ -57,7 +57,7 @@ This library is showcased at [http://html2markdown.bayn.es](http://html2markdown
 
 ## Contributing
 
-[For those interested in contributing then please read the guidelines](https://github.com/baynezy/Html2Markdown/blob/master/CONTRIBUTING.md)
+For those interested in contributing then [please read the guidelines](http://bit.ly/html2md-contributing)
 
 ## License
 
