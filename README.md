@@ -78,5 +78,11 @@ This library is showcased at [http://html2markdown.bayn.es](http://html2markdown
 
 After forking the repository please create a pull request before creating the fix. This way we can talk about how the fix will be implemented. This will greatly increase your chance of your patch getting merged into the code base.
 
+### Commit Template
+
+Please run the following to make sure you commit messages conform to the project standards.
+
+    git config --local commit.template .gitmessage
+
 ## License
 This project is licensed under [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
