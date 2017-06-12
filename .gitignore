@@ -10,3 +10,4 @@ _ReSharper.*
 *.Cache
 Thumbs.db
 *.nupkg
+.vscode

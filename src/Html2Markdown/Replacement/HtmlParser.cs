@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -95,6 +95,7 @@ namespace Html2Markdown.Replacement
 
 			nodes.ToList().ForEach(node =>
 				{
+					
 					var src = node.Attributes.GetAttributeOrEmpty("src");
 					var alt = node.Attributes.GetAttributeOrEmpty("alt");
 					var title = node.Attributes.GetAttributeOrEmpty("title");
