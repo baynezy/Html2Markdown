@@ -1001,7 +1001,7 @@ If you want to play with this application you can fork or browse it on [GitHub](
 
 		private static string TestPath()
 		{
-			const string route = @"..\..\Files\";
+			const string route = @"..\..\..\Files\";
 			var environmentPath = System.Environment.GetEnvironmentVariable("Test.Path");
 
 			return environmentPath ?? route;
