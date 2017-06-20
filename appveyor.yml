@@ -1,4 +1,4 @@
-version: 1.0.{build}
+version: 2.1.3.{build}
 skip_tags: true
 configuration: Release
 init:
@@ -27,6 +27,8 @@ build_script:
       dotnet restore
       
       dotnet build
+
+      dotnet pack .\src\Html2Markdown\Html2Markdown.csproj /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 test_script:
   - cmd: >-
       dotnet test .\test\Html2Markdown.Test\Html2Markdown.Test.csproj --logger "trx;LogFileName=results.trx"

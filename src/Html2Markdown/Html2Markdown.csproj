@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
+    <Authors>Simon Baynes</Authors>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/baynezy/Html2Markdown</PackageProjectUrl>
+    <Description>A library for converting HTML to markdown syntax in C#</Description>
+    <Copyright>© Simon Baynes 2013</Copyright>
+    <PackageTags>Markdown;Html;Convert</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
