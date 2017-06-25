@@ -1,6 +1,8 @@
-version: 1.0.{build}
+version: 2.1.3.{build}
 skip_tags: true
 configuration: Release
+init:
+- git config --global core.autocrlf true
 build:
   publish_nuget: true
   verbosity: minimal
@@ -18,7 +20,20 @@ deploy:
     branch: master
 install:
   - choco install doxygen.portable
+build_script:
+  - cmd: >-
+      cd %BUILD_DIR%
+
+      dotnet restore
+      
+      dotnet build
+
+      dotnet pack .\src\Html2Markdown\Html2Markdown.csproj /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+test_script:
+  - cmd: >-
+      dotnet test .\test\Html2Markdown.Test\Html2Markdown.Test.csproj --logger "trx;LogFileName=results.trx"
 after_test:
+  - ps: ./uploadTestResults.ps1
   - ps: C:/ProgramData/chocolatey/lib/doxygen.portable/tools/doxygen.exe doxygen.config
   - ps: ./pushDocumentation.ps1 $env:APPVEYOR_BUILD_FOLDER $env:GithubEmail $env:GithubUsername $env:GithubPersonalAccessToken $env:appveyor_repo_branch
 notifications:
