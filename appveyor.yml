@@ -18,8 +18,6 @@ deploy:
     secure: mqfd5QXj3a2N+D2EP9avxupQJRBJFEKT9kjF7Tipl1OCkUvPBsKjfiZMQHpnwVKq
   on:
     branch: master
-install:
-  - choco install doxygen.portable
 build_script:
   - cmd: >-
       cd %BUILD_DIR%
@@ -34,7 +32,6 @@ test_script:
       dotnet test .\test\Html2Markdown.Test\Html2Markdown.Test.csproj --logger "trx;LogFileName=results.trx"
 after_test:
   - ps: ./uploadTestResults.ps1
-  - ps: C:/ProgramData/chocolatey/lib/doxygen.portable/tools/doxygen.exe doxygen.config
   - ps: ./pushDocumentation.ps1 $env:APPVEYOR_BUILD_FOLDER $env:GithubEmail $env:GithubUsername $env:GithubPersonalAccessToken $env:appveyor_repo_branch
 notifications:
   - provider: Slack
