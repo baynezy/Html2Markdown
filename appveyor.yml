@@ -26,7 +26,7 @@ build_script:
       
       dotnet build
 
-      dotnet pack .\src\Html2Markdown\Html2Markdown.csproj /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+      dotnet pack .\src\Html2Markdown\Html2Markdown.csproj -c %CONFIGURATION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 test_script:
   - cmd: >-
       dotnet test .\test\Html2Markdown.Test\Html2Markdown.Test.csproj --logger "trx;LogFileName=results.trx"
