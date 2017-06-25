@@ -33,6 +33,8 @@ test_script:
 after_test:
   - ps: ./uploadTestResults.ps1
   - ps: ./pushDocumentation.ps1 $env:APPVEYOR_BUILD_FOLDER $env:GithubEmail $env:GithubUsername $env:GithubPersonalAccessToken $env:appveyor_repo_branch
+artifacts:
+- path: src\Html2Markdown\bin\Release\*.nupkg
 notifications:
   - provider: Slack
     auth_token:
