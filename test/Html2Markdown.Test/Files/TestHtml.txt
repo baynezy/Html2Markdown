@@ -1,4 +1,4 @@
-﻿<h2>Installing via NuGet</h2>
+<h2>Installing via NuGet</h2>
 
 <pre><code>Install-Package Html2Markdown
 </code></pre>

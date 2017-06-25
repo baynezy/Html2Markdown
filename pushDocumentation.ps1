@@ -1,6 +1,12 @@
 param([string]$buildFolder, [string]$email, [string]$username, [string]$personalAccessToken, [string]$currentBranch)
 
 if($currentBranch -eq 'master') {
+	Write-Host "- Installing Doxygen"
+	choco install doxygen.portable
+
+	Write-Host "- Generating documentation"
+	C:/ProgramData/chocolatey/lib/doxygen.portable/tools/doxygen.exe doxygen.config
+
 	Write-Host "- Set config settings...."
 	git config --global user.email $email
 	git config --global user.name $username

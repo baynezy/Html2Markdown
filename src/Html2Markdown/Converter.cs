@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -150,11 +150,13 @@ namespace Html2Markdown
 		/// <returns>A Markdown representation of the passed in Html</returns>
 		public string ConvertFile(string path)
 		{
-			using (var reader = new StreamReader(path))
-			{
-				var html = reader.ReadToEnd();
-				html = StandardiseWhitespace(html);
-				return Convert(html);
+			using (var stream = new FileStream(path, FileMode.Open)) {
+				using (var reader = new StreamReader(stream))
+				{
+					var html = reader.ReadToEnd();
+					html = StandardiseWhitespace(html);
+					return Convert(html);
+				}
 			}
 		}
 

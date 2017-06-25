@@ -1,4 +1,4 @@
-﻿namespace Html2Markdown.Replacement
+namespace Html2Markdown.Replacement
 {
 	internal interface IReplacer
 	{
