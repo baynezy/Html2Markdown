@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['assemblyinfo_2ecs',['AssemblyInfo.cs',['../_assembly_info_8cs.html',1,'']]]
+  ['converter_2ecs',['Converter.cs',['../_converter_8cs.html',1,'']]],
+  ['customreplacer_2ecs',['CustomReplacer.cs',['../_custom_replacer_8cs.html',1,'']]]
 ];
