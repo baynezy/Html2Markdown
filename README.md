@@ -10,16 +10,10 @@ Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax).
 
 ## Build Status
 
-<table>
-    <tr>
-        <th>master</th>
-		<td><a href="https://ci.appveyor.com/project/baynezy/html2markdown"><img src="https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/master?svg=true" alt="master" title="master" /></a></td>
-    </tr>
-    <tr>
-        <th>develop</th>
-		<td><a href="https://ci.appveyor.com/project/baynezy/html2markdown"><img src="https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/develop?svg=true" alt="develop" title="develop" /></a></td>
-    </tr>
-</table>
+| Branch | Status |
+| ------ | ------ |
+| master | [![master](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/master?svg=true)](https://ci.appveyor.com/project/baynezy/html2markdown) |
+| develop | [![develop](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/develop?svg=true)](https://ci.appveyor.com/project/baynezy/html2markdown) |
 
 ## Documentation
 
@@ -60,15 +54,19 @@ This project will currently convert the following HTML tags:-
 
 ### Strings
 
-    var html = "Something to <strong>convert</strong>";
-    var converter = new Converter();
-    var markdown = converter.Convert(html);
+```csharp
+var html = "Something to <strong>convert</strong>";
+var converter = new Converter();
+var markdown = converter.Convert(html);
+```
 
 ### Files
 
-    var path = "file.html";
-    var converter = new Converter();
-    var markdown = converter.ConvertFile(path);
+```csharp
+var path = "file.html";
+var converter = new Converter();
+var markdown = converter.ConvertFile(path);
+```
 
 ## Try it
 
