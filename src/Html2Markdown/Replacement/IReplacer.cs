@@ -1,6 +1,6 @@
 namespace Html2Markdown.Replacement
 {
-	internal interface IReplacer
+	public interface IReplacer
 	{
 		string Replace(string html);
 	}

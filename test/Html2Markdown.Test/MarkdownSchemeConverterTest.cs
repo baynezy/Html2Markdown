@@ -1,18 +1,23 @@
 using System;
+using Html2Markdown.Scheme;
 using NUnit.Framework;
 
 namespace Html2Markdown.Test
 {
 	[TestFixture]
-	class ConverterTest
+	class MarkdownSchemeConverterTest
 	{
-		private string _testPath;
 
-		[SetUp]
-		public void SetUp() {
-			_testPath = TestPath();
+		[Test]
+		public void Converter_WhenProvidingMarkdownAsACustomScheme_ThenShouldConvertEquivalentlyToNoScheme() {
+			const string html = @"So this is <a href=""http://www.simonbaynes.com/"">a link</a>. Convert it";
+			const string expected = @"So this is [a link](http://www.simonbaynes.com/). Convert it";
+
+			var scheme = new Markdown();
+
+			CheckConversion(html, expected, scheme);
 		}
-
+		
 		[Test]
 		public void Convert_WhenThereAreHtmlLinks_ThenConvertToMarkDownLinks()
 		{
@@ -781,22 +786,6 @@ a comment
 		}
 
 		[Test]
-		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
-		{
-			var sourcePath = _testPath + "TestHtml.txt";
-			const string expected = @"## Installing via NuGet
-
-        Install-Package Html2Markdown
-
-## Usage
-
-        var converter = new Converter();
-        var result = converter.Convert(html);";
-
-			CheckFileConversion(sourcePath, expected);
-		}
-
-		[Test]
 		public void Convert_ComplexTest_001()
 		{
 			string html =
@@ -982,30 +971,20 @@ If you want to play with this application you can fork or browse it on [GitHub](
 			CheckConversion(html, expected);
 		}
 
-		private static void CheckFileConversion(string path, string expected)
+		private static void CheckConversion(string html, string expected, IScheme scheme = null)
 		{
-			var converter = new Converter();
+			Converter converter;
 
-			var result = converter.ConvertFile(path);
-
-			Assert.That(result, Is.EqualTo(expected));
-		}
-
-		private static void CheckConversion(string html, string expected)
-		{
-			var converter = new Converter();
+			if (scheme == null) {
+				converter = new Converter();
+			}
+			else {
+				converter = new Converter(scheme);
+			}
 
 			var result = converter.Convert(html);
 
 			Assert.That(result, Is.EqualTo(expected));
-		}
-
-		private static string TestPath()
-		{
-			const string route = @"..\..\..\Files\";
-			var environmentPath = System.Environment.GetEnvironmentVariable("Test.Path");
-
-			return environmentPath ?? route;
 		}
 	}
 }
