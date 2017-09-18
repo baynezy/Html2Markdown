@@ -16,10 +16,17 @@ namespace Html2Markdown
 		private IList<IReplacer> _replacers;
 		private IScheme _scheme;
 
+		/// <summary>
+		/// Create a Converter with the standard Markdown conversion scheme
+		/// </summary>
 		public Converter() {
 			_replacers = new Markdown().Replacers();
 		}
 
+		/// <summary>
+		/// Create a converter with a custom conversion scheme
+		/// </summary>
+		/// <param name="scheme">Conversion scheme to control conversion</param>
 		public Converter(IScheme scheme)
 		{
 			_scheme = scheme;

@@ -68,6 +68,18 @@ var converter = new Converter();
 var markdown = converter.ConvertFile(path);
 ```
 
+## Customise
+
+### Create new `IScheme` implementation
+
+Create your own implementation of `IScheme` and construct `Converter` with that.
+
+```csharp
+var html = "Something to <strong>convert</strong>";
+var converter = new Converter(customConversionScheme);
+var markdown = converter.Convert(html);
+```
+
 ## Try it
 
 This library is showcased at [http://html2markdown.bayn.es](http://html2markdown.bayn.es).
