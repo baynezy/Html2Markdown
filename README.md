@@ -4,6 +4,8 @@ Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax).
 
 [![Stories in Ready](https://badge.waffle.io/baynezy/Html2Markdown.svg?label=ready&title=Stories%20in%20Ready)](http://waffle.io/baynezy/Html2Markdown)
 
+[![Join the chat at https://gitter.im/Html2Markdown/Lobby](https://badges.gitter.im/Html2Markdown/Lobby.svg)](https://gitter.im/Html2Markdown/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ---
 
 ![Html2Markdown](https://cloud.githubusercontent.com/assets/1049999/11505182/0480ad76-9841-11e5-8a62-126d4b7c03be.png)
