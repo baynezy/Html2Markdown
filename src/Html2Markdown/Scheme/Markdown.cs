@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Html2Markdown.Replacement;
 
 namespace Html2Markdown.Scheme {
+	/// <summary>
+	/// Collection of IReplacer for converting vanilla Markdown
+	/// </summary>
 	public class Markdown : IScheme
 	{
 		private readonly IList<IReplacer> _replacers = new List<IReplacer>
