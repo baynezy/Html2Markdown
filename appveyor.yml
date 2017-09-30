@@ -1,8 +1,10 @@
-version: 3.0.1.{build}
+version: 3.1.0.{build}
 skip_tags: true
 configuration: Release
 init:
 - git config --global core.autocrlf true
+install:
+- ps: npm install -g markdownlint-cli
 build:
   publish_nuget: true
   verbosity: minimal
@@ -21,6 +23,8 @@ deploy:
 build_script:
   - cmd: >-
       cd %BUILD_DIR%
+
+      markdownlint .
 
       dotnet restore
       
