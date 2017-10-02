@@ -14,8 +14,8 @@ Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax).
 
 | Branch | Status |
 | ------ | ------ |
-| master | [![master](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/master?svg=true)](https://ci.appveyor.com/project/baynezy/html2markdown) |
-| develop | [![develop](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/develop?svg=true)](https://ci.appveyor.com/project/baynezy/html2markdown) |
+| master | [![master](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/master?svg=true)](https://ci.appveyor.com/project/baynezy/html2markdown/branch/master) |
+| develop | [![develop](https://ci.appveyor.com/api/projects/status/cbi6sknslvu3rq6n/branch/develop?svg=true)](https://ci.appveyor.com/project/baynezy/html2markdown/branch/develop) |
 
 ## Documentation
 
