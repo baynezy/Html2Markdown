@@ -35,8 +35,9 @@ test_script:
   - cmd: >-
       dotnet test .\test\Html2Markdown.Test\Html2Markdown.Test.csproj --logger "trx;LogFileName=results.trx"
 after_test:
-  - ps: ./uploadTestResults.ps1
   - ps: ./pushDocumentation.ps1 $env:APPVEYOR_BUILD_FOLDER $env:GithubEmail $env:GithubUsername $env:GithubPersonalAccessToken $env:appveyor_repo_branch
+on_finish:
+  - ps: ./uploadTestResults.ps1
 artifacts:
 - path: src\Html2Markdown\bin\Release\*.nupkg
 notifications:
