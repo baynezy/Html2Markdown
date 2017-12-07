@@ -40,6 +40,8 @@ if($currentBranch -eq 'master') {
 	else {
 		Write-Host "- No changes to documentation to commit"
 	}
+
+	cd $buildFolder
 }
 else {
 	Write-Host "- Not pushing documentation as '$currentBranch' does not match 'master'"
