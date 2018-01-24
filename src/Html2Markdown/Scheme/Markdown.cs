@@ -100,6 +100,11 @@ namespace Html2Markdown.Scheme {
 				Pattern = @"<!--[^-]+-->",
 				Replacement = ""
 			},
+			new PatternReplacer
+			{
+				Pattern = @"</?script[^>]*>",
+				Replacement = ""
+			},
 			new CustomReplacer
 			{
 				CustomAction = HtmlParser.ReplaceImg
