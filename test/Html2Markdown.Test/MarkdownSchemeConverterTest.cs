@@ -8,15 +8,23 @@ namespace Html2Markdown.Test
 	class MarkdownSchemeConverterTest
 	{
 
+		#region Schemes
+
 		[Test]
 		public void Converter_WhenProvidingMarkdownAsACustomScheme_ThenShouldConvertEquivalentlyToNoScheme() {
 			const string html = @"So this is <a href=""http://www.simonbaynes.com/"">a link</a>. Convert it";
-			const string expected = @"So this is [a link](http://www.simonbaynes.com/). Convert it";
 
 			var scheme = new Markdown();
 
-			CheckConversion(html, expected, scheme);
+			var converterWithScheme = new Converter(scheme);
+			var converterWithoutScheme = new Converter();
+
+			Assert.That(converterWithoutScheme.Convert(html), Is.EqualTo(converterWithScheme.Convert(html)));
 		}
+
+		#endregion
+
+		#region Links
 		
 		[Test]
 		public void Convert_WhenThereAreHtmlLinks_ThenConvertToMarkDownLinks()
@@ -81,6 +89,10 @@ namespace Html2Markdown.Test
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Strong and Bold Tags
+
 		[Test]
 		public void Convert_WhenThereAreStrongTags_ThenConvertToMarkDownDoubleAsterisks()
 		{
@@ -108,6 +120,10 @@ namespace Html2Markdown.Test
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Emphasis and Italic Tags
+
 		[Test]
 		public void Convert_WhenThereAreEmphsisTags_ThenConvertToMarkDownSingleAsterisk()
 		{
@@ -126,6 +142,10 @@ namespace Html2Markdown.Test
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Break tags
+		
 		[Test]
 		public void Convert_WhenThereAreBreakTags_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
 		{
@@ -155,6 +175,10 @@ Convert it.";
 
 			CheckConversion(html, expected);
 		}
+
+		#endregion
+
+		#region Code Tags
 
 		[Test]
 		public void Convert_WhenThereAreCodeTags_ThenReplaceWithBackTick()
@@ -200,6 +224,10 @@ Convert it.";
 
 			CheckConversion(html, expected);
 		}
+
+		#endregion
+
+		#region Header Tags
 
 		[Test]
 		public void Convert_WhenThereAreH1Tags_ThenReplaceWithMarkDownHeader()
@@ -359,6 +387,10 @@ Convert it.";
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Blockquote Tags
+		
 		[Test]
 		public void Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
 		{
@@ -411,6 +443,10 @@ Convert it.";
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Paragraph Tags
+		
 		[Test]
 		public void Convert_WhenThereAreParagraphTags_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
 		{
@@ -448,6 +484,10 @@ Convert it!";
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Horizontal Rule Tags
+		
 		[Test]
 		public void Convert_WhenThereAreHorizontalRuleTags_ThenReplaceWithMarkDownHorizontalRule()
 		{
@@ -496,6 +536,10 @@ Convert it!";
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Image Tags
+		
 		[Test]
 		public void Convert_WhenThereAreImgTags_ThenReplaceWithMarkdownImage()
 		{
@@ -514,6 +558,10 @@ Convert it!";
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Pre Tags
+		
 		[Test]
 		public void Convert_WhenThereArePreTags_ThenReplaceWithMarkdownPre()
 		{
@@ -561,6 +609,10 @@ var result = converter.Convert(html);
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Lists
+		
 		[Test]
 		public void Convert_WhenThereAreUnorderedLists_ThenReplaceWithMarkdownLists()
 		{
@@ -611,6 +663,10 @@ var result = converter.Convert(html);
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Extra HTML Removal
+		
 		[Test]
 		public void Convert_WhenThereIsAnHtmlDoctype_ThenRemoveFromResult()
 		{
@@ -749,6 +805,10 @@ a comment
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		#region Entities
+		
 		[Test]
 		public void Convert_WhenThereIsAnAmpersandEntity_ThenReplaceWithActualCharacter()
 		{
@@ -785,6 +845,11 @@ a comment
 			CheckConversion(html, expected);
 		}
 
+		#endregion
+
+		
+		#region Complex Tests
+		
 		[Test]
 		public void Convert_ComplexTest_001()
 		{
@@ -970,6 +1035,8 @@ If you want to play with this application you can fork or browse it on [GitHub](
 
 			CheckConversion(html, expected);
 		}
+
+		#endregion
 
 		private static void CheckConversion(string html, string expected, IScheme scheme = null)
 		{
