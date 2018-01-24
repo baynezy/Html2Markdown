@@ -805,6 +805,24 @@ a comment
 			CheckConversion(html, expected);
 		}
 
+		[Test]
+		public void Convert_WhenThereIsAScriptTag_ThenRemoveFromResult() 
+		{
+			const string html = @"<!DOCTYPE html>
+<html>
+<head>
+	<script src=""scripts/jquery.min.js"" type=""text/javascript"">
+	</script>
+</head>
+<body>
+Hello World
+</body>
+</html>";
+			const string expected = "Hello World";
+
+			CheckConversion(html, expected);
+		}
+
 		#endregion
 
 		#region Entities
@@ -847,7 +865,6 @@ a comment
 
 		#endregion
 
-		
 		#region Complex Tests
 		
 		[Test]
