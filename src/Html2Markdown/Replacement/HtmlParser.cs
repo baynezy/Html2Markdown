@@ -13,14 +13,15 @@ namespace Html2Markdown.Replacement
 
 		internal static string ReplaceLists(string html)
 		{
-			while (HasNoChildLists(html))
+			var finalHtml = html;
+			while (HasNoChildLists(finalHtml))
 			{
-				var listToReplace = NoChildren.Match(html).Value;
+				var listToReplace = NoChildren.Match(finalHtml).Value;
 				var formattedList = ReplaceList(listToReplace);
-				html = html.Replace(listToReplace, formattedList);
+				finalHtml = finalHtml.Replace(listToReplace, formattedList);
 			}
 
-			return html;
+			return finalHtml;
 		}
 
 		private static string ReplaceList(string html)
@@ -36,7 +37,9 @@ namespace Html2Markdown.Replacement
 					var listPrefix = (listType.Equals("ol")) ? string.Format("{0}.  ", ++counter) : "*   ";
 					var finalList = Regex.Replace(listItem, @"<li[^>]*>", string.Empty);
 
-					if (finalList.Trim().Length == 0) return;
+					if (finalList.Trim().Length == 0) {
+						return;
+					}
 
 					finalList = Regex.Replace(finalList, @"^\s+", string.Empty);
 					finalList = Regex.Replace(finalList, @"\n{2}", string.Format("{0}{1}    ", Environment.NewLine, Environment.NewLine));
@@ -57,7 +60,9 @@ namespace Html2Markdown.Replacement
 		{
 			var doc = GetHtmlDocument(html);
 			var nodes = doc.DocumentNode.SelectNodes("//pre");
-			if (nodes == null) return html;
+			if (nodes == null) {
+				return html;
+			}
 
 			nodes.ToList().ForEach(node =>
 				{
@@ -91,7 +96,9 @@ namespace Html2Markdown.Replacement
 		{
 			var doc = GetHtmlDocument(html);
 			var nodes = doc.DocumentNode.SelectNodes("//img");
-			if (nodes == null) return html;
+			if (nodes == null) {
+				return html;
+			}
 
 			nodes.ToList().ForEach(node =>
 				{
@@ -112,7 +119,9 @@ namespace Html2Markdown.Replacement
 		{
 			var doc = GetHtmlDocument(html);
 			var nodes = doc.DocumentNode.SelectNodes("//a");
-			if (nodes == null) return html;
+			if (nodes == null) {
+				return html;
+			}
 
 			nodes.ToList().ForEach(node =>
 				{
@@ -136,31 +145,35 @@ namespace Html2Markdown.Replacement
 
 		public static string ReplaceCode(string html)
 		{
-			var singleLineCodeBlocks = new Regex(@"<code>([^\n]*?)</code>").Matches(html);
+			var finalHtml = html;
+			var singleLineCodeBlocks = new Regex(@"<code>([^\n]*?)</code>").Matches(finalHtml);
 			singleLineCodeBlocks.Cast<Match>().ToList().ForEach(block =>
 			{
 				var code = block.Value;
 				var content = GetCodeContent(code);
-				html = html.Replace(code, string.Format("`{0}`", content));
+				finalHtml = finalHtml.Replace(code, string.Format("`{0}`", content));
 			});
 
-			var multiLineCodeBlocks = new Regex(@"<code>([^>]*?)</code>").Matches(html);
+			var multiLineCodeBlocks = new Regex(@"<code>([^>]*?)</code>").Matches(finalHtml);
 			multiLineCodeBlocks.Cast<Match>().ToList().ForEach(block =>
 			{
 				var code = block.Value;
 				var content = GetCodeContent(code);
 				content = IndentLines(content).TrimEnd() + Environment.NewLine + Environment.NewLine;
-				html = html.Replace(code, string.Format("{0}    {1}", Environment.NewLine, TabsToSpaces(content)));
+				finalHtml = finalHtml.Replace(code, string.Format("{0}    {1}", Environment.NewLine, TabsToSpaces(content)));
 			});
 
-			return html;
+			return finalHtml;
 		}
 
 		public static string ReplaceBlockquote(string html)
 		{
-			var doc = GetHtmlDocument(html);
+			var finalHtml = html;
+			var doc = GetHtmlDocument(finalHtml);
 			var nodes = doc.DocumentNode.SelectNodes("//blockquote");
-			if (nodes == null) return html;
+			if (nodes == null) {
+				return finalHtml;
+			}
 
 			nodes.ToList().ForEach(node =>
 				{
@@ -192,7 +205,9 @@ namespace Html2Markdown.Replacement
 		{
 			var doc = GetHtmlDocument(html);
 			var nodes = doc.DocumentNode.SelectNodes("//p");
-			if (nodes == null) return html;
+			if (nodes == null) {
+				return html;
+			}
 
 			nodes.ToList().ForEach(node =>
 				{
@@ -242,7 +257,9 @@ namespace Html2Markdown.Replacement
 
 		private static string IndentLine(string line)
 		{
-			if (line.Trim().Equals(string.Empty)) return "";
+			if (line.Trim().Equals(string.Empty)) {
+				return "";
+			}
 			return line + Environment.NewLine + "    ";
 		}
 
