@@ -1053,6 +1053,16 @@ If you want to play with this application you can fork or browse it on [GitHub](
 			CheckConversion(html, expected);
 		}
 
+		// Issue #81 https://github.com/baynezy/Html2Markdown/issues/81
+		[Test]
+		public void Convert_WhenConvertingContentFromIssue81_ThenShouldNotError() {
+			const string content = "\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Repro steps amended functionality:</span> Followed\nduplication plan. Location field now only shows location at the booking's site. Testing passed.</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\">&nbsp;</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Exploratory Testing</span>: n/a</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\">&nbsp;</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Areas Affected and Tested: </span>Inpatient Bookings, Bed Move screen<br></p>\n\n";
+
+			var converter = new Converter();
+
+			Assert.DoesNotThrow(() => converter.Convert(content));
+		}
+
 		#endregion
 
 		private static void CheckConversion(string html, string expected, IScheme scheme = null)
