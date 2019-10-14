@@ -62,6 +62,8 @@ namespace Html2Markdown
 		{
 			return CleanWhiteSpace(_replacers.Aggregate(html, (current, element) => element.Replace(current)));
 		}
+		
+		public static string Convert(string html) => new Converter().Convert(html);
 
 		private static string CleanWhiteSpace(string markdown)
 		{
