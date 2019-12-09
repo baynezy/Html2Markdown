@@ -29,6 +29,10 @@ namespace Html2Markdown.Replacement
 			var list = Regex.Match(html, @"<(ul|ol)\b[^>]*>([\s\S]*?)<\/\1>");
 			var listType = list.Groups[1].Value;
 			var listItems = Regex.Split(list.Groups[2].Value, "<li[^>]*>");
+			if(!listItems.Any(i => !String.IsNullOrEmpty(i)))
+			{
+				return String.Empty;
+			}
 			listItems = listItems.Skip(1).ToArray();
 			
 			var counter = 0;

@@ -626,6 +626,15 @@ var result = converter.Convert(html);
 		}
 
 		[Test]
+		public void Convert_WhenThereAreEmptyUnorderedLists_ThenReplaceWithNothing()
+		{
+			const string html = @"This code is with an unordered list.<ul></ul>";
+			const string expected = @"This code is with an unordered list.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreUnorderedListsWihtoutClosingTags_ThenReplaceWithMarkdownLists()
 		{
 			const string html = @"This code is with an unordered list.<ul><li>Yes<li>No</ul>";
