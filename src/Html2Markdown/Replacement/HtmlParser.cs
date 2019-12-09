@@ -28,14 +28,15 @@ namespace Html2Markdown.Replacement
 		{
 			var list = Regex.Match(html, @"<(ul|ol)\b[^>]*>([\s\S]*?)<\/\1>");
 			var listType = list.Groups[1].Value;
-			var listItems = list.Groups[2].Value.Split(new[] { "</li>" }, StringSplitOptions.None);
-
+			var listItems = Regex.Split(list.Groups[2].Value, "<li[^>]*>");
+			listItems = listItems.Skip(1).ToArray();
+			
 			var counter = 0;
 			var markdownList = new List<string>();
 			listItems.ToList().ForEach(listItem =>
 				{
 					var listPrefix = (listType.Equals("ol")) ? string.Format("{0}.  ", ++counter) : "*   ";
-					var finalList = Regex.Replace(listItem, @"<li[^>]*>", string.Empty);
+					var finalList = listItem.Replace(@"</li>", string.Empty);
 
 					if (finalList.Trim().Length == 0) {
 						return;
