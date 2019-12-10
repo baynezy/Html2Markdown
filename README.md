@@ -54,7 +54,9 @@ This project will currently convert the following HTML tags:-
 
 [![NuGet version](https://badge.fury.io/nu/Html2Markdown.svg)](http://badge.fury.io/nu/Html2Markdown)
 
+```pwsh
     Install-Package Html2Markdown
+```
 
 ## Usage
 
