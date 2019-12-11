@@ -21,10 +21,6 @@ Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax).
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b8acbfab2c434cdf91ea2f90ac91dad6)](https://www.codacy.com/app/baynezy/Html2Markdown?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=baynezy/Html2Markdown&amp;utm_campaign=Badge_Grade)
 
-## Documentation
-
-Fully navigable documentation available on [GitHub Pages](http://baynezy.github.io/Html2Markdown/)
-
 ## Support
 
 This project will currently convert the following HTML tags:-
