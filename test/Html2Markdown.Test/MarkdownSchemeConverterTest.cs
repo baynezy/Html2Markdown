@@ -626,10 +626,31 @@ var result = converter.Convert(html);
 		}
 
 		[Test]
+		public void Convert_WhenThereAreEmptyUnorderedLists_ThenReplaceWithNothing()
+		{
+			const string html = @"This code is with an unordered list.<ul></ul>";
+			const string expected = @"This code is with an unordered list.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreUnorderedListsWihtoutClosingTags_ThenReplaceWithMarkdownLists()
+		{
+			const string html = @"This code is with an unordered list.<ul><li>Yes<li>No</ul>";
+			const string expected = @"This code is with an unordered list.
+
+*   Yes
+*   No";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreOrderedLists_ThenReplaceWithMarkdownLists()
 		{
-			const string html = @"This code is with an unordered list.<ol><li>Yes</li><li>No</li></ol>";
-			const string expected = @"This code is with an unordered list.
+			const string html = @"This code is with an ordered list.<ol><li>Yes</li><li>No</li></ol>";
+			const string expected = @"This code is with an ordered list.
 
 1.  Yes
 2.  No";
@@ -1051,6 +1072,16 @@ If you want to play with this application you can fork or browse it on [GitHub](
 > **— Johann Wolfgang von Goethe**";
 
 			CheckConversion(html, expected);
+		}
+
+		// Issue #81 https://github.com/baynezy/Html2Markdown/issues/81
+		[Test]
+		public void Convert_WhenConvertingContentFromIssue81_ThenShouldNotError() {
+			const string content = "\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Repro steps amended functionality:</span> Followed\nduplication plan. Location field now only shows location at the booking's site. Testing passed.</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\">&nbsp;</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Exploratory Testing</span>: n/a</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\">&nbsp;</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Areas Affected and Tested: </span>Inpatient Bookings, Bed Move screen<br></p>\n\n";
+
+			var converter = new Converter();
+
+			Assert.DoesNotThrow(() => converter.Convert(content));
 		}
 
 		#endregion

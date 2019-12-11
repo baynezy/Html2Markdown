@@ -1,10 +1,10 @@
-version: 3.2.1.{build}
+version: 3.2.2.{build}
 skip_tags: true
 configuration: Release
 init:
 - git config --global core.autocrlf true
 install:
-- ps: npm install -g markdownlint-cli
+- ps: npm install -g markdownlint-cli@0.11.0
 build:
   publish_nuget: true
   verbosity: minimal
@@ -40,8 +40,3 @@ on_finish:
   - ps: ./uploadTestResults.ps1
 artifacts:
 - path: src\Html2Markdown\bin\Release\*.nupkg
-notifications:
-  - provider: Slack
-    auth_token:
-      secure: xLrYwFJVzehV+sdSJsDp52X1TSPeSGJrr56LI2GQDvrmkpjcrwX1rmPwdH+i14H8lijQDcWbUt9jl81saehgRA==
-    channel: '#build'
