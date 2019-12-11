@@ -1,4 +1,4 @@
-version: 3.2.2.{build}
+version: 3.2.3.{build}
 skip_tags: true
 configuration: Release
 init:
@@ -17,7 +17,7 @@ environment:
 deploy:
 - provider: NuGet
   api_key:
-    secure: mqfd5QXj3a2N+D2EP9avxupQJRBJFEKT9kjF7Tipl1OCkUvPBsKjfiZMQHpnwVKq
+    secure: +wqELgJP/mgvSbyFi/7p+82HSObi3k3Z/B6HGwCnqIjYRPhEgzKU9543DBXNUsUd
   on:
     branch: master
 build_script:
@@ -34,8 +34,6 @@ build_script:
 test_script:
   - cmd: >-
       dotnet test .\test\Html2Markdown.Test\Html2Markdown.Test.csproj --logger "trx;LogFileName=results.trx"
-after_test:
-  - ps: ./pushDocumentation.ps1 $env:APPVEYOR_BUILD_FOLDER $env:GithubEmail $env:GithubUsername $env:GithubPersonalAccessToken $env:appveyor_repo_branch
 on_finish:
   - ps: ./uploadTestResults.ps1
 artifacts:
