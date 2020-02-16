@@ -12,12 +12,32 @@ namespace Html2Markdown.Scheme {
 		{
 			new PatternReplacer
 			{
-				Pattern = @"</?(strong|b)>",
+				Pattern = @"<(?:strong|b)>(\s+)",
+				Replacement = @" **"
+			},
+			new PatternReplacer
+			{
+				Pattern = @"<(?:strong|b)>",
 				Replacement = @"**"
 			},
 			new PatternReplacer
 			{
-				Pattern = @"</?(em|i)>",
+				Pattern = @"</(strong|b)>",
+				Replacement = @"**"
+			},
+			new PatternReplacer
+			{
+				Pattern = @"<(?:em|i)>(\s+)",
+				Replacement = @" *"
+			},
+			new PatternReplacer
+			{
+				Pattern = @"<(?:em|i)>",
+				Replacement = @"*"
+			},
+			new PatternReplacer
+			{
+				Pattern = @"</(em|i)>",
 				Replacement = @"*"
 			},
 			new PatternReplacer
