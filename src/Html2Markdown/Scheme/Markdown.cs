@@ -22,6 +22,11 @@ namespace Html2Markdown.Scheme {
 			},
 			new PatternReplacer
 			{
+				Pattern = @"(\s+)</(strong|b)>",
+				Replacement = @"** "
+			},
+			new PatternReplacer
+			{
 				Pattern = @"</(strong|b)>",
 				Replacement = @"**"
 			},
@@ -34,6 +39,11 @@ namespace Html2Markdown.Scheme {
 			{
 				Pattern = @"<(?:em|i)>",
 				Replacement = @"*"
+			},
+			new PatternReplacer
+			{
+				Pattern = @"(\s+)</(em|i)>",
+				Replacement = @"* "
 			},
 			new PatternReplacer
 			{

@@ -121,6 +121,24 @@ namespace Html2Markdown.Test
 		}
 
 		[Test]
+		public void Convert_WhenThereAreClosingStrongTagsFollowedByASpace_ThenConvertToMarkDownDoubleAsterisks()
+		{
+			const string html = @"This is a <strong>test </strong>that causes problems.";
+			const string expected = @"This is a **test** that causes problems.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreClosingStrongTagsFollowedByAMultipleSpaces_ThenConvertToMarkDownDoubleAsterisks()
+		{
+			const string html = @"This is a <strong>test  </strong>that causes problems.";
+			const string expected = @"This is a **test** that causes problems.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
 		public void Convert_WhenThereAreMultipleStrongTags_ThenConvertToMarkDownDoubleAsterisks()
 		{
 			const string html = @"So this text is <strong>bold</strong> and <strong>is this</strong>. Convert it.";
@@ -143,7 +161,7 @@ namespace Html2Markdown.Test
 		#region Emphasis and Italic Tags
 
 		[Test]
-		public void Convert_WhenThereAreEmphsisTags_ThenConvertToMarkDownSingleAsterisk()
+		public void Convert_WhenThereAreEmphasisTags_ThenConvertToMarkDownSingleAsterisk()
 		{
 			const string html = @"So this text is <em>italic</em>. Convert it.";
 			const string expected = @"So this text is *italic*. Convert it.";
@@ -152,7 +170,7 @@ namespace Html2Markdown.Test
 		}
 
 		[Test]
-		public void Convert_WhenThereAreEmphsisTagsFollowedByASpace_ThenConvertToMarkDownSingleAsterisk()
+		public void Convert_WhenThereAreEmphasisTagsFollowedByASpace_ThenConvertToMarkDownSingleAsterisk()
 		{
 			const string html = @"This is a<em> test</em> that causes problems.";
 			const string expected = @"This is a *test* that causes problems.";
@@ -161,9 +179,27 @@ namespace Html2Markdown.Test
 		}
 
 		[Test]
-		public void Convert_WhenThereAreEmphsisTagsFollowedByMultipleSpaces_ThenConvertToMarkDownSingleAsterisk()
+		public void Convert_WhenThereAreEmphasisTagsFollowedByMultipleSpaces_ThenConvertToMarkDownSingleAsterisk()
 		{
 			const string html = @"This is a<em>  test</em> that causes problems.";
+			const string expected = @"This is a *test* that causes problems.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreClosingEmphasisTagsFollowedByASpace_ThenConvertToMarkDownSingleAsterisk()
+		{
+			const string html = @"This is a <em>test </em>that causes problems.";
+			const string expected = @"This is a *test* that causes problems.";
+
+			CheckConversion(html, expected);
+		}
+
+		[Test]
+		public void Convert_WhenThereAreClosingEmphasisTagsFollowedByMultipleSpaces_ThenConvertToMarkDownSingleAsterisk()
+		{
+			const string html = @"This is a <em>test  </em>that causes problems.";
 			const string expected = @"This is a *test* that causes problems.";
 
 			CheckConversion(html, expected);
