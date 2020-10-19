@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,7 +17,8 @@ namespace Html2Markdown
 		/// <summary>
 		/// Create a Converter with the standard Markdown conversion scheme
 		/// </summary>
-		public Converter() {
+		public Converter() 
+		{
 			_replacers = new Markdown().Replacers();
 		}
 
