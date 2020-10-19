@@ -11,7 +11,8 @@ namespace Html2Markdown.Test
 		#region Schemes
 
 		[Test]
-		public void Converter_WhenProvidingMarkdownAsACustomScheme_ThenShouldConvertEquivalentlyToNoScheme() {
+		public void Converter_WhenProvidingMarkdownAsACustomScheme_ThenShouldConvertEquivalentlyToNoScheme()
+		{
 			const string html = @"So this is <a href=""http://www.simonbaynes.com/"">a link</a>. Convert it";
 
 			var scheme = new Markdown();
