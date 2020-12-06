@@ -17,7 +17,7 @@ environment:
 deploy:
 - provider: NuGet
   api_key:
-    secure: +wqELgJP/mgvSbyFi/7p+82HSObi3k3Z/B6HGwCnqIjYRPhEgzKU9543DBXNUsUd
+    secure: XVtJjWTseOinoS2JFWXHv11l/Dg+q/V2Cbh6vv/vqDyyRsSYAe2Sdis2pkIFTYmK
   on:
     branch: master
 build_script:
