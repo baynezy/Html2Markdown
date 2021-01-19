@@ -272,10 +272,11 @@ Convert it.";
 &lt;/p&gt;
 </code>";
 			const string expected = @"So this text has multiline code.
-
-    <p>
-        Some code we are looking at
-    </p>";
+```
+<p>
+	Some code we are looking at
+</p>
+```";
 
 			CheckConversion(html, expected);
 		}
@@ -290,10 +291,31 @@ Convert it.";
 	&lt;/p&gt;
 </code>";
 			const string expected = @"So this text has multiline code.
+```
+	<p>
+		Some code we are looking at
+	</p>
+```";
 
-        <p>
-            Some code we are looking at
-        </p>";
+			CheckConversion(html, expected);
+		}
+
+		/// https://github.com/baynezy/Html2Markdown/issues/112
+		[Test]
+		public void Convert_WhenThereMultilineCodeTags_ThenReplaceWithMultilineMarkdownBlock003()
+		{
+			const string html = @"<code>
+	class solution {<br>
+		int i;<br>
+		string name = “name”;<br>
+	}
+</code>";
+			const string expected = @"```
+	class solution {
+		int i;
+		string name = “name”;
+	}
+```";
 
 			CheckConversion(html, expected);
 		}
@@ -652,7 +674,9 @@ Convert it!";
 		{
 			const string html = @"<pre><code>Install-Package Html2Markdown
 </code></pre>";
-			const string expected = @"        Install-Package Html2Markdown";
+			const string expected = @"```
+    Install-Package Html2Markdown
+    ```";
 
 			CheckConversion(html, expected);
 		}
@@ -672,12 +696,16 @@ var result = converter.Convert(html);
 </code></pre>";
 			const string expected = @"## Installing via NuGet
 
-        Install-Package Html2Markdown
+```
+    Install-Package Html2Markdown
+    ```
 
 ## Usage
 
-        var converter = new Converter();
-        var result = converter.Convert(html);";
+```
+    var converter = new Converter();
+    var result = converter.Convert(html);
+    ```";
 
 			CheckConversion(html, expected);
 		}
@@ -976,14 +1004,18 @@ In this post we are going to look at handling reconnection if the browser loses 
 
 When the server reconnects your SSE end point it will send a special HTTP header `Last-Event-Id` in the reconnection request. In the previous part of this blog series we looked at just sending events with the `data` component. Which looked something like this:-
 
-        data: The payload we are sending\n\n
+```
+    data: The payload we are sending\n\n
+    ```
 
 Now while this is enough to make the events make it to your client-side implementation. We need more information to handle reconnection. To do this we need to add an event id to the output.
 
 E.g.
 
-        id: 1439887379635\n
-        data: The payload we are sending\n\n
+```
+    id: 1439887379635\n
+    data: The payload we are sending\n\n
+    ```
 
 The important thing to understand here is that each event needs a unique identifier, so that the client can communicate back to the server (using the `Last-Event-Id` header) which was the last event it received on reconnection.
 
@@ -1001,25 +1033,31 @@ OK so let us look at how we can actually implement this.
 
 We need to update the ServerEvent object to support having an `id` for an event.
 
-        function ServerEvent(name) {
-            this.name = name || """";
-            this.data = """";
-        };
-        ServerEvent.prototype.addData = function(data) {
-            var lines = data.split(/\n/);
-            for (var i = 0; i < lines.length; i++) {
-                var element = lines[i];
-                this.data += ""data:"" + element + ""\n"";
-            }
+```
+    function ServerEvent(name) {
+        this.name = name || """";
+        this.data = """";
+    };
+
+    ServerEvent.prototype.addData = function(data) {
+        var lines = data.split(/\n/);
+
+        for (var i = 0; i < lines.length; i++) {
+            var element = lines[i];
+            this.data += ""data:"" + element + ""\n"";
         }
-        ServerEvent.prototype.payload = function() {
-            var payload = """";
-            if (this.name != """") {
-                payload += ""id: "" + this.name + ""\n"";
-            }
-            payload += this.data;
-            return payload + ""\n"";
+    }
+
+    ServerEvent.prototype.payload = function() {
+        var payload = """";
+        if (this.name != """") {
+            payload += ""id: "" + this.name + ""\n"";
         }
+
+        payload += this.data;
+        return payload + ""\n"";
+    }
+    ```
 
 This is pretty straightforward string manipulation and won't impress anyone, but it is foundation for what will follow.
 
@@ -1027,34 +1065,42 @@ This is pretty straightforward string manipulation and won't impress anyone, but
 
 We need to update the `post.js` code to also store new events in MongoDB.
 
-        app.put(""/api/post-update"", function(req, res) {
-            var json = req.body;
-            json.timestamp = Date.now();
-            eventStorage.save(json).then(function(doc) {
-                dataChannel.publish(JSON.stringify(json));
-            }, errorHandling);
-            res.status(204).end();
-        });
+```
+    app.put(""/api/post-update"", function(req, res) {
+        var json = req.body;
+        json.timestamp = Date.now();
+
+        eventStorage.save(json).then(function(doc) {
+            dataChannel.publish(JSON.stringify(json));
+        }, errorHandling);
+
+        res.status(204).end();
+    });
+    ```
 
 The `event-storage` module looks as follows:
 
-        var Q = require(""q""),
-            config = require(""./config""),
-            mongo = require(""mongojs""),
-            db = mongo(config.mongoDatabase),
-            collection = db.collection(config.mongoScoresCollection);
-        module.exports.save = function(data) {
-            var deferred = Q.defer();
-            collection.save(data, function(err, doc){
-                if(err) {
-                    deferred.reject(err);
-                }
-                else {
-                    deferred.resolve(doc);
-                }
-            });
-            return deferred.promise;
-        };
+```
+    var Q = require(""q""),
+        config = require(""./config""),
+        mongo = require(""mongojs""),
+        db = mongo(config.mongoDatabase),
+        collection = db.collection(config.mongoScoresCollection);
+
+    module.exports.save = function(data) {
+        var deferred = Q.defer();
+        collection.save(data, function(err, doc){
+            if(err) {
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(doc);
+            }
+        });
+
+        return deferred.promise;
+    };
+    ```
 
 Here we are just using basic MongoDB commands to save a new event into the collection. Yep that is it, we are now additionally persisting the events so they can be retrieved later.
 
@@ -1062,53 +1108,66 @@ Here we are just using basic MongoDB commands to save a new event into the colle
 
 When an `EventSource` reconnects after a disconnection it passes a special header `Last-Event-Id`. So we need to look for that and return the events that got broadcast while the client was disconnected.
 
-        app.get(""/api/updates"", function(req, res){
-            initialiseSSE(req, res);
-            if (typeof(req.headers[""last-event-id""]) != ""undefined"") {
-                replaySSEs(req, res);
+```
+    app.get(""/api/updates"", function(req, res){
+        initialiseSSE(req, res);
+
+        if (typeof(req.headers[""last-event-id""]) != ""undefined"") {
+            replaySSEs(req, res);
+        }
+    });
+
+    function replaySSEs(req, res) {
+        var lastId = req.headers[""last-event-id""];
+
+        eventStorage.findEventsSince(lastId).then(function(docs) {
+            for (var index = 0; index < docs.length; index++) {
+                var doc = docs[index];
+                var messageEvent = new ServerEvent(doc.timestamp);
+                messageEvent.addData(doc.update);
+                outputSSE(req, res, messageEvent.payload());
             }
-        });
-        function replaySSEs(req, res) {
-            var lastId = req.headers[""last-event-id""];
-            eventStorage.findEventsSince(lastId).then(function(docs) {
-                for (var index = 0; index < docs.length; index++) {
-                    var doc = docs[index];
-                    var messageEvent = new ServerEvent(doc.timestamp);
-                    messageEvent.addData(doc.update);
-                    outputSSE(req, res, messageEvent.payload());
-                }
-            }, errorHandling);
-        };
+        }, errorHandling);
+    };
+    ```
 
 What we are doing here is querying MongoDB for the events that were missed. We then iterate over them and output them to the browser.
 
 The code for querying MongoDB is as follows:
 
-        module.exports.findEventsSince = function(lastEventId) {
-            var deferred = Q.defer();
-            collection.find({
-                timestamp: {$gt: Number(lastEventId)}
-            })
-            .sort({timestamp: 1}, function(err, docs) {
-                if (err) {
-                    deferred.reject(err);
-                }
-                else {
-                    deferred.resolve(docs);
-                }
-            });
-            return deferred.promise;
-        };
+```
+    module.exports.findEventsSince = function(lastEventId) {
+        var deferred = Q.defer();
+
+        collection.find({
+            timestamp: {$gt: Number(lastEventId)}
+        })
+        .sort({timestamp: 1}, function(err, docs) {
+            if (err) {
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(docs);
+            }
+        });
+
+        return deferred.promise;
+    };
+    ```
 
 ## Testing
 
 To test this you will need to run both apps at the same time.
 
-        node app.js
+```
+    node app.js
+    ```
 
 and 
 
-        node post.js
+```
+    node post.js
+    ```
 
 Once they are running open two browser windows [http://localhost:8181/](http://localhost:8181/) and [http://localhost:8082/api/post-update](http://localhost:8082/api/post-update)
 
