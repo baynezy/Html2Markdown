@@ -151,24 +151,44 @@ namespace Html2Markdown.Replacement
 		public static string ReplaceCode(string html)
 		{
 			var finalHtml = html;
-			var singleLineCodeBlocks = new Regex(@"<code>([^\n]*?)</code>").Matches(finalHtml);
-			singleLineCodeBlocks.Cast<Match>().ToList().ForEach(block =>
-			{
-				var code = block.Value;
-				var content = GetCodeContent(code);
-				finalHtml = finalHtml.Replace(code, string.Format("`{0}`", content));
-			});
+			var doc = GetHtmlDocument(finalHtml);
+			var nodes = doc.DocumentNode.SelectNodes("//code");
 
-			var multiLineCodeBlocks = new Regex(@"<code>([^>]*?)</code>").Matches(finalHtml);
-			multiLineCodeBlocks.Cast<Match>().ToList().ForEach(block =>
-			{
-				var code = block.Value;
-				var content = GetCodeContent(code);
-				content = IndentLines(content).TrimEnd() + Environment.NewLine + Environment.NewLine;
-				finalHtml = finalHtml.Replace(code, string.Format("{0}    {1}", Environment.NewLine, TabsToSpaces(content)));
-			});
+			if (nodes == null) {
+				return finalHtml;
+			}
 
-			return finalHtml;
+			nodes.ToList().ForEach(node =>
+				{
+					var code = node.InnerHtml;
+					string markdown;
+					if(isSingleLineCodeBlock(code))
+					{
+						markdown = "`" + code + "`";
+					}
+					else
+					{
+						markdown = ReplaceBreakTagsWithNewLines(code);
+						markdown = Regex.Replace(markdown, "^\r\n", "");
+						markdown = Regex.Replace(markdown, "\r\n$", "");
+						markdown = "```" + Environment.NewLine + markdown + Environment.NewLine + "```";
+					}
+
+					ReplaceNode(node, markdown);
+				});
+
+			return doc.DocumentNode.OuterHtml;
+		}
+
+		private static string ReplaceBreakTagsWithNewLines(string code)
+		{
+			return Regex.Replace(code, "<\\s*?/?\\s*?br\\s*?>", "");
+		}
+
+		private static bool isSingleLineCodeBlock(string code)
+		{
+			// single line code blocks do not have new line characters
+			return code.IndexOf(Environment.NewLine) == -1;
 		}
 
 		public static string ReplaceBlockquote(string html)
