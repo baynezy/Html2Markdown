@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using NUnit.Framework;
+using VerifyNUnit;
 
 namespace Html2Markdown.Test {
 	[TestFixture]
@@ -11,23 +13,11 @@ namespace Html2Markdown.Test {
 		}
 
 		[Test]
-		public void ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
+		public Task ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 		{
 			var sourcePath = _testPath + "TestHtml.txt";
-			const string expected = @"## Installing via NuGet
 
-```
-    Install-Package Html2Markdown
-    ```
-
-## Usage
-
-```
-    var converter = new Converter();
-    var result = converter.Convert(html);
-    ```";
-
-			CheckFileConversion(sourcePath, expected);
+			return CheckFileConversion(sourcePath);
 		}
 
 		private static string TestPath()
@@ -38,13 +28,13 @@ namespace Html2Markdown.Test {
 			return environmentPath ?? route;
 		}
 
-		private static void CheckFileConversion(string path, string expected)
+		private static Task CheckFileConversion(string path)
 		{
 			var converter = new Converter();
 
 			var result = converter.ConvertFile(path);
 
-			Assert.That(result, Is.EqualTo(expected));
+			return Verifier.Verify(result);
 		}
 	}
 }
