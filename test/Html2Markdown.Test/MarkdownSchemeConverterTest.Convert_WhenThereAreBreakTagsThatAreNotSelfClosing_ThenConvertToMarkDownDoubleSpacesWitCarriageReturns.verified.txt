@@ -1,0 +1,2 @@
+﻿So this text has a break.  
+Convert it.
