@@ -261,14 +261,22 @@ namespace Html2Markdown.Replacement
 
 		private static void ReplaceNode(HtmlNode node, string markdown)
 		{
-			var markdownNode = HtmlNode.CreateNode(markdown);
 			if (string.IsNullOrEmpty(markdown))
 			{
 				node.ParentNode.RemoveChild(node);
 			}
 			else
 			{
-				node.ParentNode.ReplaceChild(markdownNode.ParentNode, node);
+				var temp = HtmlNode.CreateNode("<p></p>");
+				temp.InnerHtml = markdown;
+				var current = node;
+
+				foreach (var child in temp.ChildNodes)
+				{
+					node.ParentNode.InsertAfter(child, current);
+					current = child;
+				}
+				node.Remove();
 			}
 			
 		}
