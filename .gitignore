@@ -11,3 +11,5 @@ _ReSharper.*
 Thumbs.db
 *.nupkg
 .vscode
+.idea
+.vs
