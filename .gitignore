@@ -12,3 +12,4 @@ Thumbs.db
 *.nupkg
 .vscode
 .idea
+.vs
