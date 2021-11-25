@@ -29,7 +29,7 @@ namespace Html2Markdown.Replacement
 			var list = Regex.Match(html, @"<(ul|ol)\b[^>]*>([\s\S]*?)<\/\1>");
 			var listType = list.Groups[1].Value;
 			var listItems = Regex.Split(list.Groups[2].Value, "<li[^>]*>");
-			if(!listItems.Any(i => !String.IsNullOrEmpty(i)))
+			if(listItems.All(string.IsNullOrEmpty))
 			{
 				return String.Empty;
 			}
@@ -39,7 +39,7 @@ namespace Html2Markdown.Replacement
 			var markdownList = new List<string>();
 			listItems.ToList().ForEach(listItem =>
 				{
-					var listPrefix = (listType.Equals("ol")) ? string.Format("{0}.  ", ++counter) : "*   ";
+					var listPrefix = (listType.Equals("ol")) ? $"{++counter}.  " : "*   ";
 					var finalList = listItem.Replace(@"</li>", string.Empty);
 
 					if (finalList.Trim().Length == 0) {
@@ -47,10 +47,10 @@ namespace Html2Markdown.Replacement
 					}
 
 					finalList = Regex.Replace(finalList, @"^\s+", string.Empty);
-					finalList = Regex.Replace(finalList, @"\n{2}", string.Format("{0}{1}    ", Environment.NewLine, Environment.NewLine));
+					finalList = Regex.Replace(finalList, @"\n{2}", $"{Environment.NewLine}{Environment.NewLine}    ");
 					// indent nested lists
-					finalList = Regex.Replace(finalList, @"\n([ ]*)+(\*|\d+\.)", string.Format("{0}$1    $2", "\n"));
-					markdownList.Add(string.Format("{0}{1}", listPrefix, finalList));
+					finalList = Regex.Replace(finalList, @"\n([ ]*)+(\*|\d+\.)", "\n$1    $2");
+					markdownList.Add($"{listPrefix}{finalList}");
 				});
 
 			return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) => current + Environment.NewLine + item);
@@ -112,7 +112,7 @@ namespace Html2Markdown.Replacement
 					var alt = node.Attributes.GetAttributeOrEmpty("alt");
 					var title = node.Attributes.GetAttributeOrEmpty("title");
 
-					var markdown = string.Format(@"![{0}]({1}{2})", alt, src, (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
+					var markdown = $@"![{alt}]({src}{((title.Length > 0) ? $" \"{title}\"" : "")})";
 
 					ReplaceNode(node, markdown);
 				});
@@ -138,8 +138,7 @@ namespace Html2Markdown.Replacement
 
 					if (!IsEmptyLink(linkText, href))
 					{
-						markdown = string.Format(@"[{0}]({1}{2})", linkText, href,
-												 (title.Length > 0) ? string.Format(" \"{0}\"", title) : "");
+						markdown = $@"[{linkText}]({href}{((title.Length > 0) ? $" \"{title}\"" : "")})";
 					}
 
 					ReplaceNode(node, markdown);
@@ -162,7 +161,7 @@ namespace Html2Markdown.Replacement
 				{
 					var code = node.InnerHtml;
 					string markdown;
-					if(isSingleLineCodeBlock(code))
+					if(IsSingleLineCodeBlock(code))
 					{
 						markdown = "`" + code + "`";
 					}
@@ -185,19 +184,18 @@ namespace Html2Markdown.Replacement
 			return Regex.Replace(code, "<\\s*?/?\\s*?br\\s*?>", "");
 		}
 
-		private static bool isSingleLineCodeBlock(string code)
+		private static bool IsSingleLineCodeBlock(string code)
 		{
 			// single line code blocks do not have new line characters
-			return code.IndexOf(Environment.NewLine) == -1;
+			return code.IndexOf(Environment.NewLine, StringComparison.Ordinal) == -1;
 		}
 
 		public static string ReplaceBlockquote(string html)
 		{
-			var finalHtml = html;
-			var doc = GetHtmlDocument(finalHtml);
+			var doc = GetHtmlDocument(html);
 			var nodes = doc.DocumentNode.SelectNodes("//blockquote");
 			if (nodes == null) {
-				return finalHtml;
+				return html;
 			}
 
 			nodes.ToList().ForEach(node =>
@@ -208,7 +206,7 @@ namespace Html2Markdown.Replacement
 
 					lines.ToList().ForEach(line =>
 						{
-							markdown += string.Format("> {0}{1}", line.TrimEnd(), Environment.NewLine);
+							markdown += $"> {line.TrimEnd()}{Environment.NewLine}";
 						});
 
 					markdown = Regex.Replace(markdown, @"(>\s\r\n)+$", "");
@@ -267,40 +265,8 @@ namespace Html2Markdown.Replacement
 			}
 			else
 			{
-				var temp = HtmlNode.CreateNode("<p></p>");
-				temp.InnerHtml = markdown;
-				var current = node;
-
-				foreach (var child in temp.ChildNodes)
-				{
-					node.ParentNode.InsertAfter(child, current);
-					current = child;
-				}
-				node.Remove();
+				node.ReplaceNodeWithString(markdown);
 			}
-			
-		}
-
-		private static string IndentLines(string content)
-		{
-			var lines = content.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
-
-			return lines.Aggregate("", (current, line) => current + IndentLine(line));
-		}
-
-		private static string IndentLine(string line)
-		{
-			if (line.Trim().Equals(string.Empty)) {
-				return "";
-			}
-			return line + Environment.NewLine + "    ";
-		}
-
-		private static string GetCodeContent(string code)
-		{
-			var match = Regex.Match(code, @"<code[^>]*?>([^<]*?)</code>");
-			var groups = match.Groups;
-			return groups[1].Value;
 		}
 	}
 }

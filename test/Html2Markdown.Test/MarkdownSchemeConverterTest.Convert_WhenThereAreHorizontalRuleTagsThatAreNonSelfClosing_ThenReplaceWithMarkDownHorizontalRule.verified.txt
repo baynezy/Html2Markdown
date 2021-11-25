@@ -1,4 +1,4 @@
-﻿This code is seperated by a horizonrtal rule.
+﻿This code is seperated by a horizontal rule.
 
 * * *
 Convert it!

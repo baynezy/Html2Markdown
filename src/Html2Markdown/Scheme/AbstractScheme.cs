@@ -10,9 +10,9 @@ namespace Html2Markdown.Scheme
 	public abstract class AbstractScheme : IScheme {
 		protected readonly IList<IReplacer> _replacers = new List<IReplacer>();
 
-		protected void AddReplacementGroup(IList<IReplacer> replacers, IReplacementGroup replacementGroup)
+		protected static void AddReplacementGroup(IList<IReplacer> replacers, IReplacementGroup replacementGroup)
 		{
-			replacementGroup.Replacers().ToList().ForEach(r => replacers.Add(r));
+			replacementGroup.Replacers().ToList().ForEach(replacers.Add);
 		}
 
 		public IList<IReplacer> Replacers()
