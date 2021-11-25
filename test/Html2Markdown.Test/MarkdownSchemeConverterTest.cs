@@ -456,7 +456,7 @@ namespace Html2Markdown.Test
 		[Test]
 		public Task Convert_WhenThereAreHorizontalRuleTags_ThenReplaceWithMarkDownHorizontalRule()
 		{
-			const string html = @"This code is seperated by a horizonrtal rule.<hr/>Convert it!";
+			const string html = @"This code is seperated by a horizontal rule.<hr/>Convert it!";
 
 			return CheckConversion(html);
 		}
@@ -464,7 +464,7 @@ namespace Html2Markdown.Test
 		[Test]
 		public Task Convert_WhenThereAreHorizontalRuleTagsWithWhiteSpace_ThenReplaceWithMarkDownHorizontalRule()
 		{
-			const string html = @"This code is seperated by a horizonrtal rule.<hr />Convert it!";
+			const string html = @"This code is seperated by a horizontal rule.<hr />Convert it!";
 
 			return CheckConversion(html);
 		}
@@ -472,7 +472,7 @@ namespace Html2Markdown.Test
 		[Test]
 		public Task Convert_WhenThereAreHorizontalRuleTagsWithAttributes_ThenReplaceWithMarkDownHorizontalRule()
 		{
-			const string html = @"This code is seperated by a horizonrtal rule.<hr class=""something"" />Convert it!";
+			const string html = @"This code is seperated by a horizontal rule.<hr class=""something"" />Convert it!";
 
 			return CheckConversion(html);
 		}
@@ -480,7 +480,7 @@ namespace Html2Markdown.Test
 		[Test]
 		public Task Convert_WhenThereAreHorizontalRuleTagsThatAreNonSelfClosing_ThenReplaceWithMarkDownHorizontalRule()
 		{
-			const string html = @"This code is seperated by a horizonrtal rule.<hr>Convert it!";
+			const string html = @"This code is seperated by a horizontal rule.<hr>Convert it!";
 
 			return CheckConversion(html);
 		}
@@ -815,7 +815,7 @@ Hello World
 
 		#endregion
 
-		private Task CheckConversion(string html, IScheme scheme = null)
+		private static Task CheckConversion(string html, IScheme scheme = null)
 		{
 			var converter = scheme == null ? new Converter() : new Converter(scheme);
 
