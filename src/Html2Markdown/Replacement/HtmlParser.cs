@@ -84,7 +84,7 @@ namespace Html2Markdown.Replacement
 		{
 			var tag = TabsToSpaces(html);
 			tag = IndentNewLines(tag);
-			return Environment.NewLine + Environment.NewLine + tag + Environment.NewLine;
+            return Environment.NewLine + Environment.NewLine + "```" + Environment.NewLine + tag + Environment.NewLine + "```" + Environment.NewLine;
 		}
 
 		private static string IndentNewLines(string tag)
