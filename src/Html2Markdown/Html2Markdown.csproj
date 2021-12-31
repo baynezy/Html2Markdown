@@ -8,10 +8,12 @@
     <Description>A library for converting HTML to markdown syntax in C#</Description>
     <Copyright>© Simon Baynes 2013</Copyright>
     <PackageTags>Markdown;Html;Convert</PackageTags>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>Html2Markdown.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.38" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.39" />
   </ItemGroup>
 
 </Project>
