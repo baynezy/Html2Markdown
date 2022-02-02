@@ -9,7 +9,7 @@
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
-    <PackageReference Include="Verify.NUnit" Version="14.8.1" />
+    <PackageReference Include="Verify.NUnit" Version="15.2.1" />
   </ItemGroup>
 
   <ItemGroup>
