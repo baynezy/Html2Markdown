@@ -53,7 +53,7 @@ namespace Html2Markdown.Replacement
 					markdownList.Add($"{listPrefix}{finalList}");
 				});
 
-			return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) => current + Environment.NewLine + item);
+			return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) => current + Environment.NewLine + item) + Environment.NewLine + Environment.NewLine;
 		}
 
 		private static bool HasNoChildLists(string html)
