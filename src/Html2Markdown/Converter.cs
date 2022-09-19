@@ -70,6 +70,11 @@ namespace Html2Markdown
 			cleaned = Regex.Replace(cleaned, @"(> \r\n){2,}", "> \r\n");
 			cleaned = Regex.Replace(cleaned, @"^(\r\n)+", "");
 			cleaned = Regex.Replace(cleaned, @"(\r\n)+$", "");
+                        cleaned = Regex.Replace(cleaned, @"\n\s+\n", "\n\n");
+                        cleaned = Regex.Replace(cleaned, @"(\n){3,}", "\n\n");
+                        cleaned = Regex.Replace(cleaned, @"(> \n){2,}", "> \n");
+                        cleaned = Regex.Replace(cleaned, @"^(\n)+", "");
+                        cleaned = Regex.Replace(cleaned, @"(\n)+$", "");
 			return cleaned;
 		}
 	}
