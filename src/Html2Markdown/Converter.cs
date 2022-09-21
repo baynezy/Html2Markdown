@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -65,12 +66,12 @@ namespace Html2Markdown
 
 		private static string CleanWhiteSpace(string markdown)
 		{
-			var cleaned = Regex.Replace(markdown, @"\r\n\s+\r\n", "\r\n\r\n");
-			cleaned = Regex.Replace(cleaned, @"(\r\n){3,}", "\r\n\r\n");
-			cleaned = Regex.Replace(cleaned, @"(> \r\n){2,}", "> \r\n");
-			cleaned = Regex.Replace(cleaned, @"^(\r\n)+", "");
-			cleaned = Regex.Replace(cleaned, @"(\r\n)+$", "");
-			return cleaned;
+			var cleaned = Regex.Replace(markdown, @"\r?\n\s+\r?\n", Environment.NewLine + Environment.NewLine);
+			cleaned = Regex.Replace(cleaned, @"(\r?\n){3,}", Environment.NewLine + Environment.NewLine);
+			cleaned = Regex.Replace(cleaned, @"(> \r?\n){2,}", "> " + Environment.NewLine + Environment.NewLine);
+			cleaned = Regex.Replace(cleaned, @"^(\r?\n)+", "");
+			cleaned = Regex.Replace(cleaned, @"(\r?\n)+$", "");
+			return cleaned.Trim();
 		}
 	}
 }

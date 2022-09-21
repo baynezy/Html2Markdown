@@ -168,8 +168,8 @@ namespace Html2Markdown.Replacement
 					else
 					{
 						markdown = ReplaceBreakTagsWithNewLines(code);
-						markdown = Regex.Replace(markdown, "^\r\n", "");
-						markdown = Regex.Replace(markdown, "\r\n$", "");
+						markdown = Regex.Replace(markdown, "^\r?\n", "");
+						markdown = Regex.Replace(markdown, "\r?\n$", "");
 						markdown = "```" + Environment.NewLine + markdown + Environment.NewLine + "```";
 					}
 
@@ -209,7 +209,7 @@ namespace Html2Markdown.Replacement
 							markdown += $"> {line.TrimEnd()}{Environment.NewLine}";
 						});
 
-					markdown = Regex.Replace(markdown, @"(>\s\r\n)+$", "");
+					markdown = Regex.Replace(markdown, @"(>\s\r?\n)+$", "");
 
 					markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine + Environment.NewLine;
 
