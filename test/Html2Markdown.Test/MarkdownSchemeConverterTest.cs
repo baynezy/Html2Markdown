@@ -805,12 +805,29 @@ Hello World
 
 		// Issue #81 https://github.com/baynezy/Html2Markdown/issues/81
 		[Test]
-		public void Convert_WhenConvertingContentFromIssue81_ThenShouldNotError() {
+		public void Convert_WhenConvertingContentFromIssue81_ThenShouldNotError()
+		{
 			const string content = "\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Repro steps amended functionality:</span> Followed\nduplication plan. Location field now only shows location at the booking's site. Testing passed.</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\">&nbsp;</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Exploratory Testing</span>: n/a</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\">&nbsp;</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Areas Affected and Tested: </span>Inpatient Bookings, Bed Move screen<br></p>\n\n";
 
 			var converter = new Converter();
 
 			Assert.DoesNotThrow(() => converter.Convert(content));
+		}
+
+		[Test]
+		public Task Convert_WhenThereAreParagraphTagsEitherSideOfAList_ThenThereShouldBeAppropriateSpacing()
+		{
+			const string html = @"<p>a</p><ul><li>First</li><li>Last</li></ul><p>b</p>";
+			
+			return CheckConversion(html);
+		}
+
+		[Test]
+		public Task Convert_WhenThereIsAParagraphTagAfterfAList_ThenThereShouldBeAppropriateSpacing()
+		{
+			const string html = @"<p>a</p><ul><li>First</li><li>Last</li></ul>b";
+			
+			return CheckConversion(html);
 		}
 
 		#endregion

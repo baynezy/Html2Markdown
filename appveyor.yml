@@ -1,7 +1,9 @@
-version: 5.0.2.{build}
+version: 5.1.0.{build}
 skip_tags: true
 configuration: Release
-image: Visual Studio 2022
+image:
+  - Visual Studio 2022
+  - Ubuntu
 init:
 - git config --global core.autocrlf true
 install:
@@ -10,7 +12,8 @@ build:
   publish_nuget: true
   verbosity: minimal
 environment:
-  Test.Path: C:\projects\html2markdown\test\Html2Markdown.Test\Files\
+  TestPathWindows: C:\projects\html2markdown\test\Html2Markdown.Test\Files\
+  TestPathLinux: /home/appveyor/projects/html2markdown/test/Html2Markdown.Test/Files/
   GithubEmail: baynezy@gmail.com
   GithubUsername: baynezy
   GithubPersonalAccessToken:
@@ -22,18 +25,21 @@ deploy:
   on:
     branch: master
 build_script:
-  - cmd: >-
-      cd %BUILD_DIR%
-
+  - ps: >-
       markdownlint .
 
       dotnet restore
       
       dotnet build
 
-      dotnet pack .\src\Html2Markdown\Html2Markdown.csproj -c %CONFIGURATION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+      dotnet pack .\src\Html2Markdown\Html2Markdown.csproj -c $env:CONFIGURATION /p:PackageVersion=$env:APPVEYOR_BUILD_VERSION
 test_script:
-  - cmd: >-
+  - ps: >-
+      if ($isLinux) {
+        $env:TestPath = $env:TestPathLinux
+      } else {
+        $env:TestPath = $env:TestPathWindows
+      }
       dotnet test .\test\Html2Markdown.Test\Html2Markdown.Test.csproj --logger "trx;LogFileName=results.trx"
 on_finish:
   - ps: ./uploadTestResults.ps1
