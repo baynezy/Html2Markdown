@@ -1,0 +1,26 @@
+name: Deploy Develop Branch
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - '**.sln'
+      - '**.cake'
+      - '.github/workflows/branch-develop.yml'
+      - '.github/workflows/step-*.yml'
+  workflow_dispatch:
+
+jobs:
+  get-version:
+    uses: ./.github/workflows/step-version.yml
+
+  build:
+    needs: [get-version]
+    uses: ./.github/workflows/step-build.yml
+    secrets: inherit
+    with:
+      version: ${{ needs.get-version.outputs.version }}
+      checkout-ref: ${{ github.base_ref }}

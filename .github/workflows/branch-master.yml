@@ -1,0 +1,53 @@
+name: Deploy Master Branch
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  get-version:
+    uses: ./.github/workflows/step-version.yml
+    with:
+      static-build: true
+
+  build:
+    needs: [get-version]
+    uses: ./.github/workflows/step-build.yml
+    secrets: inherit
+    with:
+      version: ${{ needs.get-version.outputs.version }}
+      checkout-ref: ${{ github.base_ref }}
+
+  publish-to-nuget:
+    needs: [get-version,build]
+    uses: ./.github/workflows/step-publish.yml
+    secrets: inherit
+    with:
+      deploy-env: nuget
+      deploy-branch: ${{ github.base_ref }}
+      version: ${{ needs.get-version.outputs.version }}
+  
+  tag-release:
+    needs: [get-version,publish-to-nuget]
+    uses: ./.github/workflows/step-tag-release.yml
+    with:
+      version: ${{ needs.get-version.outputs.version }}
+  
+  merge-master-to-develop:
+    needs: [publish-to-nuget]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.CREATE_PR_TOKEN }}
+        run: |
+          echo -e "This PR merges the master branch back into develop.\nThis happens to ensure that the updates that happened on the release branch, i.e. CHANGELOG updates are also present on the develop branch." > msg.txt
+          
+          export msg=$(cat msg.txt) ; gh pr create \
+          --head master \
+          --base develop \
+          --title "Merge master into develop branch" \
+          --body "$msg"
