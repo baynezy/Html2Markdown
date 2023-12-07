@@ -1,0 +1,66 @@
+on:
+  workflow_call:
+    inputs:
+      static-build:
+        description: 'Should the build number come from the semver.json file?'
+        type: boolean
+        required: false
+        default: false
+      is-pre-release:
+        description: 'Is this a pre-release?'
+        type: boolean
+        required: false
+        default: false
+    outputs:
+      version:
+        description: 'The version of the app'
+        value: ${{ jobs.version-number.outputs.version }}
+      major:
+        description: 'The major version of the app'
+        value: ${{ jobs.version-number.outputs.major }}
+      minor:
+        description: 'The minor version of the app'
+        value: ${{ jobs.version-number.outputs.minor }}
+      patch:
+        description: 'The patch version of the app'
+        value: ${{ jobs.version-number.outputs.patch }}
+      build:
+        description: 'The patch version of the app'
+        value: ${{ jobs.version-number.outputs.build }}
+
+jobs:
+  version-number:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set-version.outputs.version }}
+      major: ${{ steps.set-version.outputs.major }}
+      minor: ${{ steps.set-version.outputs.minor }}
+      patch: ${{ steps.set-version.outputs.patch }}
+      build: ${{ steps.set-version.outputs.build }}
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Get Version
+        id: get-version
+        uses: RadovanPelka/github-action-json@v1.0.1
+        with:
+          path: 'semver.json'
+      - id: set-version
+        run: |
+          echo "major=${{ steps.get-version.outputs.major }}" >> $GITHUB_OUTPUT
+          echo "minor=${{ steps.get-version.outputs.minor }}" >> $GITHUB_OUTPUT
+          echo "patch=${{ steps.get-version.outputs.patch }}" >> $GITHUB_OUTPUT
+
+          suffix=""
+
+          if [ "${{ inputs.is-pre-release }}" == true ]; then
+            suffix="-alpha"
+          fi
+          
+          if [ "${{ inputs.static-build }}" == true ]; then
+            echo "version=${{ steps.get-version.outputs.major }}.${{ steps.get-version.outputs.minor }}.${{ steps.get-version.outputs.patch }}.${{ steps.get-version.outputs.build }}${suffix}" >> $GITHUB_OUTPUT
+            echo "build=${{ steps.get-version.outputs.build }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${{ steps.get-version.outputs.major }}.${{ steps.get-version.outputs.minor }}.${{ steps.get-version.outputs.patch }}.${{ github.run_number }}${suffix}" >> $GITHUB_OUTPUT
+            echo "build=${{ github.run_number }}" >> $GITHUB_OUTPUT
+          fi

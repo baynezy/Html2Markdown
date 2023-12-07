@@ -1,0 +1,29 @@
+name: Deploy Release Branch
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - master
+      - develop
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - '**.sln'
+      - '**.cake'
+      - '.github/workflows/branch-release.yml'
+      - '.github/workflows/step-*.yml'
+  workflow_dispatch:
+
+jobs:
+  get-version:
+    if: startsWith(github.head_ref, 'release/')
+    uses: ./.github/workflows/step-version.yml
+  
+  build:
+    needs: [get-version]
+    uses: ./.github/workflows/step-build.yml
+    secrets: inherit
+    with:
+      version: ${{ needs.get-version.outputs.version }}
+      checkout-ref: ${{ github.head_ref }}

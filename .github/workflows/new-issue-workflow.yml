@@ -1,0 +1,15 @@
+name: New Issue Workflow
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  update-new-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialise Labelling
+        run: gh issue edit $ISSUE --add-label "to do"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ github.event.issue.html_url }}

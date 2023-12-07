@@ -1,0 +1,37 @@
+on:
+  workflow_call:
+    inputs:
+      deploy-env:
+        required: true
+        description: 'Environment to deploy to'
+        type: string
+      deploy-branch:
+        required: true
+        description: 'Branch to deploy'
+        type: string
+      version:
+        description: 'The version number to use for the build'
+        required: true
+        type: string
+      package-name:
+        description: 'The name of the package to push'
+        required: true
+        type: string
+  
+jobs:
+  push-package:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.deploy-env }}
+    steps:
+      - name: Download Package
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.package-name }}
+          path: ./src/Html2Markdown/bin/Release
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3.2.0
+        with:
+          dotnet-version: 8.0.x
+      - name: Push package to NuGet
+        run: |
+          dotnet nuget push $(find ./src/Html2Markdown/bin/Release/*.nupkg) --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

@@ -1,0 +1,36 @@
+name: Deploy Feature Branch
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - develop
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - '**.sln'
+      - '**.cake'
+      - '.github/workflows/branch-feature.yml'
+      - '.github/workflows/step-*.yml'
+  workflow_dispatch:
+
+jobs:
+  get-version:
+    if: startsWith(github.head_ref, 'feature/') || github.head_ref == 'master'
+    uses: ./.github/workflows/step-version.yml
+    secrets: inherit
+    with:
+      is-pre-release: true
+
+  build:
+    needs: [get-version]
+    uses: ./.github/workflows/step-build.yml
+    secrets: inherit
+    with:
+      version: ${{ needs.get-version.outputs.version }}
+      checkout-ref: ${{ github.head_ref }}
+      
+  check-markdown:
+    needs: [get-version]
+    uses: ./.github/workflows/step-check-markdown.yml
+    secrets: inherit

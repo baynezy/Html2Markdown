@@ -1,0 +1,21 @@
+name: Test Dependabot PRs
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  get-version:
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    uses: ./.github/workflows/step-version.yml
+
+  build:
+    needs: [get-version]
+    uses: ./.github/workflows/step-build.yml
+    secrets: inherit
+    with:
+      version: ${{ needs.get-version.outputs.version }}
+      checkout-ref: ${{ github.event.pull_request.head.sha }}
