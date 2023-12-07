@@ -5,6 +5,7 @@
     <Authors>Simon Baynes</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/baynezy/Html2Markdown</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>A library for converting HTML to markdown syntax in C#</Description>
     <Copyright>© Simon Baynes 2013</Copyright>
     <PackageTags>Markdown;Html;Convert</PackageTags>
@@ -12,10 +13,14 @@
     <AssemblyOriginatorKeyFile>Html2Markdown.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.62" />
     <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
 </Project>
