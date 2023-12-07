@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     <Authors>Simon Baynes</Authors>
-    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/baynezy/Html2Markdown</PackageProjectUrl>
     <Description>A library for converting HTML to markdown syntax in C#</Description>
     <Copyright>© Simon Baynes 2013</Copyright>
@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
   </ItemGroup>
 
 </Project>

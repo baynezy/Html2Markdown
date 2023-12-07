@@ -1,0 +1,24 @@
+name: Completed Feature Workflow
+
+on:
+  pull_request:
+    branches: [ develop ]
+    types: [closed]
+
+jobs:
+  update-merged-issue-issues:
+    if: github.event.pull_request.merged_by != '' && github.actor != 'dependabot[bot]' && startsWith(github.head_ref, 'feature/issue-')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Extract Issue Number
+        shell: bash
+        run: echo "##[set-output name=issue;]$(echo ${{ github.event.pull_request.head.ref }} | sed 's|[^0-9]||g')"
+        id: extract_issue
+      - name: Output Issue Number
+        run: echo "Issue Number- ${{ steps.extract_issue.outputs.issue }}"
+      - name: Update Labels
+        run: gh issue edit ${{ steps.extract_issue.outputs.issue }} --add-label "next release" --remove-label "in progress"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

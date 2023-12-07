@@ -1,0 +1,25 @@
+on:
+  workflow_call:
+    inputs:
+      deploy-env:
+        required: true
+        description: 'Environment to deploy to'
+        type: string
+      deploy-branch:
+        required: true
+        description: 'Branch to deploy'
+        type: string
+      version:
+        description: 'The version number to use for the build'
+        required: true
+        type: string
+  
+jobs:    
+  publish-package:
+    uses: ./.github/workflows/step-publish-package.yml
+    secrets: inherit
+    with:
+      deploy-env: ${{ inputs.deploy-env }}
+      deploy-branch: ${{ inputs.deploy-branch }}
+      version: ${{ inputs.version }}
+      package-name: Html2Markdown

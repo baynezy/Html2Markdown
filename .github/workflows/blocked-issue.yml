@@ -1,0 +1,36 @@
+﻿name: Blocked Issue Labeler
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+  issue_comment:
+    types:
+      - created
+      - edited
+
+jobs:
+  add-blocked-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Add blocked label if issue is blocked
+        run: |
+          body=$BODY
+          comment=$COMMENT
+          issue_number=${{ github.event.issue.number }}
+
+          # if body contains "blocked" or comment contains "blocked"
+          # add label "blocked"
+
+          if [[ "${body,,}" == *"blocked"* ]] || [[ "${comment,,}" == *"blocked"* ]]; then
+            echo "Issue is blocked"
+            echo "Adding blocked label"
+            gh issue edit $issue_number --add-label blocked
+          fi
+        env:
+          BODY: ${{ github.event.issue.body }}
+          COMMENT: ${{ github.event.comment.body }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

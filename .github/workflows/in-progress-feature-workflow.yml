@@ -1,0 +1,23 @@
+name: In Progress Feature Workflow
+
+on:
+  push:
+    branches:
+    - feature/issue-*
+
+jobs:
+  update-in-progress-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Extract Issue Number
+        shell: bash
+        run: echo "##[set-output name=issue;]$(echo ${GITHUB_REF#refs/heads/} | sed 's|[^0-9]||g')"
+        id: extract_issue
+      - name: Output Issue Number
+        run: echo "Issue Number- ${{ steps.extract_issue.outputs.issue }}"
+      - name: Update Labels
+        run: gh issue edit ${{ steps.extract_issue.outputs.issue }} --add-label "in progress" --remove-label "to do"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

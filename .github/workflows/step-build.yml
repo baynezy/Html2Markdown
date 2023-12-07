@@ -1,0 +1,60 @@
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'The version number to use for the build'
+        required: true
+        type: string
+      checkout-ref:
+        description: 'The commit SHA to checkout'
+        required: true
+        type: string
+  
+jobs:
+  build-libraries:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Log Branch
+      run: |
+        echo "Branch: ${{ inputs.checkout-ref }}"
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.checkout-ref }}
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4.0.0
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore
+      uses: cake-build/cake-action@v1
+      with:
+        target: Restore
+    - name: Build
+      uses: cake-build/cake-action@v1
+      with:
+        target: Build
+        arguments: |
+          versionNumber: ${{inputs.version}}
+    - name: Run tests
+      uses: cake-build/cake-action@v1
+      env: 
+        TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
+      with:
+        target: Test
+    - name: Publish Unit Test Results
+      if: ${{ github.actor != 'dependabot[bot]' }}
+      uses: EnricoMi/publish-unit-test-result-action/composite@v2
+      with:
+        files: "**/TestResults/*.xml"
+    - name: Build NuGet Package
+      uses: cake-build/cake-action@v1
+      with:
+        target: Pack
+        arguments: |
+          versionNumber: ${{inputs.version}}
+    - name: Upload Package
+      if: ${{ github.actor != 'dependabot[bot]' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: Html2Markdown
+        path: ./src/Html2Markdown/bin/Release/*.nupkg
