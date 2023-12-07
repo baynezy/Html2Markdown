@@ -8,10 +8,10 @@ Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax).
 
 ## Build Status
 
-| Branch | Status |
-| ------ | ------ |
-| master | [![master](https://github.com/baynezy/Html2Markdown/actions/workflows/deploy-master.yml/badge.svg?branch=master)](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-master.yml) |
-| develop | [![develop](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-develop.yml/badge.svg?branch=develop)](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-develop.yml) |
+| Branch | Status                                                                                                                                                                                              |
+| ------ |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `master` | [![master](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-master.yml/badge.svg?branch=master)](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-master.yml)     |
+| `develop` | [![develop](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-develop.yml/badge.svg?branch=develop)](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-develop.yml) |
 
 ## Support
 
