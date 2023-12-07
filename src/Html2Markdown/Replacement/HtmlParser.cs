@@ -29,11 +29,12 @@ namespace Html2Markdown.Replacement
 			var list = Regex.Match(html, @"<(ul|ol)\b[^>]*>([\s\S]*?)<\/\1>");
 			var listType = list.Groups[1].Value;
 			var listItems = Regex.Split(list.Groups[2].Value, "<li[^>]*>");
-			if(listItems.All(string.IsNullOrEmpty))
-			{
-				return String.Empty;
-			}
+			
+			if (listItems.All(string.IsNullOrEmpty)) return string.Empty;
+			
 			listItems = listItems.Skip(1).ToArray();
+			
+			if (listItems.Length == 0) return string.Empty;
 			
 			var counter = 0;
 			var markdownList = new List<string>();
