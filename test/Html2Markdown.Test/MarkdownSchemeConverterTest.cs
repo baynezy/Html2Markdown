@@ -741,6 +741,23 @@ Hello World
 
 			return CheckConversion(html);
 		}
+		
+		[Test]
+		public Task Convert_WhenAListHasNoItems_ThenRemoveTheList()
+		{
+			const string html = @"<ul></ul>";
+
+			return CheckConversion(html);
+		}
+
+		// See issue https://github.com/baynezy/Html2Markdown/issues/269
+		[Test]
+		public Task Convert_Bug269()
+		{
+			const string html = "<ol> Test </ol>";
+
+			return CheckConversion(html);
+		} 
 
 		#endregion
 
