@@ -276,6 +276,46 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
+
+	[Test]
+	public Task Convert_WhenThereMultilineCodeTagsWithSyntaxHighlight_ThenReplaceWithMultilineMarkdownBlock001()
+	{
+		const string html = @"So this text has multiline code.
+<code class='language-javascript'>
+	&lt;p&gt;
+		Some code we are looking at
+	&lt;/p&gt;
+</code>";
+
+		return CheckConversion(html);
+	}
+
+	[Test]
+	public Task Convert_WhenThereMultilineCodeTagsWithSyntaxHighlight_ThenReplaceWithMultilineMarkdownBlock002()
+	{
+		const string html = @"So this text has multiline code.
+<code class='javascript'>
+	&lt;p&gt;
+		Some code we are looking at
+	&lt;/p&gt;
+</code>";
+
+		return CheckConversion(html);
+	}
+
+	[Test]
+	public Task Convert_WhenThereMultilineCodeTagsWithSyntaxHighlight_ThenReplaceWithMultilineMarkdownBlock003()
+	{
+		const string html = @"So this text has multiline code.
+<code class='lang-javascript'>
+	&lt;p&gt;
+		Some code we are looking at
+	&lt;/p&gt;
+</code>";
+
+		return CheckConversion(html);
+	}
+
 	#endregion
 
 	#region Header Tags

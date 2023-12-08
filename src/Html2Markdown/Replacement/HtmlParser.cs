@@ -168,6 +168,8 @@ internal static partial class HtmlParser
 		nodes.ToList().ForEach(node =>
 		{
 			var code = node.InnerHtml;
+			string language = GetSyntaxHighlightLanguage(node);
+
 			string markdown;
 			if(IsSingleLineCodeBlock(code))
 			{
@@ -178,7 +180,7 @@ internal static partial class HtmlParser
 				markdown = ReplaceBreakTagsWithNewLines(code);
 				markdown = Regex.Replace(markdown, "^\r?\n", "");
 				markdown = Regex.Replace(markdown, "\r?\n$", "");
-				markdown = "```" + Environment.NewLine + markdown + Environment.NewLine + "```";
+				markdown = "```" + language + Environment.NewLine + markdown + Environment.NewLine + "```";
 			}
 
 			ReplaceNode(node, markdown);
@@ -196,6 +198,26 @@ internal static partial class HtmlParser
 	{
 		// single line code blocks do not have new line characters
 		return code.IndexOf(Environment.NewLine, StringComparison.Ordinal) == -1;
+	}
+
+	private static string GetSyntaxHighlightLanguage(HtmlNode node)
+	{
+		// extract the language for syntax highlighting from a code tag
+		// depending on the implementations, language can be declared in the tag as :
+		// <code class="language-csharp">
+		// <code class="lang-csharp">
+		// <code class="csharp">
+		var classAttributeValue = node.Attributes["class"]?.Value;
+
+		if(string.IsNullOrEmpty(classAttributeValue)){
+			return string.Empty;
+		}
+
+		if(classAttributeValue.StartsWith("lang")){
+			return classAttributeValue.Split('-').Last();
+		}else{
+			return classAttributeValue;
+		}
 	}
 
 	public static string ReplaceBlockquote(string html)
