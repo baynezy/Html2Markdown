@@ -1,0 +1,1 @@
+﻿Enties like & should be converted

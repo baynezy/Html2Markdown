@@ -1,7 +1,3 @@
-using System.Threading.Tasks;
-using NUnit.Framework;
-using VerifyNUnit;
-
 namespace Html2Markdown.Test;
 
 [TestFixture]

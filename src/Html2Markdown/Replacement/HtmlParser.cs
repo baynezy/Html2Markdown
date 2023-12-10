@@ -154,8 +154,10 @@ internal static partial class HtmlParser
 
 		return doc.DocumentNode.OuterHtml;
 	}
+	
+	public static string ReplaceCode(string html) => ReplaceCode(html, false);
 
-	public static string ReplaceCode(string html)
+	public static string ReplaceCode(string html, bool supportSyntaxHighlighting)
 	{
 		var finalHtml = html;
 		var doc = GetHtmlDocument(finalHtml);
@@ -168,7 +170,7 @@ internal static partial class HtmlParser
 		nodes.ToList().ForEach(node =>
 		{
 			var code = node.InnerHtml;
-			string language = GetSyntaxHighlightLanguage(node);
+			var language = supportSyntaxHighlighting ? GetSyntaxHighlightLanguage(node) : "";
 
 			string markdown;
 			if(IsSingleLineCodeBlock(code))
@@ -213,11 +215,9 @@ internal static partial class HtmlParser
 			return string.Empty;
 		}
 
-		if(classAttributeValue.StartsWith("lang")){
-			return classAttributeValue.Split('-').Last();
-		}else{
-			return classAttributeValue;
-		}
+		return classAttributeValue.StartsWith("lang") 
+			? classAttributeValue.Split('-').Last() 
+			: classAttributeValue;
 	}
 
 	public static string ReplaceBlockquote(string html)
