@@ -1,10 +1,10 @@
-namespace Html2Markdown.Replacement;
+namespace Html2Markdown.Replacement.CommonMark;
 
 /// <summary>
 /// A group of IReplacer to deal with converting HTML that is
 /// used for layout
 /// </summary>
-public class LayoutReplacementGroup : IReplacementGroup
+public class CommonMarkLayoutReplacementGroup : IReplacementGroup
 {
 	private readonly IList<IReplacer> _replacements = new List<IReplacer> {
 		new PatternReplacer
@@ -14,7 +14,7 @@ public class LayoutReplacementGroup : IReplacementGroup
 		},
 		new CustomReplacer
 		{
-			CustomAction = HtmlParser.ReplaceCode
+			CustomAction = ReplaceCode
 		},
 		new CustomReplacer
 		{
@@ -34,6 +34,11 @@ public class LayoutReplacementGroup : IReplacementGroup
 			CustomAction = HtmlParser.ReplaceBlockquote
 		}
 	};
+
+	private static string ReplaceCode(string html)
+	{
+		return HtmlParser.ReplaceCode(html, true);
+	}
 
 	public IEnumerable<IReplacer> Replacers()
 	{

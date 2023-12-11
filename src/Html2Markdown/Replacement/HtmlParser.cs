@@ -44,22 +44,22 @@ internal static partial class HtmlParser
 				return;
 			}
 
-			finalList = Regex.Replace(finalList, @"^\s+", string.Empty);
-			finalList = Regex.Replace(finalList, @"\n{2}", $"{Environment.NewLine}{Environment.NewLine}    ");
+			finalList = SpacesAtTheStartOfALine().Replace(finalList, string.Empty);
+			finalList = TwoNewLines().Replace(finalList, $"{Environment.NewLine}{Environment.NewLine}    ");
 			// indent nested lists
-			finalList = Regex.Replace(finalList, @"\n([ ]*)+(\*|\d+\.)", "\n$1    $2");
+			finalList = NestedList().Replace(finalList, "\n$1    $2");
 			markdownList.Add($"{listPrefix}{finalList}");
 		});
 
 		return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) => current + Environment.NewLine + item) + Environment.NewLine + Environment.NewLine;
 	}
 
-	private static bool ListIsEmpty(string[] listItems)
+	private static bool ListIsEmpty(IReadOnlyCollection<string> listItems)
 	{
-		return listItems.Length == 0;
+		return listItems.Count == 0;
 	}
 
-	private static bool ListOnlyHasEmptyStringsForChildren(string[] listItems)
+	private static bool ListOnlyHasEmptyStringsForChildren(IEnumerable<string> listItems)
 	{
 		return listItems.All(string.IsNullOrEmpty);
 	}
@@ -120,7 +120,7 @@ internal static partial class HtmlParser
 			var alt = node.Attributes.GetAttributeOrEmpty("alt");
 			var title = node.Attributes.GetAttributeOrEmpty("title");
 
-			var markdown = $@"![{alt}]({src}{(title.Length > 0 ? $" \"{title}\"" : "")})";
+			var markdown = $"![{alt}]({src}{(title.Length > 0 ? $" \"{title}\"" : "")})";
 
 			ReplaceNode(node, markdown);
 		});
@@ -146,7 +146,7 @@ internal static partial class HtmlParser
 
 			if (!IsEmptyLink(linkText, href))
 			{
-				markdown = $@"[{linkText}]({href}{(title.Length > 0 ? $" \"{title}\"" : "")})";
+				markdown = $"[{linkText}]({href}{(title.Length > 0 ? $" \"{title}\"" : "")})";
 			}
 
 			ReplaceNode(node, markdown);
@@ -154,20 +154,23 @@ internal static partial class HtmlParser
 
 		return doc.DocumentNode.OuterHtml;
 	}
+	
+	public static string ReplaceCode(string html) => ReplaceCode(html, false);
 
-	public static string ReplaceCode(string html)
+	public static string ReplaceCode(string html, bool supportSyntaxHighlighting)
 	{
-		var finalHtml = html;
-		var doc = GetHtmlDocument(finalHtml);
+		var doc = GetHtmlDocument(html);
 		var nodes = doc.DocumentNode.SelectNodes("//code");
 
 		if (nodes == null) {
-			return finalHtml;
+			return html;
 		}
 
 		nodes.ToList().ForEach(node =>
 		{
 			var code = node.InnerHtml;
+			var language = supportSyntaxHighlighting ? GetSyntaxHighlightLanguage(node) : "";
+
 			string markdown;
 			if(IsSingleLineCodeBlock(code))
 			{
@@ -176,9 +179,9 @@ internal static partial class HtmlParser
 			else
 			{
 				markdown = ReplaceBreakTagsWithNewLines(code);
-				markdown = Regex.Replace(markdown, "^\r?\n", "");
-				markdown = Regex.Replace(markdown, "\r?\n$", "");
-				markdown = "```" + Environment.NewLine + markdown + Environment.NewLine + "```";
+				markdown = InitialCrLf().Replace(markdown, "");
+				markdown = FinalCrLf().Replace(markdown, "");
+				markdown = "```" + language + Environment.NewLine + markdown + Environment.NewLine + "```";
 			}
 
 			ReplaceNode(node, markdown);
@@ -189,13 +192,31 @@ internal static partial class HtmlParser
 
 	private static string ReplaceBreakTagsWithNewLines(string code)
 	{
-		return Regex.Replace(code, "<\\s*?/?\\s*?br\\s*?>", "");
+		return BreakTag().Replace(code, "");
 	}
 
 	private static bool IsSingleLineCodeBlock(string code)
 	{
 		// single line code blocks do not have new line characters
-		return code.IndexOf(Environment.NewLine, StringComparison.Ordinal) == -1;
+		return !code.Contains(Environment.NewLine);
+	}
+
+	private static string GetSyntaxHighlightLanguage(HtmlNode node)
+	{
+		// extract the language for syntax highlighting from a code tag
+		// depending on the implementations, language can be declared in the tag as :
+		// <code class="language-csharp">
+		// <code class="lang-csharp">
+		// <code class="csharp">
+		var classAttributeValue = node.Attributes["class"]?.Value;
+
+		if(string.IsNullOrEmpty(classAttributeValue)){
+			return string.Empty;
+		}
+
+		return classAttributeValue.StartsWith("lang") 
+			? classAttributeValue.Split('-').Last() 
+			: classAttributeValue;
 	}
 
 	public static string ReplaceBlockquote(string html)
@@ -217,7 +238,7 @@ internal static partial class HtmlParser
 				markdown += $"> {line.TrimEnd()}{Environment.NewLine}";
 			});
 
-			markdown = Regex.Replace(markdown, @"(>\s\r?\n)+$", "");
+			markdown = EmptyQuoteLines().Replace(markdown, "");
 
 			markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine + Environment.NewLine;
 
@@ -243,7 +264,7 @@ internal static partial class HtmlParser
 		nodes.ToList().ForEach(node =>
 		{
 			var text = node.InnerHtml;
-			var markdown = Regex.Replace(text, @"\s+", " ");
+			var markdown = Spaces().Replace(text, " ");
 			markdown = markdown.Replace(Environment.NewLine, " ");
 			markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine;
 			ReplaceNode(node, markdown);
@@ -283,4 +304,20 @@ internal static partial class HtmlParser
     private static partial Regex HtmlListHasNoChildren();
     [GeneratedRegex("<li[^>]*>")]
     private static partial Regex FindHtmlListItems();
+    [GeneratedRegex(@"\s+")]
+    private static partial Regex Spaces();
+    [GeneratedRegex(@"(>\s\r?\n)+$")]
+    private static partial Regex EmptyQuoteLines();
+    [GeneratedRegex(@"^\s+")]
+    private static partial Regex SpacesAtTheStartOfALine();
+    [GeneratedRegex("\\n{2}")]
+    private static partial Regex TwoNewLines();
+    [GeneratedRegex(@"\n([ ]*)+(\*|\d+\.)")]
+    private static partial Regex NestedList();
+    [GeneratedRegex("^\r?\n")]
+    private static partial Regex InitialCrLf();
+    [GeneratedRegex("\r?\n$")]
+    private static partial Regex FinalCrLf();
+    [GeneratedRegex(@"<\s*?/?\s*?br\s*?>")]
+    private static partial Regex BreakTag();
 }
