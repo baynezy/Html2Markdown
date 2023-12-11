@@ -9,7 +9,7 @@ public class LayoutReplacementGroup : IReplacementGroup
 	private readonly IList<IReplacer> _replacements = new List<IReplacer> {
 		new PatternReplacer
 		{
-			Pattern = @"<hr[^>]*>",
+			Pattern = "<hr[^>]*>",
 			Replacement = Environment.NewLine + Environment.NewLine + "* * *" + Environment.NewLine
 		},
 		new CustomReplacer
@@ -26,8 +26,8 @@ public class LayoutReplacementGroup : IReplacementGroup
 		},
 		new PatternReplacer
 		{
-			Pattern = @"<br[^>]*>",
-			Replacement = @"  " + Environment.NewLine
+			Pattern = "<br[^>]*>",
+			Replacement = "  " + Environment.NewLine
 		},
 		new CustomReplacer
 		{

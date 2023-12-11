@@ -4,6 +4,7 @@ namespace Html2Markdown.Scheme;
 
 /// <summary>
 /// Collection of IReplacer for converting vanilla Markdown
+/// See : https://daringfireball.net/projects/markdown/syntax
 /// </summary>
 public class Markdown : AbstractScheme
 {

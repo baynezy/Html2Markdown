@@ -10,42 +10,42 @@ public class TextFormattingReplacementGroup : IReplacementGroup
 		new PatternReplacer
 		{
 			Pattern = @"<(?:strong|b)>(\s+)",
-			Replacement = @" **"
+			Replacement = " **"
 		},
 		new PatternReplacer
 		{
-			Pattern = @"<(?:strong|b)>",
-			Replacement = @"**"
+			Pattern = "<(?:strong|b)>",
+			Replacement = "**"
 		},
 		new PatternReplacer
 		{
 			Pattern = @"(\s+)</(strong|b)>",
-			Replacement = @"** "
+			Replacement = "** "
 		},
 		new PatternReplacer
 		{
-			Pattern = @"</(strong|b)>",
-			Replacement = @"**"
+			Pattern = "</(strong|b)>",
+			Replacement = "**"
 		},
 		new PatternReplacer
 		{
 			Pattern = @"<(?:em|i)>(\s+)",
-			Replacement = @" *"
+			Replacement = " *"
 		},
 		new PatternReplacer
 		{
-			Pattern = @"<(?:em|i)>",
-			Replacement = @"*"
+			Pattern = "<(?:em|i)>",
+			Replacement = "*"
 		},
 		new PatternReplacer
 		{
 			Pattern = @"(\s+)</(em|i)>",
-			Replacement = @"* "
+			Replacement = "* "
 		},
 		new PatternReplacer
 		{
-			Pattern = @"</(em|i)>",
-			Replacement = @"*"
+			Pattern = "</(em|i)>",
+			Replacement = "*"
 		},
 		new CustomReplacer
 		{

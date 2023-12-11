@@ -8,47 +8,47 @@ public class IllegalHtmlReplacementGroup : IReplacementGroup
 	private readonly IList<IReplacer> _replacements = new List<IReplacer> {
 		new PatternReplacer
 		{
-			Pattern = @"<!DOCTYPE[^>]*>",
+			Pattern = "<!DOCTYPE[^>]*>",
 			Replacement = ""
 		},
 		new PatternReplacer
 		{
-			Pattern = @"</?html[^>]*>",
+			Pattern = "</?html[^>]*>",
 			Replacement = ""
 		},
 		new PatternReplacer
 		{
-			Pattern = @"</?head[^>]*>",
+			Pattern = "</?head[^>]*>",
 			Replacement = ""
 		},
 		new PatternReplacer
 		{
-			Pattern = @"</?body[^>]*>",
+			Pattern = "</?body[^>]*>",
 			Replacement = ""
 		},
 		new PatternReplacer
 		{
-			Pattern = @"<title[^>]*>.*?</title>",
+			Pattern = "<title[^>]*>.*?</title>",
 			Replacement = ""
 		},
 		new PatternReplacer
 		{
-			Pattern = @"<meta[^>]*>",
+			Pattern = "<meta[^>]*>",
 			Replacement = ""
 		},
 		new PatternReplacer
 		{
-			Pattern = @"<link[^>]*>",
+			Pattern = "<link[^>]*>",
 			Replacement = ""
 		},
 		new PatternReplacer
 		{
-			Pattern = @"<!--[^-]+-->",
+			Pattern = "<!--[^-]+-->",
 			Replacement = ""
 		},
 		new PatternReplacer
 		{
-			Pattern = @"</?script[^>]*>",
+			Pattern = "</?script[^>]*>",
 			Replacement = ""
 		}
 	};
