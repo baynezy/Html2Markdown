@@ -287,8 +287,7 @@ public class MarkdownSchemeConverterTest
 
 		return CheckConversion(html);
 	}
-
-
+	
 	[Test]
 	public Task Convert_WhenThereAreH2Tags_ThenReplaceWithMarkDownHeader()
 	{
@@ -849,7 +848,7 @@ Hello World
 
 	#endregion
 
-	private static Task CheckConversion(string html, IScheme scheme = null)
+	protected virtual Task CheckConversion(string html, IScheme scheme = null)
 	{
 		var converter = scheme == null ? new Converter() : new Converter(scheme);
 

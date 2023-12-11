@@ -1,0 +1,1 @@
+﻿So this is [a link](http://www.simonbaynes.com/ "example"). Convert it
