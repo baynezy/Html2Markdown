@@ -1,8 +1,5 @@
 using System;
-using System.Threading.Tasks;
 using Html2Markdown.Scheme;
-using NUnit.Framework;
-using VerifyNUnit;
 
 namespace Html2Markdown.Test;
 
@@ -564,7 +561,7 @@ var result = converter.Convert(html);
 	}
 
 	[Test]
-	public Task Convert_WhenThereAreUnorderedListsWihtoutClosingTags_ThenReplaceWithMarkdownLists()
+		public Task Convert_WhenThereAreUnorderedListsWithoutClosingTags_ThenReplaceWithMarkdownLists()
 	{
 		const string html = @"This code is with an unordered list.<ul><li>Yes<li>No</ul>";
 
@@ -591,6 +588,49 @@ var result = converter.Convert(html);
 	public Task Convert_WhenThereIsAnOrderedListWithANestedUnorderList_ThenReplaceWithMarkdownLists()
 	{
 		const string html = @"This code is with an unordered list.<ol><li>Yes</li><li><ul><li>No</li><li>Maybe</li></ul></li></ol>";
+
+		return CheckConversion(html);
+	}
+
+	// Refer to issue https://github.com/baynezy/Html2Markdown/issues/325
+	[Test]
+	public Task Convert_Bug325()
+	{
+		const string html = """
+		                    <h1>Adopt OKRs as a strategy execution framework</h1>
+		                    <h2>Channel: OPSP 2023</h2>
+		                    <h2>Tags: 2023Q3ROCKS</h2>
+		                    <p><strong>Ações</strong></p>
+		                    <ul>
+		                    <li>✅ <a
+		                                href=\"https://www.site.pt">Apresentação</a>
+		                            OKRs 101 </li>
+		                    <li>✅ Titçe
+		                    <ul>
+		                    <li><img
+		                                        src=\"https://www.site.pt"></li>
+		                    
+		                            </ul>
+		                    </li>
+		                    <li>✅ Definição de \"coaches\"
+		                    <ul>
+		                    <li>John Doe</li>
+		                    </ul>
+		                    
+		                        </li>
+		                    <li>✅ Subtitle
+		                    <ul>
+		                    <li>Q4 2023</li>
+		                    </ul>
+		                    </li>
+		                    <li>🕒 Tool
+
+		                    <ul>
+		                    <li>In evaluation</li>
+		                    </ul>
+		                    </li>
+		                    </ul>
+		                    """;
 
 		return CheckConversion(html);
 	}
