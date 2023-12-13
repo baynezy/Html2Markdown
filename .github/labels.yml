@@ -70,3 +70,6 @@
 - name: "awaiting feedback"
   color: "fbca04"
   description: "This issue is awaiting feedback from the reporter"
+- name: "stale"
+  color: "eeeeee"
+  description: "This issue/PR has been inactive for too long"
