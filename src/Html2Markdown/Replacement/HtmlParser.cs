@@ -8,20 +8,21 @@ internal static partial class HtmlParser
 {
 	private static readonly Regex NoChildren = HtmlListHasNoChildren();
 
-	internal static string ReplaceLists(string html)
+	internal static string ReplaceLists(string html) => ReplaceLists(html, false);
+	internal static string ReplaceLists(string html, bool supportCommonMark = false)
 	{
 		var finalHtml = html;
 		while (HasNoChildLists(finalHtml))
 		{
 			var listToReplace = NoChildren.Match(finalHtml).Value;
-			var formattedList = ReplaceList(listToReplace);
+			var formattedList = ReplaceList(listToReplace, supportCommonMark);
 			finalHtml = finalHtml.Replace(listToReplace, formattedList);
 		}
 
 		return finalHtml;
 	}
 
-	private static string ReplaceList(string html)
+	private static string ReplaceList(string html, bool supportCommonMark = false)
 	{
 		var list = FindHtmlList().Match(html);
 		var listType = list.Groups[1].Value;
@@ -38,7 +39,10 @@ internal static partial class HtmlParser
 		listItems.ToList().ForEach(listItem =>
 		{
 			var listPrefix = listType.Equals("ol") ? $"{++counter}.  " : "*   ";
-			var finalList = listItem.Replace(@"</li>", string.Empty);
+			//In case of multiline Html, a line can end with a new line. In this case we want to remove the closing tag as well as the new line
+			//otherwise we may only keep the line breaks between tags and create a double line break in the markdown
+			string closingTag = listItem.EndsWith($"</li>{Environment.NewLine}") ? $"</li>{Environment.NewLine}" : "</li>";
+			var finalList = listItem.Replace(closingTag, string.Empty);
 
 			if (finalList.Trim().Length == 0) {
 				return;
@@ -48,10 +52,18 @@ internal static partial class HtmlParser
 			finalList = TwoNewLines().Replace(finalList, $"{Environment.NewLine}{Environment.NewLine}    ");
 			// indent nested lists
 			finalList = NestedList().Replace(finalList, "\n$1    $2");
+			//In Common mark, a list item may contain blocks that are separated by more than one blank line. In these cases it's rendered as separate paragraphs.
+			//When converting to common mark, we need to specifically process paragraph tags inside list items to avoid adding unsolicited new line characters
+			//When using a scheme that supports Common Mark and if a list item starts with a paragraph, call ReplaceParagraph from within the list processing
+			if (supportCommonMark && listItem.StartsWith("<p>"))
+			{
+				finalList = ReplaceParagraph(finalList, true);
+			}
 			markdownList.Add($"{listPrefix}{finalList}");
 		});
 
-		return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) => current + Environment.NewLine + item) + Environment.NewLine + Environment.NewLine;
+		//If a new line is already ending the markdown item, then we don't need to add another one
+		return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) =>  current.EndsWith(Environment.NewLine) ? current + item : current + Environment.NewLine + item) + Environment.NewLine + Environment.NewLine;
 	}
 
 	private static bool ListIsEmpty(IReadOnlyCollection<string> listItems)
@@ -253,7 +265,8 @@ internal static partial class HtmlParser
 		return WebUtility.HtmlDecode(html);
 	}
 
-	public static string ReplaceParagraph(string html)
+	internal static string ReplaceParagraph(string html) => ReplaceParagraph(html, false);
+	public static string ReplaceParagraph(string html, bool nestedIntoList = false)
 	{
 		var doc = GetHtmlDocument(html);
 		var nodes = doc.DocumentNode.SelectNodes("//p");
@@ -266,7 +279,12 @@ internal static partial class HtmlParser
 			var text = node.InnerHtml;
 			var markdown = Spaces().Replace(text, " ");
 			markdown = markdown.Replace(Environment.NewLine, " ");
-			markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine;
+
+			//If a paragraph is contained in a list, we don't want to add new line characters
+			string openingTag = nestedIntoList ? "" : Environment.NewLine + Environment.NewLine;
+			string closingTag = nestedIntoList ? "" : Environment.NewLine;
+
+			markdown = openingTag + markdown + closingTag;
 			ReplaceNode(node, markdown);
 		});
 

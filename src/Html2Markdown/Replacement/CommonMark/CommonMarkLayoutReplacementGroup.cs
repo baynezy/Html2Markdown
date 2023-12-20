@@ -43,5 +43,5 @@ public class CommonMarkLayoutReplacementGroup : IReplacementGroup
 	public IEnumerable<IReplacer> Replacers()
 	{
 			return _replacements;
-		}
+	}
 }

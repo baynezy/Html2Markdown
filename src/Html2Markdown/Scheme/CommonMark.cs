@@ -14,7 +14,7 @@ public class CommonMark : AbstractScheme
 {
     public CommonMark()
     {
-        AddReplacementGroup(ReplacerCollection, new TextFormattingReplacementGroup());
+        AddReplacementGroup(ReplacerCollection, new CommonMarkTextFormattingReplacementGroup());
         AddReplacementGroup(ReplacerCollection, new HeadingReplacementGroup());
         AddReplacementGroup(ReplacerCollection, new IllegalHtmlReplacementGroup());
         AddReplacementGroup(ReplacerCollection, new CommonMarkLayoutReplacementGroup());
