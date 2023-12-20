@@ -143,6 +143,22 @@ public class MarkdownSchemeConverterTest
 
 		return CheckConversion(html);
 	}
+	
+	[Test]
+	public Task Convert_WhenThereIsABoldTagWithProperties_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = @"So this text is <b id=""something"">bold</b>. Convert it.";
+
+		return CheckConversion(html);
+	}
+	
+	[Test]
+	public Task Convert_WhenThereIsAStrongTagWithProperties_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = @"So this text is <strong id=""something"">bold</strong>. Convert it.";
+
+		return CheckConversion(html);
+	}
 
 	#endregion
 
