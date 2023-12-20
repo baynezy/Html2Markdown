@@ -14,7 +14,7 @@ public class TextFormattingReplacementGroup : IReplacementGroup
 		},
 		new PatternReplacer
 		{
-			Pattern = "<(?:strong|b)>",
+			Pattern = @"<(?:strong|b)(:?\s[^>]*)?>",
 			Replacement = "**"
 		},
 		new PatternReplacer
