@@ -7,36 +7,16 @@ namespace Html2Markdown.Replacement;
 public class LayoutReplacementGroup : IReplacementGroup
 {
 	private readonly IList<IReplacer> _replacements = new List<IReplacer> {
-		new PatternReplacer
-		{
-			Pattern = "<hr[^>]*>",
-			Replacement = Environment.NewLine + Environment.NewLine + "* * *" + Environment.NewLine
-		},
-		new CustomReplacer
-		{
-			CustomAction = HtmlParser.ReplaceCode
-		},
-		new CustomReplacer
-		{
-			CustomAction = HtmlParser.ReplacePre
-		},
-		new CustomReplacer
-		{
-			CustomAction = HtmlParser.ReplaceParagraph
-		},
-		new PatternReplacer
-		{
-			Pattern = "<br[^>]*>",
-			Replacement = "  " + Environment.NewLine
-		},
-		new CustomReplacer
-		{
-			CustomAction = HtmlParser.ReplaceBlockquote
-		}
+		new HorizontalRuleTagReplacer(),
+		new CodeTagReplacer(),
+		new PreTagReplacer(),
+		new ParagraphTagReplacer(),
+		new BreakTagReplacer(),
+		new BlockquoteTagReplacer()
 	};
 
 	public IEnumerable<IReplacer> Replacers()
 	{
-			return _replacements;
-		}
+		return _replacements;
+	}
 }

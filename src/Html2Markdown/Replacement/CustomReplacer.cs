@@ -1,11 +1,13 @@
 namespace Html2Markdown.Replacement;
-
-internal class CustomReplacer : IReplacer
+/// <summary>
+/// Allows custom replacement of HTML tags utilising external functions.
+/// </summary>
+public class CustomReplacer : IReplacer
 {
 	public string Replace(string html)
 	{
 		return CustomAction.Invoke(html);
 	}
 
-	public Func<string, string> CustomAction { get; init; }
+	protected Func<string, string> CustomAction { get; init; }
 }

@@ -17,8 +17,8 @@ public partial class Converter
 	/// </summary>
 	public Converter() 
 	{
-			_replacers = new Markdown().Replacers();
-		}
+		_replacers = new Markdown().Replacers();
+	}
 
 	/// <summary>
 	/// Create a converter with a custom conversion scheme
@@ -26,8 +26,8 @@ public partial class Converter
 	/// <param name="scheme">Conversion scheme to control conversion</param>
 	public Converter(IScheme scheme)
 	{
-			_replacers = scheme.Replacers();
-		}
+		_replacers = scheme.Replacers();
+	}
 
 	/// <summary>
 	/// Converts Html contained in a file to a Markdown string
