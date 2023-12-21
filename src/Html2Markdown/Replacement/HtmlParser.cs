@@ -38,7 +38,10 @@ internal static partial class HtmlParser
 		listItems.ToList().ForEach(listItem =>
 		{
 			var listPrefix = listType.Equals("ol") ? $"{++counter}.  " : "*   ";
-			var finalList = listItem.Replace(@"</li>", string.Empty);
+			//In case of multiline Html, a line can end with a new line. In this case we want to remove the closing tag as well as the new line
+			//otherwise we may only keep the line breaks between tags and create a double line break in the markdown
+			var closingTag = listItem.EndsWith($"</li>{Environment.NewLine}") ? $"</li>{Environment.NewLine}" : "</li>";
+			var finalList = listItem.Replace(closingTag, string.Empty);
 
 			if (finalList.Trim().Length == 0) {
 				return;
@@ -48,10 +51,16 @@ internal static partial class HtmlParser
 			finalList = TwoNewLines().Replace(finalList, $"{Environment.NewLine}{Environment.NewLine}    ");
 			// indent nested lists
 			finalList = NestedList().Replace(finalList, "\n$1    $2");
+			// remove the indent from the first line
+			if (listItem.StartsWith("<p>"))
+			{
+				finalList = ReplaceParagraph(finalList, true);
+			}
 			markdownList.Add($"{listPrefix}{finalList}");
 		});
 
-		return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) => current + Environment.NewLine + item) + Environment.NewLine + Environment.NewLine;
+		//If a new line is already ending the markdown item, then we don't need to add another one
+		return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) =>  current.EndsWith(Environment.NewLine) ? current + item : current + Environment.NewLine + item) + Environment.NewLine + Environment.NewLine;
 	}
 
 	private static bool ListIsEmpty(IReadOnlyCollection<string> listItems)
@@ -128,7 +137,7 @@ internal static partial class HtmlParser
 		return doc.DocumentNode.OuterHtml;
 	}
 
-	public static string ReplaceAnchor(string html)
+	internal static string ReplaceAnchor(string html)
 	{
 		var doc = GetHtmlDocument(html);
 		var nodes = doc.DocumentNode.SelectNodes("//a");
@@ -155,9 +164,7 @@ internal static partial class HtmlParser
 		return doc.DocumentNode.OuterHtml;
 	}
 	
-	public static string ReplaceCode(string html) => ReplaceCode(html, false);
-
-	public static string ReplaceCode(string html, bool supportSyntaxHighlighting)
+	internal static string ReplaceCode(string html, bool supportSyntaxHighlighting)
 	{
 		var doc = GetHtmlDocument(html);
 		var nodes = doc.DocumentNode.SelectNodes("//code");
@@ -219,7 +226,7 @@ internal static partial class HtmlParser
 			: classAttributeValue;
 	}
 
-	public static string ReplaceBlockquote(string html)
+	internal static string ReplaceBlockquote(string html)
 	{
 		var doc = GetHtmlDocument(html);
 		var nodes = doc.DocumentNode.SelectNodes("//blockquote");
@@ -248,12 +255,14 @@ internal static partial class HtmlParser
 		return doc.DocumentNode.OuterHtml;
 	}
 
-	public static string ReplaceEntities(string html)
+	internal static string ReplaceEntities(string html)
 	{
 		return WebUtility.HtmlDecode(html);
 	}
 
-	public static string ReplaceParagraph(string html)
+	internal static string ReplaceParagraph(string html) => ReplaceParagraph(html, false);
+
+	private static string ReplaceParagraph(string html, bool nestedIntoList)
 	{
 		var doc = GetHtmlDocument(html);
 		var nodes = doc.DocumentNode.SelectNodes("//p");
@@ -266,7 +275,12 @@ internal static partial class HtmlParser
 			var text = node.InnerHtml;
 			var markdown = Spaces().Replace(text, " ");
 			markdown = markdown.Replace(Environment.NewLine, " ");
-			markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine;
+
+			//If a paragraph is contained in a list, we don't want to add new line characters
+			var openingTag = nestedIntoList ? "" : Environment.NewLine + Environment.NewLine;
+			var closingTag = nestedIntoList ? "" : Environment.NewLine;
+
+			markdown = openingTag + markdown + closingTag;
 			ReplaceNode(node, markdown);
 		});
 

@@ -9,5 +9,5 @@ public class CustomReplacer : IReplacer
 		return CustomAction.Invoke(html);
 	}
 
-	protected Func<string, string> CustomAction { get; init; }
+	public Func<string, string> CustomAction { get; init; }
 }

@@ -6,7 +6,7 @@ public class CodeTagReplacer : CustomReplacer
 {
     public CodeTagReplacer()
     {
-        CustomAction = HtmlParser.ReplaceCode;
+        CustomAction = html => HtmlParser.ReplaceCode(html, false);
     }
 
     public CodeTagReplacer(bool supportSyntaxHighlighting)
