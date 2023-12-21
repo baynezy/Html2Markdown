@@ -6,45 +6,16 @@ namespace Html2Markdown.Replacement;
 public class HeadingReplacementGroup : IReplacementGroup
 {
 	private readonly IList<IReplacer> _replacements = new List<IReplacer> {
-		new PatternReplacer
-		{
-			Pattern = "</h[1-6]>",
-			Replacement = Environment.NewLine + Environment.NewLine
-		},
-		new PatternReplacer
-		{
-			Pattern = "<h1[^>]*>",
-			Replacement = Environment.NewLine + Environment.NewLine + "# "
-		},
-		new PatternReplacer
-		{
-			Pattern = "<h2[^>]*>",
-			Replacement = Environment.NewLine + Environment.NewLine + "## "
-		},
-		new PatternReplacer
-		{
-			Pattern = "<h3[^>]*>",
-			Replacement = Environment.NewLine + Environment.NewLine + "### "
-		},
-		new PatternReplacer
-		{
-			Pattern = "<h4[^>]*>",
-			Replacement = Environment.NewLine + Environment.NewLine + "#### "
-		},
-		new PatternReplacer
-		{
-			Pattern = "<h5[^>]*>",
-			Replacement = Environment.NewLine + Environment.NewLine + "##### "
-		},
-		new PatternReplacer
-		{
-			Pattern = "<h6[^>]*>",
-			Replacement = Environment.NewLine + Environment.NewLine + "###### "
-		}
+		new HeadingTagReplacer(Heading.H1),
+		new HeadingTagReplacer(Heading.H2),
+		new HeadingTagReplacer(Heading.H3),
+		new HeadingTagReplacer(Heading.H4),
+		new HeadingTagReplacer(Heading.H5),
+		new HeadingTagReplacer(Heading.H6)
 	};
 
 	public IEnumerable<IReplacer> Replacers()
 	{
-			return _replacements;
-		}
+		return _replacements;
+	}
 }

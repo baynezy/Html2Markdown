@@ -1,8 +1,5 @@
 using System;
-using System.Threading.Tasks;
 using Html2Markdown.Scheme;
-using NUnit.Framework;
-using VerifyNUnit;
 
 namespace Html2Markdown.Test;
 
@@ -91,7 +88,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreStrongTags_ThenConvertToMarkDownDoubleAsterisks()
 	{
-		const string html = @"So this text is <strong>bold</strong>. Convert it.";
+		const string html = "So this text is <strong>bold</strong>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -99,7 +96,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreStrongTagsFollowedByASpace_ThenConvertToMarkDownDoubleAsterisks()
 	{
-		const string html = @"This is a<strong> test</strong> that causes problems.";
+		const string html = "This is a<strong> test</strong> that causes problems.";
 
 		return CheckConversion(html);
 	}
@@ -107,7 +104,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreStrongTagsFollowedByAMultipleSpaces_ThenConvertToMarkDownDoubleAsterisks()
 	{
-		const string html = @"This is a<strong>  test</strong> that causes problems.";
+		const string html = "This is a<strong>  test</strong> that causes problems.";
 
 		return CheckConversion(html);
 	}
@@ -115,7 +112,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreClosingStrongTagsFollowedByASpace_ThenConvertToMarkDownDoubleAsterisks()
 	{
-		const string html = @"This is a <strong>test </strong>that causes problems.";
+		const string html = "This is a <strong>test </strong>that causes problems.";
 
 		return CheckConversion(html);
 	}
@@ -123,7 +120,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreClosingStrongTagsFollowedByAMultipleSpaces_ThenConvertToMarkDownDoubleAsterisks()
 	{
-		const string html = @"This is a <strong>test  </strong>that causes problems.";
+		const string html = "This is a <strong>test  </strong>that causes problems.";
 
 		return CheckConversion(html);
 	}
@@ -131,7 +128,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreMultipleStrongTags_ThenConvertToMarkDownDoubleAsterisks()
 	{
-		const string html = @"So this text is <strong>bold</strong> and <strong>is this</strong>. Convert it.";
+		const string html = "So this text is <strong>bold</strong> and <strong>is this</strong>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -139,7 +136,23 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreBoldTags_ThenConvertToMarkDownDoubleAsterisks()
 	{
-		const string html = @"So this text is <b>bold</b>. Convert it.";
+		const string html = "So this text is <b>bold</b>. Convert it.";
+
+		return CheckConversion(html);
+	}
+	
+	[Test]
+	public Task Convert_WhenThereIsABoldTagWithProperties_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = @"So this text is <b id=""something"">bold</b>. Convert it.";
+
+		return CheckConversion(html);
+	}
+	
+	[Test]
+	public Task Convert_WhenThereIsAStrongTagWithProperties_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = @"So this text is <strong id=""something"">bold</strong>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -151,7 +164,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreEmphasisTags_ThenConvertToMarkDownSingleAsterisk()
 	{
-		const string html = @"So this text is <em>italic</em>. Convert it.";
+		const string html = "So this text is <em>italic</em>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -159,7 +172,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreEmphasisTagsFollowedByASpace_ThenConvertToMarkDownSingleAsterisk()
 	{
-		const string html = @"This is a<em> test</em> that causes problems.";
+		const string html = "This is a<em> test</em> that causes problems.";
 
 		return CheckConversion(html);
 	}
@@ -167,7 +180,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreEmphasisTagsFollowedByMultipleSpaces_ThenConvertToMarkDownSingleAsterisk()
 	{
-		const string html = @"This is a<em>  test</em> that causes problems.";
+		const string html = "This is a<em>  test</em> that causes problems.";
 
 		return CheckConversion(html);
 	}
@@ -175,7 +188,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreClosingEmphasisTagsFollowedByASpace_ThenConvertToMarkDownSingleAsterisk()
 	{
-		const string html = @"This is a <em>test </em>that causes problems.";
+		const string html = "This is a <em>test </em>that causes problems.";
 
 		return CheckConversion(html);
 	}
@@ -183,7 +196,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreClosingEmphasisTagsFollowedByMultipleSpaces_ThenConvertToMarkDownSingleAsterisk()
 	{
-		const string html = @"This is a <em>test  </em>that causes problems.";
+		const string html = "This is a <em>test  </em>that causes problems.";
 
 		return CheckConversion(html);
 	}
@@ -191,7 +204,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreItalicTags_ThenConvertToMarkDownSingleAsterisk()
 	{
-		const string html = @"So this text is <i>italic</i>. Convert it.";
+		const string html = "So this text is <i>italic</i>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -203,7 +216,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreBreakTags_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
 	{
-		const string html = @"So this text has a break.<br/>Convert it.";
+		const string html = "So this text has a break.<br/>Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -211,7 +224,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreBreakTagsWithWhitespace_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
 	{
-		const string html = @"So this text has a break.<br />Convert it.";
+		const string html = "So this text has a break.<br />Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -219,7 +232,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreBreakTagsThatAreNotSelfClosing_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
 	{
-		const string html = @"So this text has a break.<br>Convert it.";
+		const string html = "So this text has a break.<br>Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -231,7 +244,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreCodeTags_ThenReplaceWithBackTick()
 	{
-		const string html = @"So this text has code <code>alert();</code>. Convert it.";
+		const string html = "So this text has code <code>alert();</code>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -283,7 +296,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreH1Tags_ThenReplaceWithMarkDownHeader()
 	{
-		const string html = @"This code has a <h1>header</h1>. Convert it.";
+		const string html = "This code has a <h1>header</h1>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -291,7 +304,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreH2Tags_ThenReplaceWithMarkDownHeader()
 	{
-		const string html = @"This code has a <h2>header</h2>. Convert it.";
+		const string html = "This code has a <h2>header</h2>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -299,7 +312,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreH3Tags_ThenReplaceWithMarkDownHeader()
 	{
-		const string html = @"This code has a <h3>header</h3>. Convert it.";
+		const string html = "This code has a <h3>header</h3>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -307,7 +320,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreH4Tags_ThenReplaceWithMarkDownHeader()
 	{
-		const string html = @"This code has a <h4>header</h4>. Convert it.";
+		const string html = "This code has a <h4>header</h4>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -315,7 +328,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreH5Tags_ThenReplaceWithMarkDownHeader()
 	{
-		const string html = @"This code has a <h5>header</h5>. Convert it.";
+		const string html = "This code has a <h5>header</h5>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -323,7 +336,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreH6Tags_ThenReplaceWithMarkDownHeader()
 	{
-		const string html = @"This code has a <h6>header</h6>. Convert it.";
+		const string html = "This code has a <h6>header</h6>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -384,7 +397,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
 	{
-		const string html = @"This code has a <blockquote>blockquote</blockquote>. Convert it.";
+		const string html = "This code has a <blockquote>blockquote</blockquote>. Convert it.";
 
 		return CheckConversion(html);
 	}
@@ -392,7 +405,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereIsABlockquoteTagWithNestedHtml_ThenReplaceWithMarkDownBlockQuote()
 	{
-		const string html = @"<blockquote><em>“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.<br />Ouse fazer, e o poder lhe será dado!”</em><br /><strong>— Johann Wolfgang von Goethe</strong></blockquote>";
+		const string html = "<blockquote><em>“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.<br />Ouse fazer, e o poder lhe será dado!”</em><br /><strong>— Johann Wolfgang von Goethe</strong></blockquote>";
 
 		return CheckConversion(html);
 	}
@@ -423,7 +436,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreParagraphTags_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
 	{
-		const string html = @"This code has no markup.<p>This code is in a paragraph.</p>Convert it!";
+		const string html = "This code has no markup.<p>This code is in a paragraph.</p>Convert it!";
 
 		return CheckConversion(html);
 	}
@@ -455,7 +468,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreHorizontalRuleTags_ThenReplaceWithMarkDownHorizontalRule()
 	{
-		const string html = @"This code is seperated by a horizontal rule.<hr/>Convert it!";
+		const string html = "This code is seperated by a horizontal rule.<hr/>Convert it!";
 
 		return CheckConversion(html);
 	}
@@ -463,7 +476,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreHorizontalRuleTagsWithWhiteSpace_ThenReplaceWithMarkDownHorizontalRule()
 	{
-		const string html = @"This code is seperated by a horizontal rule.<hr />Convert it!";
+		const string html = "This code is seperated by a horizontal rule.<hr />Convert it!";
 
 		return CheckConversion(html);
 	}
@@ -479,7 +492,7 @@ public class MarkdownSchemeConverterTest
 	[Test]
 	public Task Convert_WhenThereAreHorizontalRuleTagsThatAreNonSelfClosing_ThenReplaceWithMarkDownHorizontalRule()
 	{
-		const string html = @"This code is seperated by a horizontal rule.<hr>Convert it!";
+		const string html = "This code is seperated by a horizontal rule.<hr>Convert it!";
 
 		return CheckConversion(html);
 	}
@@ -550,7 +563,7 @@ var result = converter.Convert(html);
 	[Test]
 	public Task Convert_WhenThereAreUnorderedLists_ThenReplaceWithMarkdownLists()
 	{
-		const string html = @"This code is with an unordered list.<ul><li>Yes</li><li>No</li></ul>";
+		const string html = "This code is with an unordered list.<ul><li>Yes</li><li>No</li></ul>";
 
 		return CheckConversion(html);
 	}
@@ -558,7 +571,7 @@ var result = converter.Convert(html);
 	[Test]
 	public Task Convert_WhenThereAreEmptyUnorderedLists_ThenReplaceWithNothing()
 	{
-		const string html = @"This code is with an unordered list.<ul></ul>";
+		const string html = "This code is with an unordered list.<ul></ul>";
 
 		return CheckConversion(html);
 	}
@@ -566,7 +579,7 @@ var result = converter.Convert(html);
 	[Test]
 	public Task Convert_WhenThereAreUnorderedListsWihtoutClosingTags_ThenReplaceWithMarkdownLists()
 	{
-		const string html = @"This code is with an unordered list.<ul><li>Yes<li>No</ul>";
+		const string html = "This code is with an unordered list.<ul><li>Yes<li>No</ul>";
 
 		return CheckConversion(html);
 	}
@@ -574,7 +587,7 @@ var result = converter.Convert(html);
 	[Test]
 	public Task Convert_WhenThereAreOrderedLists_ThenReplaceWithMarkdownLists()
 	{
-		const string html = @"This code is with an ordered list.<ol><li>Yes</li><li>No</li></ol>";
+		const string html = "This code is with an ordered list.<ol><li>Yes</li><li>No</li></ol>";
 
 		return CheckConversion(html);
 	}
@@ -582,15 +595,41 @@ var result = converter.Convert(html);
 	[Test]
 	public Task Convert_WhenThereIsAnUnorderedListWithANestedOrderList_ThenReplaceWithMarkdownLists()
 	{
-		const string html = @"This code is with an unordered list.<ul><li>Yes</li><li><ol><li>No</li><li>Maybe</li></ol></li></ul>";
+		const string html = "This code is with an unordered list.<ul><li>Yes</li><li><ol><li>No</li><li>Maybe</li></ol></li></ul>";
 
 		return CheckConversion(html);
 	}
 
 	[Test]
-	public Task Convert_WhenThereIsAnOrderedListWithANestedUnorderList_ThenReplaceWithMarkdownLists()
+	public Task Convert_WhenThereIsAnOrderedListWithANestedUnorderedList_ThenReplaceWithMarkdownLists()
 	{
-		const string html = @"This code is with an unordered list.<ol><li>Yes</li><li><ul><li>No</li><li>Maybe</li></ul></li></ol>";
+		const string html = "This code is with an unordered list.<ol><li>Yes</li><li><ul><li>No</li><li>Maybe</li></ul></li></ol>";
+
+		return CheckConversion(html);
+	}
+
+	[Test]
+	public Task Convert_WhenThereIsAnOrderedListWithNestedParagraphs_ThenReplaceWithMarkdownLists()
+	{
+		const string html = @"<p>This code is with an ordered list and paragraphs.</p><ol><li><p>Yes, this is a <code>code</code> element</p></li><li><p>No :</p><ul><li><code>Some code we are looking at</code></li></ul></li></ol>";
+
+		return CheckConversion(html);
+	}
+
+	[Test]
+	public Task Convert_WhenThereIsAMultilineOrderedListWithNestedParagraphsAndCodeElement_ThenReplaceWithMarkdownLists()
+	{
+		const string html = @"<p>This code is with an ordered list and paragraphs.</p>
+<ol>
+<li><p>Yes, this is a <code>code</code> element</p>
+</li>
+<li><p>No :</p>
+<ul>
+<li><code>Some code we are looking at</code></li>
+</ul>
+</li>
+</ol>
+";
 
 		return CheckConversion(html);
 	}
@@ -744,7 +783,7 @@ Hello World
 	[Test]
 	public Task Convert_WhenAListHasNoItems_ThenRemoveTheList()
 	{
-		const string html = @"<ul></ul>";
+		const string html = "<ul></ul>";
 
 		return CheckConversion(html);
 	}
@@ -765,7 +804,7 @@ Hello World
 	[Test]
 	public Task Convert_WhenThereIsAnAmpersandEntity_ThenReplaceWithActualCharacter()
 	{
-		const string html = @"<p>Enties like &amp; should be converted</p>";
+		const string html = "<p>Enties like &amp; should be converted</p>";
 
 		return CheckConversion(html);
 	}
@@ -773,7 +812,7 @@ Hello World
 	[Test]
 	public Task Convert_WhenThereIsAnLessThanEntity_ThenReplaceWithActualCharacter()
 	{
-		const string html = @"<p>Enties like &lt; should be converted</p>";
+		const string html = "<p>Enties like &lt; should be converted</p>";
 
 		return CheckConversion(html);
 	}
@@ -781,7 +820,7 @@ Hello World
 	[Test]
 	public Task Convert_WhenThereIsAGreaterThanEntity_ThenReplaceWithActualCharacter()
 	{
-		const string html = @"<p>Enties like &gt; should be converted</p>";
+		const string html = "<p>Enties like &gt; should be converted</p>";
 
 		return CheckConversion(html);
 	}
@@ -789,7 +828,7 @@ Hello World
 	[Test]
 	public Task Convert_WhenThereIsABulletEntity_ThenReplaceWithActualCharacter()
 	{
-		const string html = @"<p>Enties like &#8226; should be converted</p>";
+		const string html = "<p>Enties like &#8226; should be converted</p>";
 
 		return CheckConversion(html);
 	}
@@ -833,15 +872,15 @@ Hello World
 	[Test]
 	public Task Convert_WhenThereAreParagraphTagsEitherSideOfAList_ThenThereShouldBeAppropriateSpacing()
 	{
-		const string html = @"<p>a</p><ul><li>First</li><li>Last</li></ul><p>b</p>";
+		const string html = "<p>a</p><ul><li>First</li><li>Last</li></ul><p>b</p>";
 			
 		return CheckConversion(html);
 	}
 
 	[Test]
-	public Task Convert_WhenThereIsAParagraphTagAfterfAList_ThenThereShouldBeAppropriateSpacing()
+	public Task Convert_WhenThereIsAParagraphTagAfterAList_ThenThereShouldBeAppropriateSpacing()
 	{
-		const string html = @"<p>a</p><ul><li>First</li><li>Last</li></ul>b";
+		const string html = "<p>a</p><ul><li>First</li><li>Last</li></ul>b";
 			
 		return CheckConversion(html);
 	}

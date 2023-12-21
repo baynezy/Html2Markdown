@@ -6,14 +6,11 @@ namespace Html2Markdown.Replacement;
 public class EntitiesReplacementGroup : IReplacementGroup
 {
 	private readonly IList<IReplacer> _replacements = new List<IReplacer> {
-		new CustomReplacer
-		{
-			CustomAction = HtmlParser.ReplaceEntities
-		}
+		new HtmlEntitiesReplacer()
 	};
 
 	public IEnumerable<IReplacer> Replacers()
 	{
-			return _replacements;
-		}
+		return _replacements;
+	}
 }
