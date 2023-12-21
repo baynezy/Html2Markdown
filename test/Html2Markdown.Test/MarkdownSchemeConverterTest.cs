@@ -608,6 +608,32 @@ var result = converter.Convert(html);
 		return CheckConversion(html);
 	}
 
+	[Test]
+	public Task Convert_WhenThereIsAnOrderedListWithNestedParagraphs_ThenReplaceWithMarkdownLists()
+	{
+		const string html = @"<p>This code is with an ordered list and paragraphs.</p><ol><li><p>Yes, this is a <code>code</code> element</p></li><li><p>No :</p><ul><li><code>Some code we are looking at</code></li></ul></li></ol>";
+
+		return CheckConversion(html);
+	}
+
+	[Test]
+	public Task Convert_WhenThereIsAMultilineOrderedListWithNestedParagraphsAndCodeElement_ThenReplaceWithMarkdownLists()
+	{
+		const string html = @"<p>This code is with an ordered list and paragraphs.</p>
+<ol>
+<li><p>Yes, this is a <code>code</code> element</p>
+</li>
+<li><p>No :</p>
+<ul>
+<li><code>Some code we are looking at</code></li>
+</ul>
+</li>
+</ol>
+";
+
+		return CheckConversion(html);
+	}
+
 	#endregion
 
 	#region Extra HTML Removal
