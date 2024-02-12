@@ -11,7 +11,8 @@ public class PatternReplacer : IReplacer
 	public string Replacement { get; init; }
 	public string Replace(string html)
 	{
-		var regex = new Regex(Pattern);
+		// SECURITY: https://sonarcloud.io/organizations/baynezy/rules?open=csharpsquid%3AS6444&rule_key=csharpsquid%3AS6444
+		var regex = new Regex(Pattern, RegexOptions.None, TimeSpan.FromSeconds(1));
 
 		return regex.Replace(html, Replacement);
 	}

@@ -221,9 +221,11 @@ internal static partial class HtmlParser
 			return string.Empty;
 		}
 
-		return classAttributeValue.StartsWith("lang") 
-			? classAttributeValue.Split('-').Last() 
-			: classAttributeValue;
+		if (!classAttributeValue.StartsWith("lang")) return classAttributeValue;
+		var split =  classAttributeValue.Split('-');
+				
+		return split[^1]; // PERFORMANCE: https://sonarcloud.io/organizations/baynezy/rules?open=csharpsquid%3AS6608&rule_key=csharpsquid%3AS6608
+
 	}
 
 	internal static string ReplaceBlockquote(string html)
