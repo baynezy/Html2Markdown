@@ -24,16 +24,13 @@ jobs:
         run: git checkout -b release/${{ github.event.inputs.major_version }}.${{ github.event.inputs.minor_version }}.${{ github.event.inputs.patch_version }}.${{ github.run_number }}
         
       - name: Update Version Number
-        uses: RadovanPelka/github-action-json@v1.0.2
+        uses: Afterlife-Guide/SemVer.Action@1.0.3.8
         with:
           path: semver.json
-          replaceWith: |
-            {
-              "major": "${{ github.event.inputs.major_version }}",
-              "minor": "${{ github.event.inputs.minor_version }}",
-              "patch": "${{ github.event.inputs.patch_version }}",
-              "build": "${{ github.run_number }}"
-            }
+          major-version: ${{ github.event.inputs.major_version }}
+          minor-version: ${{ github.event.inputs.minor_version }}
+          patch-version: ${{ github.event.inputs.patch_version }}
+          build-version: ${{ github.run_number }}
 
       - name: Update changelog
         uses: thomaseizinger/keep-a-changelog-new-release@3.0.0
