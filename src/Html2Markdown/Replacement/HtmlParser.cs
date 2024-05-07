@@ -6,15 +6,25 @@ namespace Html2Markdown.Replacement;
 
 internal static partial class HtmlParser
 {
-	private static readonly Regex NoChildren = HtmlListHasNoChildren();
 
 	internal static string ReplaceLists(string html)
 	{
 		var finalHtml = html;
+		var lastRun = string.Empty;
 		while (HasNoChildLists(finalHtml))
 		{
-			var listToReplace = NoChildren.Match(finalHtml).Value;
+			var listToReplace = HtmlListHasNoChildren().Match(finalHtml).Value;
 			var formattedList = ReplaceList(listToReplace);
+			
+			// an empty  signifies that the HTML is malformed in some way.
+			// so we should leave the final HTML as is
+			if (string.IsNullOrEmpty(formattedList)) {
+				finalHtml = finalHtml.Replace(listToReplace, lastRun);
+				break;
+			}
+
+			lastRun = formattedList;
+			
 			finalHtml = finalHtml.Replace(listToReplace, formattedList);
 		}
 
@@ -75,7 +85,7 @@ internal static partial class HtmlParser
 
 	private static bool HasNoChildLists(string html)
 	{
-		return NoChildren.Match(html).Success;
+		return HtmlListHasNoChildren().Match(html).Success;
 	}
 
 	internal static string ReplacePre(string html)
@@ -221,9 +231,11 @@ internal static partial class HtmlParser
 			return string.Empty;
 		}
 
-		return classAttributeValue.StartsWith("lang") 
-			? classAttributeValue.Split('-').Last() 
-			: classAttributeValue;
+		if (!classAttributeValue.StartsWith("lang")) return classAttributeValue;
+		var split =  classAttributeValue.Split('-');
+				
+		return split[^1]; // PERFORMANCE: https://sonarcloud.io/organizations/baynezy/rules?open=csharpsquid%3AS6608&rule_key=csharpsquid%3AS6608
+
 	}
 
 	internal static string ReplaceBlockquote(string html)
