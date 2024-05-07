@@ -38,7 +38,7 @@ jobs:
         run: |
           echo "patch_version=$(($(cat semver.json | jq -r '.patch')+1))" > $GITHUB_OUTPUT
       - name: Store New Version
-        uses: RadovanPelka/github-action-json@v1.0.1
+        uses: RadovanPelka/github-action-json@v1.0.2
         with:
           path: semver.json
           replaceWith: |
