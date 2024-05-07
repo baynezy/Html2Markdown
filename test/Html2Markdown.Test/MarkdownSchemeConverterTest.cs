@@ -633,6 +633,15 @@ var result = converter.Convert(html);
 
 		return CheckConversion(html);
 	}
+	
+	// See issue https://github.com/baynezy/Html2Markdown/issues/395
+	[Test]
+	public Task Convert_WhenThereAreMultipleUnorderedLists_ThenReplaceWithMarkdownLists()
+	{
+		const string html = "<ul><ul><li>first list val</li></ul></ul>";
+
+		return CheckConversion(html);
+	}
 
 	#endregion
 
