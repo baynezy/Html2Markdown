@@ -13,8 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add missing XML docs for classes and methods
+- Added missing XML docs for classes and methods
 - Pushing beta packages to NuGet from `develop` branch
+- Added README to NuGet package 
 
 ## [6.2.1.4] - 2024-05-07
 
@@ -33,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added stale issue workflow
 - Added allowing strong and b tags to have properties
-- Modified all `IReplacers` to have to have their own concrete implementation
+- Modified all `IReplacers` to have their own concrete implementation
 
 ### Fixed
 
