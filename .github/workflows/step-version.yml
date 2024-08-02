@@ -54,7 +54,7 @@ jobs:
           suffix=""
 
           if [ "${{ inputs.is-pre-release }}" == true ]; then
-            suffix="-alpha"
+            suffix="-beta"
           fi
           
           if [ "${{ inputs.static-build }}" == true ]; then

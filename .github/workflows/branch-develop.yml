@@ -16,6 +16,8 @@ on:
 jobs:
   get-version:
     uses: ./.github/workflows/step-version.yml
+    with:
+      is-pre-release: true
 
   build:
     needs: [get-version]
@@ -24,3 +26,18 @@ jobs:
     with:
       version: ${{ needs.get-version.outputs.version }}
       checkout-ref: ${{ github.base_ref }}
+
+  publish-to-nuget:
+    needs: [get-version,build]
+    uses: ./.github/workflows/step-publish.yml
+    secrets: inherit
+    with:
+      deploy-env: nuget-beta
+      deploy-branch: ${{ github.base_ref }}
+      version: ${{ needs.get-version.outputs.version }}
+  
+  tag-release:
+    needs: [get-version,publish-to-nuget]
+    uses: ./.github/workflows/step-tag-release.yml
+    with:
+      version: ${{ needs.get-version.outputs.version }}
