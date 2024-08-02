@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.2.3.6] - 2024-08-02
+
+### Fixed
+
+- Fixed issue with documentation not being published
+
+## [6.2.2.5] - 2024-08-02
+
 ### Removed
 
 - Removed old files that are no longer needed
@@ -452,108 +460,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/6.2.1.4...HEAD
-
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/6.2.3.6...HEAD
+[6.2.3.6]: https://github.com/baynezy/Html2Markdown/compare/6.2.2.5...6.2.3.6
+[6.2.2.5]: https://github.com/baynezy/Html2Markdown/compare/6.2.1.4...6.2.2.5
 [6.2.1.4]: https://github.com/baynezy/Html2Markdown/compare/6.2.0.3...6.2.1.4
-
 [6.2.0.3]: https://github.com/baynezy/Html2Markdown/compare/6.1.0.2...6.2.0.3
-
 [6.1.0.2]: https://github.com/baynezy/Html2Markdown/compare/6.0.0.1...6.1.0.2
-
 [6.0.0.1]: https://github.com/baynezy/Html2Markdown/compare/5.1.0...6.0.0.1
-
 [5.1.0]: https://github.com/baynezy/Html2Markdown/compare/5.0.2...5.1.0
-
 [5.0.2]: https://github.com/baynezy/Html2Markdown/compare/5.0.1...5.0.2
-
 [5.0.1]: https://github.com/baynezy/Html2Markdown/compare/5.0.0...5.0.1
-
 [5.0.0]: https://github.com/baynezy/Html2Markdown/compare/4.0.0...5.0.0
-
 [4.0.0]: https://github.com/baynezy/Html2Markdown/compare/3.4.0...4.0.0
-
 [3.4.0]: https://github.com/baynezy/Html2Markdown/compare/3.3.1...3.4.0
-
 [3.3.1]: https://github.com/baynezy/Html2Markdown/compare/3.3.0...3.3.1
-
 [3.3.0]: https://github.com/baynezy/Html2Markdown/compare/3.2.3...3.3.0
-
 [3.2.3]: https://github.com/baynezy/Html2Markdown/compare/3.2.2...3.2.3
-
 [3.2.2]: https://github.com/baynezy/Html2Markdown/compare/3.2.1...3.2.2
-
 [3.2.1]: https://github.com/baynezy/Html2Markdown/compare/3.2.0...3.2.1
-
 [3.2.0]: https://github.com/baynezy/Html2Markdown/compare/3.1.1.325...3.2.0
-
 [3.1.1.325]: https://github.com/baynezy/Html2Markdown/compare/3.1.1...3.1.1.325
-
 [3.1.1]: https://github.com/baynezy/Html2Markdown/compare/3.1.0...3.1.1
-
 [3.1.0]: https://github.com/baynezy/Html2Markdown/compare/3.0.1...3.1.0
-
 [3.0.1]: https://github.com/baynezy/Html2Markdown/compare/3.0.0.1...3.0.1
-
 [3.0.0.1]: https://github.com/baynezy/Html2Markdown/compare/3.0.0...3.0.0.1
-
 [3.0.0]: https://github.com/baynezy/Html2Markdown/compare/2.1.3...3.0.0
-
 [2.1.3]: https://github.com/baynezy/Html2Markdown/compare/2.1.2...2.1.3
-
 [2.1.2]: https://github.com/baynezy/Html2Markdown/compare/2.1.1...2.1.2
-
 [2.1.1]: https://github.com/baynezy/Html2Markdown/compare/2.1.0...2.1.1
-
 [2.1.0]: https://github.com/baynezy/Html2Markdown/compare/2.0.15...2.1.0
-
 [2.0.15]: https://github.com/baynezy/Html2Markdown/compare/2.0.14...2.0.15
-
 [2.0.14]: https://github.com/baynezy/Html2Markdown/compare/2.0.13...2.0.14
-
 [2.0.13]: https://github.com/baynezy/Html2Markdown/compare/2.0.12...2.0.13
-
 [2.0.12]: https://github.com/baynezy/Html2Markdown/compare/2.0.11...2.0.12
-
 [2.0.11]: https://github.com/baynezy/Html2Markdown/compare/2.0.9...2.0.11
-
 [2.0.9]: https://github.com/baynezy/Html2Markdown/compare/2.0.8...2.0.9
-
 [2.0.8]: https://github.com/baynezy/Html2Markdown/compare/2.0.7...2.0.8
-
 [2.0.7]: https://github.com/baynezy/Html2Markdown/compare/2.0.6...2.0.7
-
 [2.0.6]: https://github.com/baynezy/Html2Markdown/compare/2.0.5...2.0.6
-
 [2.0.5]: https://github.com/baynezy/Html2Markdown/compare/2.0.4...2.0.5
-
 [2.0.4]: https://github.com/baynezy/Html2Markdown/compare/2.0.3...2.0.4
-
 [2.0.3]: https://github.com/baynezy/Html2Markdown/compare/2.0.2...2.0.3
-
 [2.0.2]: https://github.com/baynezy/Html2Markdown/compare/2.0.1.40780...2.0.2
-
 [2.0.1.40780]: https://github.com/baynezy/Html2Markdown/compare/2.0.1...2.0.1.40780
-
 [2.0.1]: https://github.com/baynezy/Html2Markdown/compare/2.0.0...2.0.1
-
 [2.0.0]: https://github.com/baynezy/Html2Markdown/compare/1.0.7...2.0.0
-
 [1.0.7]: https://github.com/baynezy/Html2Markdown/compare/1.0.6...1.0.7
-
 [1.0.6]: https://github.com/baynezy/Html2Markdown/compare/1.0.5...1.0.6
-
 [1.0.5]: https://github.com/baynezy/Html2Markdown/compare/1.0.4...1.0.5
-
 [1.0.4]: https://github.com/baynezy/Html2Markdown/compare/1.0.3...1.0.4
-
 [1.0.3]: https://github.com/baynezy/Html2Markdown/compare/1.0.2...1.0.3
-
 [1.0.2]: https://github.com/baynezy/Html2Markdown/compare/1.0.1...1.0.2
-
 [1.0.1]: https://github.com/baynezy/Html2Markdown/compare/1.0.0...1.0.1
-
 [1.0.0]: https://github.com/baynezy/Html2Markdown/compare/0.0.2...1.0.0
-
 [0.0.2]: https://github.com/baynezy/Html2Markdown/compare/0.0.1...0.0.2
-
 [0.0.1]: https://github.com/baynezy/Html2Markdown/compare/6b4b488efd44ded4bcf0af7b3b44167591ff61cd...0.0.1
