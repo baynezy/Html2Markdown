@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.2.3.6] - 2024-08-02
+
+### Fixed
+
+- Fixed issue with documentation not being published
+
 ## [6.2.2.5] - 2024-08-02
 
 ### Removed
@@ -454,7 +460,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/6.2.2.5...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/6.2.3.6...HEAD
+[6.2.3.6]: https://github.com/baynezy/Html2Markdown/compare/6.2.2.5...6.2.3.6
 [6.2.2.5]: https://github.com/baynezy/Html2Markdown/compare/6.2.1.4...6.2.2.5
 [6.2.1.4]: https://github.com/baynezy/Html2Markdown/compare/6.2.0.3...6.2.1.4
 [6.2.0.3]: https://github.com/baynezy/Html2Markdown/compare/6.1.0.2...6.2.0.3

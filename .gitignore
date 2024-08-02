@@ -509,3 +509,6 @@ FodyWeavers.xsd
 
 # Verify
 *.received.txt
+
+## Doxygen
+docs/
