@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add missing XML docs for classes and methods
+- Pushing beta packages to NuGet from `develop` branch
 
 ## [6.2.1.4] - 2024-05-07
 
