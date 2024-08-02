@@ -8,6 +8,10 @@ namespace Html2Markdown.Scheme;
 /// </summary>
 public class Markdown : AbstractScheme
 {
+	/// <summary>
+	/// Initializes a new instance of the <see cref="Markdown"/> class.
+	/// Sets up the replacement groups for converting vanilla Markdown.
+	/// </summary>
 	public Markdown()
 	{
 		AddReplacementGroup(ReplacerCollection, new TextFormattingReplacementGroup());
