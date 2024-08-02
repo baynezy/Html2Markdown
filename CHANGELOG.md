@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.2.4.6] - 2024-08-02
+
+### Added
+
+- Added link to doxygen docs in GitHub Pages
+
+### Fixed
+
+- Fixed issue where HTML was allowed in headings
+
 ## [6.2.3.6] - 2024-08-02
 
 ### Fixed
@@ -460,7 +470,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/6.2.3.6...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/6.2.4.6...HEAD
+[6.2.4.6]: https://github.com/baynezy/Html2Markdown/compare/6.2.3.6...6.2.4.6
 [6.2.3.6]: https://github.com/baynezy/Html2Markdown/compare/6.2.2.5...6.2.3.6
 [6.2.2.5]: https://github.com/baynezy/Html2Markdown/compare/6.2.1.4...6.2.2.5
 [6.2.1.4]: https://github.com/baynezy/Html2Markdown/compare/6.2.0.3...6.2.1.4
