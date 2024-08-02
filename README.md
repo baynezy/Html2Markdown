@@ -64,6 +64,10 @@ var converter = new Converter();
 var markdown = converter.ConvertFile(path);
 ```
 
+### Documentation
+
+[Library Documentation](https://baynezy.github.io/Html2Markdown/)
+
 ## Customise
 
 ### Create new `IScheme` implementation
