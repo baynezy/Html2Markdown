@@ -1,16 +1,20 @@
 namespace Html2Markdown.Replacement;
 
 /// <summary>
-/// A group of IReplacer to deal with converting HTML entities
+/// A group of <see cref="IReplacer"/> to deal with converting HTML entities.
 /// </summary>
 public class EntitiesReplacementGroup : IReplacementGroup
 {
-	private readonly IList<IReplacer> _replacements = new List<IReplacer> {
-		new HtmlEntitiesReplacer()
-	};
+    private readonly IList<IReplacer> _replacements = new List<IReplacer> {
+        new HtmlEntitiesReplacer()
+    };
 
-	public IEnumerable<IReplacer> Replacers()
-	{
-		return _replacements;
-	}
+    /// <summary>
+    /// Returns the list of <see cref="IReplacer"/> instances.
+    /// </summary>
+    /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IReplacer"/>.</returns>
+    public IEnumerable<IReplacer> Replacers()
+    {
+        return _replacements;
+    }
 }
