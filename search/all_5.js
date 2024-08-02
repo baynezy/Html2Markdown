@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['patternreplacer_2ecs',['PatternReplacer.cs',['../_pattern_replacer_8cs.html',1,'']]]
+  ['globalusings_2ecs_34',['GlobalUsings.cs',['../_global_usings_8cs.html',1,'']]]
 ];

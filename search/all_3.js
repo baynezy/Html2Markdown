@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['ireplacer',['IReplacer',['../interface_html2_markdown_1_1_replacement_1_1_i_replacer.html',1,'Html2Markdown::Replacement']]],
-  ['ireplacer_2ecs',['IReplacer.cs',['../_i_replacer_8cs.html',1,'']]],
-  ['ischeme',['IScheme',['../interface_html2_markdown_1_1_scheme_1_1_i_scheme.html',1,'Html2Markdown::Scheme']]],
-  ['ischeme_2ecs',['IScheme.cs',['../_i_scheme_8cs.html',1,'']]]
+  ['doctypereplacer_27',['DocTypeReplacer',['../class_doc_type_replacer.html',1,'DocTypeReplacer'],['../class_doc_type_replacer.html#a4e676490e07bb969a0ba9f4eb174be50',1,'DocTypeReplacer.DocTypeReplacer()']]],
+  ['doctypereplacer_2ecs_28',['DocTypeReplacer.cs',['../_doc_type_replacer_8cs.html',1,'']]],
+  ['documentation_2emd_29',['DOCUMENTATION.md',['../_d_o_c_u_m_e_n_t_a_t_i_o_n_8md.html',1,'']]]
 ];

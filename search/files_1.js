@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['documentation_2emd',['DOCUMENTATION.md',['../_d_o_c_u_m_e_n_t_a_t_i_o_n_8md.html',1,'']]]
+  ['blockquotetagreplacer_2ecs_143',['BlockquoteTagReplacer.cs',['../_blockquote_tag_replacer_8cs.html',1,'']]],
+  ['bodytagreplacer_2ecs_144',['BodyTagReplacer.cs',['../_body_tag_replacer_8cs.html',1,'']]],
+  ['breaktagreplacer_2ecs_145',['BreakTagReplacer.cs',['../_break_tag_replacer_8cs.html',1,'']]]
 ];
