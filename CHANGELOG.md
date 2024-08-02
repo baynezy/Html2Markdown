@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed issue where HTML was allowed in headings
+
 ## [6.2.3.6] - 2024-08-02
 
 ### Fixed
