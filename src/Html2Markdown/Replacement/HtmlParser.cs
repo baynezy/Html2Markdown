@@ -273,6 +273,27 @@ internal static partial class HtmlParser
 	}
 
 	internal static string ReplaceParagraph(string html) => ReplaceParagraph(html, false);
+	
+	internal static string ReplaceHeading(string html, int headingNumber)
+	{
+		var tag = $"h{headingNumber}";
+		var doc = GetHtmlDocument(html);
+		var nodes = doc.DocumentNode.SelectNodes($"//{tag}");
+
+		if (nodes is null) return html;
+		
+		nodes.ToList().ForEach(node =>
+		{
+			var text = node.InnerHtml;
+			var htmlRemoved = HtmlTags().Replace(text, "");
+			var markdown = Spaces().Replace(htmlRemoved, " ");
+			markdown = markdown.Replace(Environment.NewLine, " ");
+			markdown = Environment.NewLine + Environment.NewLine + new string('#', headingNumber) + " " + markdown + Environment.NewLine + Environment.NewLine;
+			ReplaceNode(node, markdown);
+		});
+		
+		return doc.DocumentNode.OuterHtml;
+	}
 
 	private static string ReplaceParagraph(string html, bool nestedIntoList)
 	{
@@ -346,4 +367,6 @@ internal static partial class HtmlParser
     private static partial Regex FinalCrLf();
     [GeneratedRegex(@"<\s*?/?\s*?br\s*?>")]
     private static partial Regex BreakTag();
+    [GeneratedRegex(@"<[^>]+>")]
+    private static partial Regex HtmlTags();
 }
