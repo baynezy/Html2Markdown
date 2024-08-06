@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pattern_220',['Pattern',['../class_pattern_replacer.html#a85fc8a8fa3082e6771d2e6d9200cbbf1',1,'PatternReplacer']]]
+  ['pattern_0',['Pattern',['../class_html2_markdown_1_1_replacement_1_1_pattern_replacer.html#a7bb9331762dfbb691e1cf100ab803b37',1,'Html2Markdown::Replacement::PatternReplacer']]]
 ];

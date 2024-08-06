@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['emphasistagreplacer_111',['EmphasisTagReplacer',['../class_emphasis_tag_replacer.html',1,'']]],
-  ['entitiesreplacementgroup_112',['EntitiesReplacementGroup',['../class_entities_replacement_group.html',1,'']]]
+  ['emphasistagreplacer_0',['EmphasisTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_emphasis_tag_replacer.html',1,'Html2Markdown::Replacement']]],
+  ['entitiesreplacementgroup_1',['EntitiesReplacementGroup',['../class_html2_markdown_1_1_replacement_1_1_entities_replacement_group.html',1,'Html2Markdown::Replacement']]]
 ];

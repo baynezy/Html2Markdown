@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['headingreplacementgroup_113',['HeadingReplacementGroup',['../class_heading_replacement_group.html',1,'']]],
-  ['headingtagreplacer_114',['HeadingTagReplacer',['../class_heading_tag_replacer.html',1,'']]],
-  ['headtagreplacer_115',['HeadTagReplacer',['../class_head_tag_replacer.html',1,'']]],
-  ['horizontalruletagreplacer_116',['HorizontalRuleTagReplacer',['../class_horizontal_rule_tag_replacer.html',1,'']]],
-  ['htmlcommentreplacer_117',['HtmlCommentReplacer',['../class_html_comment_replacer.html',1,'']]],
-  ['htmlentitiesreplacer_118',['HtmlEntitiesReplacer',['../class_html_entities_replacer.html',1,'']]],
-  ['htmllistreplacer_119',['HtmlListReplacer',['../class_html_list_replacer.html',1,'']]],
-  ['htmltagreplacer_120',['HtmlTagReplacer',['../class_html_tag_replacer.html',1,'']]]
+  ['headingreplacementgroup_0',['HeadingReplacementGroup',['../class_html2_markdown_1_1_replacement_1_1_heading_replacement_group.html',1,'Html2Markdown::Replacement']]],
+  ['headingtagreplacer_1',['HeadingTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_heading_tag_replacer.html',1,'Html2Markdown::Replacement']]],
+  ['headtagreplacer_2',['HeadTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_head_tag_replacer.html',1,'Html2Markdown::Replacement']]],
+  ['horizontalruletagreplacer_3',['HorizontalRuleTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_horizontal_rule_tag_replacer.html',1,'Html2Markdown::Replacement']]],
+  ['htmlcommentreplacer_4',['HtmlCommentReplacer',['../class_html2_markdown_1_1_replacement_1_1_html_comment_replacer.html',1,'Html2Markdown::Replacement']]],
+  ['htmlentitiesreplacer_5',['HtmlEntitiesReplacer',['../class_html2_markdown_1_1_replacement_1_1_html_entities_replacer.html',1,'Html2Markdown::Replacement']]],
+  ['htmllistreplacer_6',['HtmlListReplacer',['../class_html2_markdown_1_1_replacement_1_1_html_list_replacer.html',1,'Html2Markdown::Replacement']]],
+  ['htmltagreplacer_7',['HtmlTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_html_tag_replacer.html',1,'Html2Markdown::Replacement']]]
 ];

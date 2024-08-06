@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['codetagreplacer_186',['CodeTagReplacer',['../class_code_tag_replacer.html#ae57f693b980bb25d214b425fbf77384c',1,'CodeTagReplacer.CodeTagReplacer()'],['../class_code_tag_replacer.html#ac21a72618f7d5fcb1a322467f652541b',1,'CodeTagReplacer.CodeTagReplacer(bool supportSyntaxHighlighting)']]],
-  ['commonmark_187',['CommonMark',['../class_common_mark.html#a9c861f062876d58957753dae59fc4a4f',1,'CommonMark']]],
-  ['convert_188',['Convert',['../class_converter.html#a89c6be17494b34c416104f19981893d9',1,'Converter']]],
-  ['converter_189',['Converter',['../class_converter.html#aa99b637110d27ea43d383619d98adce8',1,'Converter.Converter()'],['../class_converter.html#afdde2a8ef45745cfbcc234e1fa8d94a5',1,'Converter.Converter(IScheme scheme)']]],
-  ['convertfile_190',['ConvertFile',['../class_converter.html#a6f495964300df577a0818ea913873f87',1,'Converter']]]
+  ['codetagreplacer_0',['CodeTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_code_tag_replacer.html#a23cbc3f308240e741143e093a2b35531',1,'Html2Markdown.Replacement.CodeTagReplacer.CodeTagReplacer()'],['../class_html2_markdown_1_1_replacement_1_1_code_tag_replacer.html#a5ba4d3d5d699d56777e1134b6ed648b7',1,'Html2Markdown.Replacement.CodeTagReplacer.CodeTagReplacer(bool supportSyntaxHighlighting)']]],
+  ['commonmark_1',['CommonMark',['../class_html2_markdown_1_1_scheme_1_1_common_mark.html#adda81320f590b64ab0a0c956ed3bccc1',1,'Html2Markdown::Scheme::CommonMark']]],
+  ['convert_2',['Convert',['../class_html2_markdown_1_1_converter.html#a13b4b716ef0f710e0488aa07f3365d12',1,'Html2Markdown::Converter']]],
+  ['converter_3',['Converter',['../class_html2_markdown_1_1_converter.html#a2230f42c940b1a0fb353c2df97075fbe',1,'Html2Markdown.Converter.Converter()'],['../class_html2_markdown_1_1_converter.html#afe1b3cfadd8e12f18d3bc471120f0b47',1,'Html2Markdown.Converter.Converter(IScheme scheme)']]],
+  ['convertfile_4',['ConvertFile',['../class_html2_markdown_1_1_converter.html#a749e3b2228154fab2433526a1c08b27e',1,'Html2Markdown::Converter']]]
 ];
