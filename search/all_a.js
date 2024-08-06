@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['markdown_0',['Markdown',['../class_html2_markdown_1_1_scheme_1_1_markdown.html',1,'Html2Markdown.Scheme.Markdown'],['../class_html2_markdown_1_1_scheme_1_1_markdown.html#a22cbe5ae9fa89e9e261292aa52c56272',1,'Html2Markdown.Scheme.Markdown.Markdown()']]],
-  ['markdown_2ecs_1',['Markdown.cs',['../_markdown_8cs.html',1,'']]],
-  ['metatagreplacer_2',['MetaTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_meta_tag_replacer.html',1,'Html2Markdown.Replacement.MetaTagReplacer'],['../class_html2_markdown_1_1_replacement_1_1_meta_tag_replacer.html#aa4cef00a61243774315f0a42fafdfbef',1,'Html2Markdown.Replacement.MetaTagReplacer.MetaTagReplacer()']]],
-  ['metatagreplacer_2ecs_3',['MetaTagReplacer.cs',['../_meta_tag_replacer_8cs.html',1,'']]]
+  ['paragraphtagreplacer_0',['ParagraphTagReplacer',['../class_paragraph_tag_replacer.html',1,'ParagraphTagReplacer'],['../class_paragraph_tag_replacer.html#ac6442af47a68fa1f9a31fbb511b9b199',1,'ParagraphTagReplacer.ParagraphTagReplacer()']]],
+  ['paragraphtagreplacer_2ecs_1',['ParagraphTagReplacer.cs',['../_paragraph_tag_replacer_8cs.html',1,'']]],
+  ['pattern_2',['Pattern',['../class_pattern_replacer.html#a85fc8a8fa3082e6771d2e6d9200cbbf1',1,'PatternReplacer']]],
+  ['patternreplacer_3',['PatternReplacer',['../class_pattern_replacer.html',1,'']]],
+  ['patternreplacer_2ecs_4',['PatternReplacer.cs',['../_pattern_replacer_8cs.html',1,'']]],
+  ['pretagreplacer_5',['PreTagReplacer',['../class_pre_tag_replacer.html',1,'PreTagReplacer'],['../class_pre_tag_replacer.html#a97e9681e7478da0526de1638fadedfc7',1,'PreTagReplacer.PreTagReplacer()']]],
+  ['pretagreplacer_2ecs_6',['PreTagReplacer.cs',['../_pre_tag_replacer_8cs.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['emphasistagreplacer_0',['EmphasisTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_emphasis_tag_replacer.html#a06335581284964ff05203d775251490b',1,'Html2Markdown::Replacement::EmphasisTagReplacer']]]
+  ['emphasistagreplacer_0',['EmphasisTagReplacer',['../class_emphasis_tag_replacer.html#af930719a36201dca18417f61d7e09924',1,'EmphasisTagReplacer']]]
 ];
