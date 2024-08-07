@@ -660,6 +660,15 @@ public class MarkdownSchemeConverterTest
 
 		return CheckConversion(html);
 	}
+	
+	// See issue https://github.com/baynezy/Html2Markdown/issues/109
+	[Test]
+	public Task Convert_WhenThereIsAnEmptyList_ThenRemoveTheList()
+	{
+		const string html = "<ul><li></li></ul>";
+
+		return CheckConversion(html);
+	}
 
 	#endregion
 
