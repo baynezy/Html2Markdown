@@ -68,6 +68,8 @@ internal static partial class HtmlParser
 			}
 			markdownList.Add($"{listPrefix}{finalList}");
 		});
+		
+		if (markdownList.Count == 0) return string.Empty;
 
 		//If a new line is already ending the markdown item, then we don't need to add another one
 		return Environment.NewLine + Environment.NewLine + markdownList.Aggregate((current, item) =>  current.EndsWith(Environment.NewLine) ? current + item : current + Environment.NewLine + item) + Environment.NewLine + Environment.NewLine;
