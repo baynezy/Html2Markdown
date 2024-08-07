@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.2.5.7] - 2024-08-07
+
+### Fixed
+
+- Fixed issue where empty HTML lists would cause a `System.InvalidOperationException`
+
 ## [6.2.4.6] - 2024-08-02
 
 ### Added
@@ -470,7 +476,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/6.2.4.6...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/6.2.5.7...HEAD
+[6.2.5.7]: https://github.com/baynezy/Html2Markdown/compare/6.2.4.6...6.2.5.7
 [6.2.4.6]: https://github.com/baynezy/Html2Markdown/compare/6.2.3.6...6.2.4.6
 [6.2.3.6]: https://github.com/baynezy/Html2Markdown/compare/6.2.2.5...6.2.3.6
 [6.2.2.5]: https://github.com/baynezy/Html2Markdown/compare/6.2.1.4...6.2.2.5

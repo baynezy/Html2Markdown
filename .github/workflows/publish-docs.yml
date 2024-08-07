@@ -12,8 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: github-pages
     steps:
-      - uses: DenverCoder1/doxygen-github-pages-action@v1.3.0
+      - uses: baynezy/doxygen-github-pages-action@feature/specific-version
         with:
           github_token: ${{ secrets.PUBLISH_DOCS_TOKEN }}
           branch: gh-pages
           config_file: doxygen.config
+          doxygen_version: 1.9.6
