@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed issue where empty HTML lists would cause a `System.InvalidOperationException`
+
 ## [6.2.4.6] - 2024-08-02
 
 ### Added
