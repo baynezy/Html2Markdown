@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Reverted doxygen publishing action back to original as they have taken
+[my contribution](https://github.com/DenverCoder1/doxygen-github-pages-action/pull/30) and 
+[implemented it](https://github.com/DenverCoder1/doxygen-github-pages-action/releases/tag/v2.0.0) in the main repo.
+
 ## [6.2.5.7] - 2024-08-07
 
 ### Fixed
