@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.0.0.8] - 2024-08-15
+
 ### Added
 
 - Reverted doxygen publishing action back to original as they have taken
-[my contribution](https://github.com/DenverCoder1/doxygen-github-pages-action/pull/30) and 
-[implemented it](https://github.com/DenverCoder1/doxygen-github-pages-action/releases/tag/v2.0.0) in the main repo.
+  [my contribution](https://github.com/DenverCoder1/doxygen-github-pages-action/pull/30) and 
+  [implemented it](https://github.com/DenverCoder1/doxygen-github-pages-action/releases/tag/v2.0.0) in the main repo.
 - Dropped support for .Net 7
 
 ## [6.2.5.7] - 2024-08-07
@@ -483,7 +485,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/6.2.5.7...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.0.0.8...HEAD
+[7.0.0.8]: https://github.com/baynezy/Html2Markdown/compare/6.2.5.7...7.0.0.8
 [6.2.5.7]: https://github.com/baynezy/Html2Markdown/compare/6.2.4.6...6.2.5.7
 [6.2.4.6]: https://github.com/baynezy/Html2Markdown/compare/6.2.3.6...6.2.4.6
 [6.2.3.6]: https://github.com/baynezy/Html2Markdown/compare/6.2.2.5...6.2.3.6
