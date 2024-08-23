@@ -6,7 +6,7 @@ namespace Html2Markdown.Scheme;
 /// A group of IReplacer to deal with converting HTML entities.
 /// </summary>
 public abstract class AbstractScheme : IScheme {
-    
+
     /// <summary>
     /// The collection of IReplacer instances used for replacements.
     /// </summary>
@@ -31,6 +31,10 @@ public abstract class AbstractScheme : IScheme {
         return ReplacerCollection;
     }
 
+    /// <summary>
+    /// Adds a single replacer to the collection.
+    /// </summary>
+    /// <param name="replacer">The replacer to add.</param>
     public void AddReplacer(IReplacer replacer)
     {
         ReplacerCollection.Add(replacer);
