@@ -30,4 +30,9 @@ public abstract class AbstractScheme : IScheme {
     {
         return ReplacerCollection;
     }
+
+    public void AddReplacer(IReplacer replacer)
+    {
+        ReplacerCollection.Add(replacer);
+    }
 }
