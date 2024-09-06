@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.0.1.9] - 2024-09-06
+
+### Added
+
+- Added support extending existing Schemes for customisation
+
 ## [7.0.0.8] - 2024-08-15
 
 ### Added
@@ -485,7 +491,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.0.0.8...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.0.1.9...HEAD
+[7.0.1.9]: https://github.com/baynezy/Html2Markdown/compare/7.0.0.8...7.0.1.9
 [7.0.0.8]: https://github.com/baynezy/Html2Markdown/compare/6.2.5.7...7.0.0.8
 [6.2.5.7]: https://github.com/baynezy/Html2Markdown/compare/6.2.4.6...6.2.5.7
 [6.2.4.6]: https://github.com/baynezy/Html2Markdown/compare/6.2.3.6...6.2.4.6
