@@ -38,7 +38,7 @@ jobs:
         run: |
           echo "patch_version=$(($(cat semver.json | jq -r '.patch')+1))" > $GITHUB_OUTPUT
       - name: Store New Version
-        uses: Afterlife-Guide/SemVer.Action@1.0.4.6
+        uses: Afterlife-Guide/SemVer.Action@1.0.5.7
         with:
           path: semver.json
           major-version: ${{ needs.get-version.outputs.major }}
