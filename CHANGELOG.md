@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added support extending existing Schemes for customisation
+- Migrated to using xUnit and FluentAssertions for testing
 
 ## [7.0.0.8] - 2024-08-15
 

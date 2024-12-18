@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="SonarLintProjectSettings">
-    <option name="bindingEnabled" value="true" />
-    <option name="projectKey" value="baynezy_Html2Markdown" />
-    <option name="serverId" value="open source" />
-  </component>
-</project>
