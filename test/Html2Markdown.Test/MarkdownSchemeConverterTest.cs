@@ -8,24 +8,30 @@ public class MarkdownSchemeConverterTest
 
 	#region Schemes
 
-	[Test]
+	[Fact]
 	public void Converter_WhenProvidingMarkdownAsACustomScheme_ThenShouldConvertEquivalentlyToNoScheme()
 	{
+		// arrange
 		const string html = """So this is <a href="http://www.simonbaynes.com/">a link</a>. Convert it""";
 
 		var scheme = new Markdown();
 
 		var converterWithScheme = new Converter(scheme);
 		var converterWithoutScheme = new Converter();
-
-		Assert.That(converterWithoutScheme.Convert(html), Is.EqualTo(converterWithScheme.Convert(html)));
+		
+		// act
+		var resultWithScheme = converterWithScheme.Convert(html);
+		var resultWithoutScheme = converterWithoutScheme.Convert(html);
+		
+		// assert
+		resultWithoutScheme.Should().Be(resultWithScheme);
 	}
 
 	#endregion
 
 	#region Links
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreHtmlLinks_ThenConvertToMarkDownLinks()
 	{
 		const string html = """So this is <a href="http://www.simonbaynes.com/">a link</a>. Convert it""";
@@ -33,7 +39,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreHtmlLinksWithAttributesAfterTheHref_ThenConvertToMarkDownLink()
 	{
 		const string html = """So this is <a href="http://www.simonbaynes.com/" alt="example">a link</a>. Convert it""";
@@ -41,7 +47,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreHtmlLinksWithAttributesBeforeTheHref_ThenConvertToMarkDownLink()
 	{
 		const string html = """So this is <a alt="example" href="http://www.simonbaynes.com/">a link</a>. Convert it""";
@@ -49,7 +55,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreHtmlLinksWithTitleAttributeAfterTheHref_ThenConvertToMarkDownLink()
 	{
 		const string html = """So this is <a href="http://www.simonbaynes.com/" title="example">a link</a>. Convert it""";
@@ -57,7 +63,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreHtmlLinksWithTitleAttributeBeforeTheHref_ThenConvertToMarkDownLink()
 	{
 		const string html = """So this is <a title="example" href="http://www.simonbaynes.com/">a link</a>. Convert it""";
@@ -65,7 +71,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreMultipleHtmlLinks_ThenConvertThemToMarkDownLinks()
 	{
 		const string html = """So this is <a href="http://www.simonbaynes.com/">a link</a> and so is <a href="http://www.google.com/">this</a>. Convert them""";
@@ -73,7 +79,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreEmptyLinks_ThenRemoveThemFromResult()
 	{
 		const string html = """So this is <a name="curio"></a> and so is <a href="http://www.google.com/">this</a>. Convert them""";
@@ -85,7 +91,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Strong and Bold Tags
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreStrongTags_ThenConvertToMarkDownDoubleAsterisks()
 	{
 		const string html = "So this text is <strong>bold</strong>. Convert it.";
@@ -93,7 +99,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreStrongTagsFollowedByASpace_ThenConvertToMarkDownDoubleAsterisks()
 	{
 		const string html = "This is a<strong> test</strong> that causes problems.";
@@ -101,7 +107,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreStrongTagsFollowedByAMultipleSpaces_ThenConvertToMarkDownDoubleAsterisks()
 	{
 		const string html = "This is a<strong>  test</strong> that causes problems.";
@@ -109,7 +115,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreClosingStrongTagsFollowedByASpace_ThenConvertToMarkDownDoubleAsterisks()
 	{
 		const string html = "This is a <strong>test </strong>that causes problems.";
@@ -117,7 +123,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreClosingStrongTagsFollowedByAMultipleSpaces_ThenConvertToMarkDownDoubleAsterisks()
 	{
 		const string html = "This is a <strong>test  </strong>that causes problems.";
@@ -125,7 +131,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreMultipleStrongTags_ThenConvertToMarkDownDoubleAsterisks()
 	{
 		const string html = "So this text is <strong>bold</strong> and <strong>is this</strong>. Convert it.";
@@ -133,7 +139,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreBoldTags_ThenConvertToMarkDownDoubleAsterisks()
 	{
 		const string html = "So this text is <b>bold</b>. Convert it.";
@@ -141,7 +147,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 	
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsABoldTagWithProperties_ThenConvertToMarkDownDoubleAsterisks()
 	{
 		const string html = """So this text is <b id="something">bold</b>. Convert it.""";
@@ -149,7 +155,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 	
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAStrongTagWithProperties_ThenConvertToMarkDownDoubleAsterisks()
 	{
 		const string html = """So this text is <strong id="something">bold</strong>. Convert it.""";
@@ -161,7 +167,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Emphasis and Italic Tags
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreEmphasisTags_ThenConvertToMarkDownSingleAsterisk()
 	{
 		const string html = "So this text is <em>italic</em>. Convert it.";
@@ -169,7 +175,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreEmphasisTagsFollowedByASpace_ThenConvertToMarkDownSingleAsterisk()
 	{
 		const string html = "This is a<em> test</em> that causes problems.";
@@ -177,7 +183,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreEmphasisTagsFollowedByMultipleSpaces_ThenConvertToMarkDownSingleAsterisk()
 	{
 		const string html = "This is a<em>  test</em> that causes problems.";
@@ -185,7 +191,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreClosingEmphasisTagsFollowedByASpace_ThenConvertToMarkDownSingleAsterisk()
 	{
 		const string html = "This is a <em>test </em>that causes problems.";
@@ -193,7 +199,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreClosingEmphasisTagsFollowedByMultipleSpaces_ThenConvertToMarkDownSingleAsterisk()
 	{
 		const string html = "This is a <em>test  </em>that causes problems.";
@@ -201,7 +207,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreItalicTags_ThenConvertToMarkDownSingleAsterisk()
 	{
 		const string html = "So this text is <i>italic</i>. Convert it.";
@@ -213,7 +219,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Break tags
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreBreakTags_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
 	{
 		const string html = "So this text has a break.<br/>Convert it.";
@@ -221,7 +227,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreBreakTagsWithWhitespace_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
 	{
 		const string html = "So this text has a break.<br />Convert it.";
@@ -229,7 +235,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreBreakTagsThatAreNotSelfClosing_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
 	{
 		const string html = "So this text has a break.<br>Convert it.";
@@ -241,7 +247,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Code Tags
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreCodeTags_ThenReplaceWithBackTick()
 	{
 		const string html = "So this text has code <code>alert();</code>. Convert it.";
@@ -249,7 +255,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereMultilineCodeTags_ThenReplaceWithMultilineMarkdownBlock001()
 	{
 		const string html = """
@@ -264,7 +270,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereMultilineCodeTags_ThenReplaceWithMultilineMarkdownBlock002()
 	{
 		const string html = """
@@ -280,7 +286,7 @@ public class MarkdownSchemeConverterTest
 	}
 
 	/// https://github.com/baynezy/Html2Markdown/issues/112
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereMultilineCodeTags_ThenReplaceWithMultilineMarkdownBlock003()
 	{
 		const string html = """
@@ -299,7 +305,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Header Tags
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH1Tags_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = "This code has a <h1>header</h1>. Convert it.";
@@ -307,7 +313,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 	
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH2Tags_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = "This code has a <h2>header</h2>. Convert it.";
@@ -315,7 +321,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH3Tags_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = "This code has a <h3>header</h3>. Convert it.";
@@ -323,7 +329,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH4Tags_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = "This code has a <h4>header</h4>. Convert it.";
@@ -331,7 +337,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH5Tags_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = "This code has a <h5>header</h5>. Convert it.";
@@ -339,7 +345,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH6Tags_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = "This code has a <h6>header</h6>. Convert it.";
@@ -347,7 +353,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH1TagsWithAttributes_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = """This code has a <h1 title="header">header</h1>. Convert it.""";
@@ -356,7 +362,7 @@ public class MarkdownSchemeConverterTest
 	}
 
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH2TagsWithAttributes_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = """This code has a <h2 title="header">header</h2>. Convert it.""";
@@ -364,7 +370,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH3TagsWithAttributes_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = """This code has a <h3 title="header">header</h3>. Convert it.""";
@@ -372,7 +378,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH4TagsWithAttributes_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = """This code has a <h4 title="header">header</h4>. Convert it.""";
@@ -380,7 +386,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH5TagsWithAttributes_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = """This code has a <h5 title="header">header</h5>. Convert it.""";
@@ -388,7 +394,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreH6TagsWithAttributes_ThenReplaceWithMarkDownHeader()
 	{
 		const string html = """This code has a <h6 title="header">header</h6>. Convert it.""";
@@ -400,7 +406,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Blockquote Tags
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
 	{
 		const string html = "This code has a <blockquote>blockquote</blockquote>. Convert it.";
@@ -408,7 +414,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsABlockquoteTagWithNestedHtml_ThenReplaceWithMarkDownBlockQuote()
 	{
 		const string html = "<blockquote><em>“Qualquer coisa que possas fazer ou sonhar, podes começá-la. A ousadia encerra em si mesma genialidade, poder e magia.<br />Ouse fazer, e o poder lhe será dado!”</em><br /><strong>— Johann Wolfgang von Goethe</strong></blockquote>";
@@ -416,7 +422,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAMultilineBlockquoteTag_ThenReplaceWithMarkDownBlockQuote()
 	{
 		const string html = """
@@ -429,7 +435,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsABlockquoteTagWithAttributes_ThenReplaceWithMarkDownBlockQuote()
 	{
 		const string html = """This code has a <blockquote id="thing">blockquote</blockquote>. Convert it.""";
@@ -441,7 +447,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Paragraph Tags
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreParagraphTags_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
 	{
 		const string html = "This code has no markup.<p>This code is in a paragraph.</p>Convert it!";
@@ -449,7 +455,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreParagraphTagsWithAttributes_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
 	{
 		const string html = """This code has no markup.<p class="something">This code is in a paragraph.</p>Convert it!""";
@@ -457,7 +463,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreParagraphTagsWithNewLinesInThem_ThenReplaceWithMarkdownParagraphButNoBreakTags()
 	{
 		const string html = """
@@ -475,7 +481,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Horizontal Rule Tags
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreHorizontalRuleTags_ThenReplaceWithMarkDownHorizontalRule()
 	{
 		const string html = "This code is seperated by a horizontal rule.<hr/>Convert it!";
@@ -483,7 +489,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreHorizontalRuleTagsWithWhiteSpace_ThenReplaceWithMarkDownHorizontalRule()
 	{
 		const string html = "This code is seperated by a horizontal rule.<hr />Convert it!";
@@ -491,7 +497,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreHorizontalRuleTagsWithAttributes_ThenReplaceWithMarkDownHorizontalRule()
 	{
 		const string html = """This code is seperated by a horizontal rule.<hr class="something" />Convert it!""";
@@ -499,7 +505,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreHorizontalRuleTagsThatAreNonSelfClosing_ThenReplaceWithMarkDownHorizontalRule()
 	{
 		const string html = "This code is seperated by a horizontal rule.<hr>Convert it!";
@@ -511,7 +517,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Image Tags
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreImgTags_ThenReplaceWithMarkdownImage()
 	{
 		const string html = """This code is with and image <img alt="something" title="convert" src="https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif" /> Convert it!""";
@@ -519,7 +525,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreImgTagsWithoutATitle_ThenReplaceWithMarkdownImage()
 	{
 		const string html = """This code is with an image <img alt="something" src="https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif" /> Convert it!""";
@@ -531,7 +537,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Pre Tags
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereArePreTags_ThenReplaceWithMarkdownPre()
 	{
 		const string html = """
@@ -542,7 +548,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreOtherTagsNestedInThePreTag_ThenReplaceWithMarkdownPre()
 	{
 		const string html = """
@@ -553,7 +559,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreMultiplePreTags_ThenReplaceWithMarkdownPre()
 	{
 		const string html = """
@@ -576,7 +582,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Lists
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreUnorderedLists_ThenReplaceWithMarkdownLists()
 	{
 		const string html = "This code is with an unordered list.<ul><li>Yes</li><li>No</li></ul>";
@@ -584,7 +590,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreEmptyUnorderedLists_ThenReplaceWithNothing()
 	{
 		const string html = "This code is with an unordered list.<ul></ul>";
@@ -592,7 +598,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreUnorderedListsWihtoutClosingTags_ThenReplaceWithMarkdownLists()
 	{
 		const string html = "This code is with an unordered list.<ul><li>Yes<li>No</ul>";
@@ -600,7 +606,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreOrderedLists_ThenReplaceWithMarkdownLists()
 	{
 		const string html = "This code is with an ordered list.<ol><li>Yes</li><li>No</li></ol>";
@@ -608,7 +614,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAnUnorderedListWithANestedOrderList_ThenReplaceWithMarkdownLists()
 	{
 		const string html = "This code is with an unordered list.<ul><li>Yes</li><li><ol><li>No</li><li>Maybe</li></ol></li></ul>";
@@ -616,7 +622,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAnOrderedListWithANestedUnorderedList_ThenReplaceWithMarkdownLists()
 	{
 		const string html = "This code is with an unordered list.<ol><li>Yes</li><li><ul><li>No</li><li>Maybe</li></ul></li></ol>";
@@ -624,7 +630,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAnOrderedListWithNestedParagraphs_ThenReplaceWithMarkdownLists()
 	{
 		const string html = @"<p>This code is with an ordered list and paragraphs.</p><ol><li><p>Yes, this is a <code>code</code> element</p></li><li><p>No :</p><ul><li><code>Some code we are looking at</code></li></ul></li></ol>";
@@ -632,7 +638,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAMultilineOrderedListWithNestedParagraphsAndCodeElement_ThenReplaceWithMarkdownLists()
 	{
 		const string html = """
@@ -653,7 +659,7 @@ public class MarkdownSchemeConverterTest
 	}
 	
 	// See issue https://github.com/baynezy/Html2Markdown/issues/395
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreMultipleUnorderedLists_ThenReplaceWithMarkdownLists()
 	{
 		const string html = "<ul><ul><li>first list val</li></ul></ul>";
@@ -662,7 +668,7 @@ public class MarkdownSchemeConverterTest
 	}
 	
 	// See issue https://github.com/baynezy/Html2Markdown/issues/109
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAnEmptyList_ThenRemoveTheList()
 	{
 		const string html = "<ul><li></li></ul>";
@@ -674,7 +680,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Extra HTML Removal
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAnHtmlDoctype_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -685,7 +691,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAnHtmlTag_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -697,7 +703,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAnHtmlTagWithAttributes_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -709,7 +715,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsASingleLineComment_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -720,7 +726,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAMultiLineComment_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -733,7 +739,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAHeadTag_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -745,7 +751,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAHeadTagWithAttributes_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -757,7 +763,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAMetaTag_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -768,7 +774,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsATitleTag_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -779,7 +785,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsATitleTagWithAttributes_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -790,7 +796,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsALinkTag_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -801,7 +807,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsABodyTag_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -813,7 +819,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsABodyTagWithAttributes_ThenRemoveFromResult()
 	{
 		const string html = """
@@ -825,7 +831,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAScriptTag_ThenRemoveFromResult() 
 	{
 		const string html = """
@@ -844,7 +850,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenAListHasNoItems_ThenRemoveTheList()
 	{
 		const string html = "<ul></ul>";
@@ -853,7 +859,7 @@ public class MarkdownSchemeConverterTest
 	}
 
 	// See issue https://github.com/baynezy/Html2Markdown/issues/269
-	[Test]
+	[Fact]
 	public Task Convert_Bug269()
 	{
 		const string html = "<ol> Test </ol>";
@@ -865,7 +871,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Entities
 		
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAnAmpersandEntity_ThenReplaceWithActualCharacter()
 	{
 		const string html = "<p>Enties like &amp; should be converted</p>";
@@ -873,7 +879,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAnLessThanEntity_ThenReplaceWithActualCharacter()
 	{
 		const string html = "<p>Enties like &lt; should be converted</p>";
@@ -881,7 +887,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAGreaterThanEntity_ThenReplaceWithActualCharacter()
 	{
 		const string html = "<p>Enties like &gt; should be converted</p>";
@@ -889,7 +895,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsABulletEntity_ThenReplaceWithActualCharacter()
 	{
 		const string html = "<p>Enties like &#8226; should be converted</p>";
@@ -901,7 +907,7 @@ public class MarkdownSchemeConverterTest
 
 	#region Complex Tests
 		
-	[Test]
+	[Fact]
 	public Task Convert_ComplexTest_001()
 	{
 		var html =
@@ -910,7 +916,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_ComplexTest_002()
 	{
 		const string html = """
@@ -925,17 +931,19 @@ public class MarkdownSchemeConverterTest
 	}
 
 	// Issue #81 https://github.com/baynezy/Html2Markdown/issues/81
-	[Test]
+	[Fact]
 	public void Convert_WhenConvertingContentFromIssue81_ThenShouldNotError()
 	{
 		const string content = "\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Repro steps amended functionality:</span> Followed\nduplication plan. Location field now only shows location at the booking's site. Testing passed.</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\">&nbsp;</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Exploratory Testing</span>: n/a</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\">&nbsp;</p>\n\n<p style=\"margin:0in;font-family:Calibri;font-size:11.0pt;\"><span style=\"font-weight:bold;\">Areas Affected and Tested: </span>Inpatient Bookings, Bed Move screen<br></p>\n\n";
 
 		var converter = new Converter();
-
-		Assert.DoesNotThrow(() => converter.Convert(content));
+		
+		Action action = () => converter.Convert(content);
+		
+		action.Should().NotThrow();
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereAreParagraphTagsEitherSideOfAList_ThenThereShouldBeAppropriateSpacing()
 	{
 		const string html = "<p>a</p><ul><li>First</li><li>Last</li></ul><p>b</p>";
@@ -943,7 +951,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_WhenThereIsAParagraphTagAfterAList_ThenThereShouldBeAppropriateSpacing()
 	{
 		const string html = "<p>a</p><ul><li>First</li><li>Last</li></ul>b";
@@ -951,7 +959,7 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 
-	[Test]
+	[Fact]
 	public Task Convert_Bug_114() // https://github.com/baynezy/Html2Markdown/issues/114
 	{
 		const string html = """

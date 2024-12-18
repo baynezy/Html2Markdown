@@ -1,15 +1,9 @@
 namespace Html2Markdown.Test;
 
-[TestFixture]
 public class ConvertFromFileTest {
-	private string _testPath;
+	private readonly string _testPath = TestPath();
 
-	[SetUp]
-	public void SetUp() {
-		_testPath = TestPath();
-	}
-
-	[Test]
+	[Fact]
 	public Task ConvertFile_WhenReadingInHtmlFile_ThenConvertToMarkdown()
 	{
 		var sourcePath = _testPath + "TestHtml.txt";

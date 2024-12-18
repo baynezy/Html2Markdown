@@ -6,7 +6,7 @@ namespace Html2Markdown.Test.Scheme;
 
 public class AbstractSchemeTests
 {
-    [Test]
+    [Fact]
     public void Replacers_WhenCalled_ReturnsReplacerCollection()
     {
         // arrange
@@ -17,10 +17,10 @@ public class AbstractSchemeTests
         var replacers = scheme.Replacers();
 
         // assert
-        Assert.That(replacers.Count, Is.EqualTo(expectedCount));
+        replacers.Count.Should().Be(expectedCount);
     }
-    
-    [Test]
+
+    [Fact]
     public void Replacers_WhenCalled_ReturnsReplacerCollectionWithTestReplacer()
     {
         // arrange
@@ -30,10 +30,10 @@ public class AbstractSchemeTests
         var replacers = scheme.Replacers();
 
         // assert
-        Assert.That(replacers[0], Is.InstanceOf<TestReplacer>());
+        replacers[0].Should().BeOfType<TestReplacer>();
     }
-    
-    [Test]
+
+    [Fact]
     public void Replacers_WhenCalled_ReturnsReplacerCollectionWithTestReplacerReplaceMethod()
     {
         // arrange
@@ -45,10 +45,10 @@ public class AbstractSchemeTests
         var result = replacers[0].Replace(string.Empty);
 
         // assert
-        Assert.That(result, Is.EqualTo(expected));
+        result.Should().Be(expected);
     }
-    
-    [Test]
+
+    [Fact]
     public void AddReplacer_WhenCalled_AddsReplacerToReplacerCollection()
     {
         // arrange
@@ -60,10 +60,10 @@ public class AbstractSchemeTests
         var replacers = scheme.Replacers();
 
         // assert
-        Assert.That(replacers.Count, Is.EqualTo(expectedCount));
+        replacers.Count.Should().Be(expectedCount);
     }
-    
-    [Test]
+
+    [Fact]
     public void AddReplacer_WhenCalled_AddsReplacerToReplacerCollectionWithTestReplacer()
     {
         // arrange
@@ -74,7 +74,7 @@ public class AbstractSchemeTests
         var replacers = scheme.Replacers();
 
         // assert
-        Assert.That(replacers[1], Is.InstanceOf<TestReplacer>());
+        replacers[1].Should().BeOfType<TestReplacer>();
     }
 }
 
