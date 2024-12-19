@@ -13,6 +13,9 @@ Converts HTML to [Markdown](http://daringfireball.net/projects/markdown/syntax).
 | `master`  | [![master](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-master.yml/badge.svg?branch=master)](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-master.yml)     |
 | `develop` | [![develop](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-develop.yml/badge.svg?branch=develop)](https://github.com/baynezy/Html2Markdown/actions/workflows/branch-develop.yml) |
 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=baynezy_Html2Markdown&metric=coverage)](https://sonarcloud.io/summary/new_code?id=baynezy_Html2Markdown)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=baynezy_Html2Markdown&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=baynezy_Html2Markdown)
+
 ## Support
 
 This project will currently convert the following HTML tags:-
