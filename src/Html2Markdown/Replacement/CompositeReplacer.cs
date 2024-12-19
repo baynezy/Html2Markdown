@@ -5,7 +5,7 @@
 /// </summary>
 public abstract class CompositeReplacer : IReplacer
 {
-    private readonly IList<IReplacer> _replacements = new List<IReplacer>();
+    private readonly List<IReplacer> _replacements = [];
 
     /// <summary>
     /// Adds a replacer to the list of replacements.
