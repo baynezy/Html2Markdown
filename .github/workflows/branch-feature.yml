@@ -34,3 +34,10 @@ jobs:
     needs: [get-version]
     uses: ./.github/workflows/step-check-markdown.yml
     secrets: inherit
+    
+  mutation-testing:
+    needs: [get-version]
+    uses: ./.github/workflows/step-mutation-testing.yml
+    secrets: inherit
+    with:
+      comparison: ${{ github.base_ref }}
