@@ -1,5 +1,6 @@
 ﻿// Global using directives
 
+global using FluentAssertions;
 global using System.Threading.Tasks;
-global using NUnit.Framework;
-global using VerifyNUnit;
+global using VerifyXunit;
+global using Xunit;

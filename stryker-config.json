@@ -1,0 +1,21 @@
+{
+  "stryker-config":
+  {
+    "solution": "Html2Markdown.sln",
+    "project": "Html2Markdown.csproj",
+    "thresholds": {
+      "high": 95,
+      "low": 85,
+      "break": 80
+    },
+    "since": {
+      "target": "develop",
+      "ignore-changes-in": [
+        "**/*.md",
+        "**/*.yml",
+        "**/*.json",
+        "**/*.txt"
+      ]
+    }
+  }
+}

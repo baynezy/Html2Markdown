@@ -11,7 +11,7 @@ public class CommonMarkSchemeConverterTest : MarkdownSchemeConverterTest
 	    return base.CheckConversion(html, _scheme);
     }
 
-    [Test]
+    [Fact]
     public Task Convert_WhenThereMultilineCodeTagsWithSyntaxHighlight_ThenReplaceWithMultilineMarkdownBlock001()
     {
         const string html = @"So this text has multiline code.
@@ -24,7 +24,7 @@ public class CommonMarkSchemeConverterTest : MarkdownSchemeConverterTest
         return CheckConversion(html);
     }
 
-    [Test]
+    [Fact]
     public Task Convert_WhenThereMultilineCodeTagsWithSyntaxHighlight_ThenReplaceWithMultilineMarkdownBlock002()
     {
         const string html = @"So this text has multiline code.
@@ -37,7 +37,7 @@ public class CommonMarkSchemeConverterTest : MarkdownSchemeConverterTest
         return CheckConversion(html);
     }
 
-    [Test]
+    [Fact]
     public Task Convert_WhenThereMultilineCodeTagsWithSyntaxHighlight_ThenReplaceWithMultilineMarkdownBlock003()
     {
         const string html = @"So this text has multiline code.
