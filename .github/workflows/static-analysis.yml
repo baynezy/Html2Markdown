@@ -8,7 +8,7 @@ on:
       - 'test/**'
       - '**.sln'
       - '.github/workflows/static-analysis.yml'
-  pull_request:
+  pull_request: 
     types: [opened, synchronize, reopened]
     paths:
       - 'src/**'
@@ -23,6 +23,7 @@ env:
   TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
 jobs:
   build:
+    if: github.actor != 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository
     name: Build and analyse
     runs-on: ubuntu-latest
     steps:
