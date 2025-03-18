@@ -26,17 +26,17 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore
-      uses: cake-build/cake-action@v2
+      uses: cake-build/cake-action@v3
       with:
         target: Restore
     - name: Build
-      uses: cake-build/cake-action@v2
+      uses: cake-build/cake-action@v3
       with:
         target: Build
         arguments: |
           versionNumber: ${{inputs.version}}
     - name: Run tests
-      uses: cake-build/cake-action@v2
+      uses: cake-build/cake-action@v3
       env: 
         TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
       with:
@@ -47,7 +47,7 @@ jobs:
       with:
         files: "**/TestResults/*.xml"
     - name: Build NuGet Package
-      uses: cake-build/cake-action@v2
+      uses: cake-build/cake-action@v3
       with:
         target: Pack
         arguments: |
