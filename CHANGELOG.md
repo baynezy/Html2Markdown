@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Configuration for GitHub Copilot coding agent (#565)
+
 ## [7.0.5.14] - 2025-05-28
 
 ## [7.0.4.13] - 2025-05-28
