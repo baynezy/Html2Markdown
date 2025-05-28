@@ -57,7 +57,7 @@ jobs:
       - name: Install dotCover
         shell: bash
         run: |
-          dotnet tool install --global JetBrains.dotCover.GlobalTool
+          dotnet tool install --global jetbrains.dotcover.commandlinetools
       - name: Build, run code coverage, and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,5 +72,5 @@ jobs:
           
           .sonar/scanner/dotnet-sonarscanner begin /k:"${{ env.PROJECT_NAME }}" /o:"${{ env.ORGANISATION }}" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
           dotnet build
-          dotnet dotcover test $filter --dcReportType=HTML
+          dotCover cover-dotnet --Output=dotCover.Output.html --ReportType=HTML -- test $filter
           .sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
