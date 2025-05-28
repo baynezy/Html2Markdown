@@ -66,7 +66,7 @@ internal static partial class HtmlParser
 			{
 				finalList = ReplaceParagraph(finalList, true);
 			}
-			markdownList.Add($"{listPrefix}{finalList}");
+			markdownList.Add($"{listPrefix}{finalList.TrimEnd()}");
 		});
 		
 		if (markdownList.Count == 0) return string.Empty;
