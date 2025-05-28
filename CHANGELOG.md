@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.0.5.14] - 2025-05-28
+
 ## [7.0.4.13] - 2025-05-28
 
 ## [7.0.3.11] - 2025-03-18
@@ -499,7 +501,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.0.4.13...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.0.5.14...HEAD
+[7.0.5.14]: https://github.com/baynezy/Html2Markdown/compare/7.0.4.13...7.0.5.14
 [7.0.4.13]: https://github.com/baynezy/Html2Markdown/compare/7.0.3.11...7.0.4.13
 [7.0.3.11]: https://github.com/baynezy/Html2Markdown/compare/7.0.2.10...7.0.3.11
 [7.0.2.10]: https://github.com/baynezy/Html2Markdown/compare/7.0.1.9...7.0.2.10

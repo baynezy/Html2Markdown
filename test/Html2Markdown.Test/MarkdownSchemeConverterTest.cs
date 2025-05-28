@@ -675,6 +675,36 @@ public class MarkdownSchemeConverterTest
 
 		return CheckConversion(html);
 	}
+	
+	// See issue https://github.com/baynezy/Html2Markdown/issues/110
+	[Fact]
+	public Task Convert_WhenThereAreThreeLevelNestedLists_ThenReplaceWithCorrectIndentation()
+	{
+		const string html = """
+		                    <ul>
+		                        <li><a>Level 1</a>
+		                            <ul>
+		                                <li><a>Level 2</a>
+		                                </li>
+		                                <li><a>Level 2</a>
+		                                </li>
+		                                <li><a>Level 2</a>
+		                                    <ul>
+		                                        <li><a>Level 3</a></li>
+		                                        <li><a>Level 3</a></li>
+		                                    </ul>
+		                                </li>
+		                                <li><a>Level 2</a>
+		                                </li>
+		                                <li><a>Level 2</a>
+		                                </li>
+		                            </ul>
+		                        </li>
+		                    </ul>
+		                    """;
+
+		return CheckConversion(html);
+	}
 
 	#endregion
 
