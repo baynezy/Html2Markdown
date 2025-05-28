@@ -512,3 +512,7 @@ FodyWeavers.xsd
 
 ## Doxygen
 docs/
+
+## dotCover
+dotCover.Output/
+dotCover.Output.html
