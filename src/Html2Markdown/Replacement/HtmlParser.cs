@@ -58,7 +58,7 @@ internal static partial class HtmlParser
 			}
 
 			finalList = SpacesAtTheStartOfALine().Replace(finalList, string.Empty);
-			finalList = TwoNewLines().Replace(finalList, $"{Environment.NewLine}{Environment.NewLine}    ");
+			finalList = TwoNewLines().Replace(finalList, $"{Environment.NewLine}{Environment.NewLine}");
 			// indent nested lists
 			finalList = NestedList().Replace(finalList, "\n$1    $2");
 			// remove the indent from the first line
@@ -66,7 +66,7 @@ internal static partial class HtmlParser
 			{
 				finalList = ReplaceParagraph(finalList, true);
 			}
-			markdownList.Add($"{listPrefix}{finalList}");
+			markdownList.Add($"{listPrefix}{finalList.TrimEnd()}");
 		});
 		
 		if (markdownList.Count == 0) return string.Empty;
@@ -361,7 +361,7 @@ internal static partial class HtmlParser
     private static partial Regex SpacesAtTheStartOfALine();
     [GeneratedRegex("\\n{2}")]
     private static partial Regex TwoNewLines();
-    [GeneratedRegex(@"\n([ ]*)+(\*|\d+\.)")]
+    [GeneratedRegex(@"\n([ ]*)(\*|\d+\.)")]
     private static partial Regex NestedList();
     [GeneratedRegex("^\r?\n")]
     private static partial Regex InitialCrLf();
