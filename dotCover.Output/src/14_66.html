@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/HtmlAgilityPackExtensions.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using HtmlAgilityPack;
+
+namespace Html2Markdown;
+
+internal static class HtmlAgilityPackExtensions
+{
+	public static string GetAttributeOrEmpty(this HtmlAttributeCollection collection, string attributeName)
+	{
+		return (collection[attributeName] == null) ? &quot;&quot; : collection[attributeName].Value;
+	}
+		
+	public static void ReplaceNodeWithString(this HtmlNode node, string content) {
+		var temp = HtmlNode.CreateNode(&quot;&lt;p&gt;&lt;/p&gt;&quot;);
+		temp.InnerHtml = content;
+		var current = node;
+
+		foreach (var child in temp.ChildNodes)
+		{
+			node.ParentNode.InsertAfter(child, current);
+			current = child;
+		}
+		node.Remove();
+	} 
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,2,8,3,1],[9,3,9,85,1],[10,2,10,3,1],[12,79,12,80,1],[13,3,13,45,1],[14,3,14,28,1],[15,3,15,22,1],[17,3,17,10,1],[17,12,17,21,1],[17,22,17,24,1],[17,25,17,40,1],[18,3,18,4,1],[19,4,19,48,1],[20,4,20,20,1],[21,3,21,4,1],[22,3,22,17,1],[23,2,23,3,1]]);
+    </script>
+  </body>
+</html>

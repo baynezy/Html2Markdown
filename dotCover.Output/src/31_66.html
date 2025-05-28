@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/Replacement/HorizontalRuleTagReplacer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace Html2Markdown.Replacement;
+
+/// &lt;summary&gt;
+/// Replaces the HTML horizontal rule tag with its Markdown equivalent.
+/// &lt;/summary&gt;
+public class HorizontalRuleTagReplacer : PatternReplacer
+{
+    /// &lt;summary&gt;
+    /// Initializes a new instance of the &lt;see cref=&quot;HorizontalRuleTagReplacer&quot;/&gt; class.
+    /// Sets up the pattern and replacement for converting HTML horizontal rule tags to Markdown.
+    /// &lt;/summary&gt;
+    public HorizontalRuleTagReplacer()
+    {
+        Pattern = &quot;&lt;hr[^&gt;]*&gt;&quot;;
+        Replacement = Environment.NewLine + Environment.NewLine + &quot;* * *&quot; + Environment.NewLine;
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[12,5,12,39,1],[13,5,13,6,1],[14,9,14,31,1],[15,9,15,97,1],[16,5,16,6,1]]);
+    </script>
+  </body>
+</html>

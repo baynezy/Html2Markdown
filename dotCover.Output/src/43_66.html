@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/Replacement/PatternReplacer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Text.RegularExpressions;
+
+namespace Html2Markdown.Replacement;
+
+/// &lt;summary&gt;
+/// Allows replacement with a regular expression.
+/// &lt;/summary&gt;
+public class PatternReplacer : IReplacer
+{
+    /// &lt;summary&gt;
+    /// Gets the pattern to match in the HTML.
+    /// &lt;/summary&gt;
+    public string Pattern { get; init; }
+
+    /// &lt;summary&gt;
+    /// Gets the replacement string for the matched pattern.
+    /// &lt;/summary&gt;
+    public string Replacement { get; init; }
+
+    /// &lt;summary&gt;
+    /// Replaces occurrences of the pattern in the provided HTML with the replacement string.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;html&quot;&gt;The HTML content to process.&lt;/param&gt;
+    /// &lt;returns&gt;The processed HTML with replacements.&lt;/returns&gt;
+    public string Replace(string html)
+    {
+        // SECURITY: https://sonarcloud.io/organizations/baynezy/rules?open=csharpsquid%3AS6444&amp;rule_key=csharpsquid%3AS6444
+        var regex = new Regex(Pattern, RegexOptions.None, TimeSpan.FromSeconds(1));
+
+        return regex.Replace(html, Replacement);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[13,29,13,33,1],[13,34,13,39,1],[18,33,18,37,1],[18,38,18,43,1],[26,5,26,6,1],[28,9,28,84,1],[30,9,30,49,1],[31,5,31,6,1]]);
+    </script>
+  </body>
+</html>

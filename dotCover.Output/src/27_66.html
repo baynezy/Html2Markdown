@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/Replacement/EntitiesReplacementGroup.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace Html2Markdown.Replacement;
+
+/// &lt;summary&gt;
+/// A group of &lt;see cref=&quot;IReplacer&quot;/&gt; to deal with converting HTML entities.
+/// &lt;/summary&gt;
+public class EntitiesReplacementGroup : IReplacementGroup
+{
+    private readonly IList&lt;IReplacer&gt; _replacements = new List&lt;IReplacer&gt; {
+        new HtmlEntitiesReplacer()
+    };
+
+    /// &lt;summary&gt;
+    /// Returns the list of &lt;see cref=&quot;IReplacer&quot;/&gt; instances.
+    /// &lt;/summary&gt;
+    /// &lt;returns&gt;An &lt;see cref=&quot;IEnumerable{T}&quot;/&gt; of &lt;see cref=&quot;IReplacer&quot;/&gt;.&lt;/returns&gt;
+    public IEnumerable&lt;IReplacer&gt; Replacers()
+    {
+        return _replacements;
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,5,10,7,1],[17,5,17,6,1],[18,9,18,30,1],[19,5,19,6,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/Replacement/CustomReplacer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using JetBrains.Annotations;
+
+namespace Html2Markdown.Replacement;
+
+/// &lt;summary&gt;
+/// Allows custom replacement of HTML tags utilizing external functions.
+/// &lt;/summary&gt;
+public class CustomReplacer : IReplacer
+{
+    /// &lt;summary&gt;
+    /// Replaces the HTML string using the custom action.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;html&quot;&gt;The HTML string to process.&lt;/param&gt;
+    /// &lt;returns&gt;The processed HTML string with the custom replacement applied.&lt;/returns&gt;
+    public string Replace(string html)
+    {
+        return CustomAction.Invoke(html);
+    }
+
+    /// &lt;summary&gt;
+    /// Gets or sets the custom action to be used for replacing HTML tags.
+    /// &lt;/summary&gt;
+    [PublicAPI]
+    public Func&lt;string, string&gt; CustomAction { get; init; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,5,16,6,1],[17,9,17,42,1],[18,5,18,6,1],[24,48,24,52,1],[24,53,24,58,1]]);
+    </script>
+  </body>
+</html>

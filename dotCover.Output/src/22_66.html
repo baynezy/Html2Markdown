@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/Replacement/CodeTagReplacer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace Html2Markdown.Replacement;
+
+/// &lt;summary&gt;
+/// Replaces the HTML code tag with its Markdown equivalent.
+/// &lt;/summary&gt;
+public class CodeTagReplacer : CustomReplacer
+{
+    /// &lt;summary&gt;
+    /// Initializes a new instance of the &lt;see cref=&quot;CodeTagReplacer&quot;/&gt; class.
+    /// Sets the custom action to replace code tags with Markdown formatted code blocks.
+    /// &lt;/summary&gt;
+    public CodeTagReplacer()
+    {
+        CustomAction = html =&gt; HtmlParser.ReplaceCode(html, false);
+    }
+
+    /// &lt;summary&gt;
+    /// Initializes a new instance of the &lt;see cref=&quot;CodeTagReplacer&quot;/&gt; class with an option to support syntax highlighting.
+    /// Sets the custom action to replace code tags with Markdown formatted code blocks, optionally supporting syntax highlighting.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;supportSyntaxHighlighting&quot;&gt;If set to &lt;c&gt;true&lt;/c&gt;, supports syntax highlighting in the Markdown output.&lt;/param&gt;
+    public CodeTagReplacer(bool supportSyntaxHighlighting)
+    {
+        CustomAction = html =&gt; HtmlParser.ReplaceCode(html, supportSyntaxHighlighting);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[12,5,12,29,1],[13,5,13,6,1],[14,9,14,32,1],[14,32,14,67,1],[14,67,14,68,1],[15,5,15,6,1],[22,5,22,59,1],[23,5,23,6,1],[24,9,24,32,1],[24,32,24,87,1],[24,87,24,88,1],[25,5,25,6,1]]);
+    </script>
+  </body>
+</html>

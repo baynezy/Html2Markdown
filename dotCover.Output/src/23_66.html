@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/Replacement/CompositeReplacer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace Html2Markdown.Replacement;
+
+/// &lt;summary&gt;
+/// Allows for multiple replacements to be applied to the HTML.
+/// &lt;/summary&gt;
+public abstract class CompositeReplacer : IReplacer
+{
+    private readonly List&lt;IReplacer&gt; _replacements = [];
+
+    /// &lt;summary&gt;
+    /// Adds a replacer to the list of replacements.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;replacer&quot;&gt;The &lt;see cref=&quot;IReplacer&quot;/&gt; instance to add.&lt;/param&gt;
+    protected void AddReplacer(IReplacer replacer)
+    {
+        _replacements.Add(replacer);
+    }
+
+    /// &lt;summary&gt;
+    /// Applies all replacements to the given HTML string.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;html&quot;&gt;The HTML string to process.&lt;/param&gt;
+    /// &lt;returns&gt;The processed HTML string with all replacements applied.&lt;/returns&gt;
+    public string Replace(string html)
+    {
+        return _replacements.Aggregate(html, (current, replacer) =&gt; replacer.Replace(current));
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,5,8,57,1],[15,5,15,6,1],[16,9,16,37,1],[17,5,17,6,1],[25,5,25,6,1],[26,9,26,69,1],[26,69,26,94,1],[26,94,26,96,1],[27,5,27,6,1]]);
+    </script>
+  </body>
+</html>

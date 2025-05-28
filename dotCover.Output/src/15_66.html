@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/Scheme/AbstractScheme.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Html2Markdown.Replacement;
+
+namespace Html2Markdown.Scheme;
+
+/// &lt;summary&gt;
+/// A group of IReplacer to deal with converting HTML entities.
+/// &lt;/summary&gt;
+public abstract class AbstractScheme : IScheme {
+
+    /// &lt;summary&gt;
+    /// The collection of IReplacer instances used for replacements.
+    /// &lt;/summary&gt;
+    protected readonly IList&lt;IReplacer&gt; ReplacerCollection = new List&lt;IReplacer&gt;();
+
+    /// &lt;summary&gt;
+    /// Adds a group of replacements to the provided list of replacers.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;replacers&quot;&gt;The list of replacers to add to.&lt;/param&gt;
+    /// &lt;param name=&quot;replacementGroup&quot;&gt;The group of replacements to add.&lt;/param&gt;
+    protected static void AddReplacementGroup(IList&lt;IReplacer&gt; replacers, IReplacementGroup replacementGroup)
+    {
+        replacementGroup.Replacers().ToList().ForEach(replacers.Add);
+    }
+
+    /// &lt;summary&gt;
+    /// Gets the collection of IReplacer instances.
+    /// &lt;/summary&gt;
+    /// &lt;returns&gt;The list of IReplacer instances.&lt;/returns&gt;
+    public IList&lt;IReplacer&gt; Replacers()
+    {
+        return ReplacerCollection;
+    }
+
+    /// &lt;summary&gt;
+    /// Adds a single replacer to the collection.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;replacer&quot;&gt;The replacer to add.&lt;/param&gt;
+    public void AddReplacer(IReplacer replacer)
+    {
+        ReplacerCollection.Add(replacer);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[13,5,13,84,1],[21,5,21,6,1],[22,9,22,70,1],[23,5,23,6,1],[30,5,30,6,1],[31,9,31,35,1],[32,5,32,6,1],[39,5,39,6,1],[40,9,40,42,1],[41,5,41,6,1]]);
+    </script>
+  </body>
+</html>

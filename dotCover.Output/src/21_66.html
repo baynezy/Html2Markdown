@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/Replacement/BreakTagReplacer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace Html2Markdown.Replacement;
+
+/// &lt;summary&gt;
+/// Replaces the HTML break tag with its Markdown equivalent.
+/// &lt;/summary&gt;
+public class BreakTagReplacer : PatternReplacer
+{
+    /// &lt;summary&gt;
+    /// Initializes a new instance of the &lt;see cref=&quot;BreakTagReplacer&quot;/&gt; class.
+    /// Sets the pattern to match break tags and the replacement to a Markdown line break.
+    /// &lt;/summary&gt;
+    public BreakTagReplacer()
+    {
+        Pattern = &quot;&lt;br[^&gt;]*&gt;&quot;;
+        Replacement = &quot;  &quot; + Environment.NewLine;
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[12,5,12,30,1],[13,5,13,6,1],[14,9,14,31,1],[15,9,15,50,1],[16,5,16,6,1]]);
+    </script>
+  </body>
+</html>

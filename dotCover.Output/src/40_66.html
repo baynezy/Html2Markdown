@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/src/Html2Markdown/Replacement/LinkTagReplacer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace Html2Markdown.Replacement;
+
+/// &lt;summary&gt;
+/// Removes the link tag.
+/// &lt;/summary&gt;
+public class LinkTagReplacer : PatternReplacer
+{
+    /// &lt;summary&gt;
+    /// Initializes a new instance of the &lt;see cref=&quot;LinkTagReplacer&quot;/&gt; class.
+    /// Sets up the pattern and replacement for removing link tags.
+    /// &lt;/summary&gt;
+    public LinkTagReplacer()
+    {
+        Pattern = &quot;&lt;link[^&gt;]*&gt;&quot;;
+        Replacement = &quot;&quot;;
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[12,5,12,29,1],[13,5,13,6,1],[14,9,14,33,1],[15,9,15,26,1],[16,5,16,6,1]]);
+    </script>
+  </body>
+</html>

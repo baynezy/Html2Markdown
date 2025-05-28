@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/MarkdownSchemeConverterTest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Html2Markdown.Scheme;
+
+namespace Html2Markdown.Test;
+
+public class MarkdownSchemeConverterTest
+{
+
+	#region Schemes
+
+	[Fact]
+	public void Converter_WhenProvidingMarkdownAsACustomScheme_ThenShouldConvertEquivalentlyToNoScheme()
+	{
+		// arrange
+		const string html = &quot;&quot;&quot;So this is &lt;a href=&quot;http://www.simonbaynes.com/&quot;&gt;a link&lt;/a&gt;. Convert it&quot;&quot;&quot;;
+
+		var scheme = new Markdown();
+
+		var converterWithScheme = new Converter(scheme);
+		var converterWithoutScheme = new Converter();
+		
+		// act
+		var resultWithScheme = converterWithScheme.Convert(html);
+		var resultWithoutScheme = converterWithoutScheme.Convert(html);
+		
+		// assert
+		resultWithoutScheme.Should().Be(resultWithScheme);
+	}
+
+	#endregion
+
+	#region Links
+		
+	[Fact]
+	public Task Convert_WhenThereAreHtmlLinks_ThenConvertToMarkDownLinks()
+	{
+		const string html = &quot;&quot;&quot;So this is &lt;a href=&quot;http://www.simonbaynes.com/&quot;&gt;a link&lt;/a&gt;. Convert it&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreHtmlLinksWithAttributesAfterTheHref_ThenConvertToMarkDownLink()
+	{
+		const string html = &quot;&quot;&quot;So this is &lt;a href=&quot;http://www.simonbaynes.com/&quot; alt=&quot;example&quot;&gt;a link&lt;/a&gt;. Convert it&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreHtmlLinksWithAttributesBeforeTheHref_ThenConvertToMarkDownLink()
+	{
+		const string html = &quot;&quot;&quot;So this is &lt;a alt=&quot;example&quot; href=&quot;http://www.simonbaynes.com/&quot;&gt;a link&lt;/a&gt;. Convert it&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreHtmlLinksWithTitleAttributeAfterTheHref_ThenConvertToMarkDownLink()
+	{
+		const string html = &quot;&quot;&quot;So this is &lt;a href=&quot;http://www.simonbaynes.com/&quot; title=&quot;example&quot;&gt;a link&lt;/a&gt;. Convert it&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreHtmlLinksWithTitleAttributeBeforeTheHref_ThenConvertToMarkDownLink()
+	{
+		const string html = &quot;&quot;&quot;So this is &lt;a title=&quot;example&quot; href=&quot;http://www.simonbaynes.com/&quot;&gt;a link&lt;/a&gt;. Convert it&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreMultipleHtmlLinks_ThenConvertThemToMarkDownLinks()
+	{
+		const string html = &quot;&quot;&quot;So this is &lt;a href=&quot;http://www.simonbaynes.com/&quot;&gt;a link&lt;/a&gt; and so is &lt;a href=&quot;http://www.google.com/&quot;&gt;this&lt;/a&gt;. Convert them&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreEmptyLinks_ThenRemoveThemFromResult()
+	{
+		const string html = &quot;&quot;&quot;So this is &lt;a name=&quot;curio&quot;&gt;&lt;/a&gt; and so is &lt;a href=&quot;http://www.google.com/&quot;&gt;this&lt;/a&gt;. Convert them&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Strong and Bold Tags
+
+	[Fact]
+	public Task Convert_WhenThereAreStrongTags_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = &quot;So this text is &lt;strong&gt;bold&lt;/strong&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreStrongTagsFollowedByASpace_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = &quot;This is a&lt;strong&gt; test&lt;/strong&gt; that causes problems.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreStrongTagsFollowedByAMultipleSpaces_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = &quot;This is a&lt;strong&gt;  test&lt;/strong&gt; that causes problems.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreClosingStrongTagsFollowedByASpace_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = &quot;This is a &lt;strong&gt;test &lt;/strong&gt;that causes problems.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreClosingStrongTagsFollowedByAMultipleSpaces_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = &quot;This is a &lt;strong&gt;test  &lt;/strong&gt;that causes problems.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreMultipleStrongTags_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = &quot;So this text is &lt;strong&gt;bold&lt;/strong&gt; and &lt;strong&gt;is this&lt;/strong&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreBoldTags_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = &quot;So this text is &lt;b&gt;bold&lt;/b&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+	
+	[Fact]
+	public Task Convert_WhenThereIsABoldTagWithProperties_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = &quot;&quot;&quot;So this text is &lt;b id=&quot;something&quot;&gt;bold&lt;/b&gt;. Convert it.&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+	
+	[Fact]
+	public Task Convert_WhenThereIsAStrongTagWithProperties_ThenConvertToMarkDownDoubleAsterisks()
+	{
+		const string html = &quot;&quot;&quot;So this text is &lt;strong id=&quot;something&quot;&gt;bold&lt;/strong&gt;. Convert it.&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Emphasis and Italic Tags
+
+	[Fact]
+	public Task Convert_WhenThereAreEmphasisTags_ThenConvertToMarkDownSingleAsterisk()
+	{
+		const string html = &quot;So this text is &lt;em&gt;italic&lt;/em&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreEmphasisTagsFollowedByASpace_ThenConvertToMarkDownSingleAsterisk()
+	{
+		const string html = &quot;This is a&lt;em&gt; test&lt;/em&gt; that causes problems.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreEmphasisTagsFollowedByMultipleSpaces_ThenConvertToMarkDownSingleAsterisk()
+	{
+		const string html = &quot;This is a&lt;em&gt;  test&lt;/em&gt; that causes problems.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreClosingEmphasisTagsFollowedByASpace_ThenConvertToMarkDownSingleAsterisk()
+	{
+		const string html = &quot;This is a &lt;em&gt;test &lt;/em&gt;that causes problems.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreClosingEmphasisTagsFollowedByMultipleSpaces_ThenConvertToMarkDownSingleAsterisk()
+	{
+		const string html = &quot;This is a &lt;em&gt;test  &lt;/em&gt;that causes problems.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreItalicTags_ThenConvertToMarkDownSingleAsterisk()
+	{
+		const string html = &quot;So this text is &lt;i&gt;italic&lt;/i&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Break tags
+		
+	[Fact]
+	public Task Convert_WhenThereAreBreakTags_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
+	{
+		const string html = &quot;So this text has a break.&lt;br/&gt;Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreBreakTagsWithWhitespace_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
+	{
+		const string html = &quot;So this text has a break.&lt;br /&gt;Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreBreakTagsThatAreNotSelfClosing_ThenConvertToMarkDownDoubleSpacesWitCarriageReturns()
+	{
+		const string html = &quot;So this text has a break.&lt;br&gt;Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Code Tags
+
+	[Fact]
+	public Task Convert_WhenThereAreCodeTags_ThenReplaceWithBackTick()
+	{
+		const string html = &quot;So this text has code &lt;code&gt;alert();&lt;/code&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereMultilineCodeTags_ThenReplaceWithMultilineMarkdownBlock001()
+	{
+		const string html = &quot;&quot;&quot;
+		                    So this text has multiline code.
+		                    &lt;code&gt;
+		                    &amp;lt;p&amp;gt;
+		                    	Some code we are looking at
+		                    &amp;lt;/p&amp;gt;
+		                    &lt;/code&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereMultilineCodeTags_ThenReplaceWithMultilineMarkdownBlock002()
+	{
+		const string html = &quot;&quot;&quot;
+		                    So this text has multiline code.
+		                    &lt;code&gt;
+		                    	&amp;lt;p&amp;gt;
+		                    		Some code we are looking at
+		                    	&amp;lt;/p&amp;gt;
+		                    &lt;/code&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	/// https://github.com/baynezy/Html2Markdown/issues/112
+	[Fact]
+	public Task Convert_WhenThereMultilineCodeTags_ThenReplaceWithMultilineMarkdownBlock003()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;code&gt;
+		                    	class solution {&lt;br&gt;
+		                    		int i;&lt;br&gt;
+		                    		string name = “name”;&lt;br&gt;
+		                    	}
+		                    &lt;/code&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Header Tags
+
+	[Fact]
+	public Task Convert_WhenThereAreH1Tags_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;This code has a &lt;h1&gt;header&lt;/h1&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+	
+	[Fact]
+	public Task Convert_WhenThereAreH2Tags_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;This code has a &lt;h2&gt;header&lt;/h2&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreH3Tags_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;This code has a &lt;h3&gt;header&lt;/h3&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreH4Tags_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;This code has a &lt;h4&gt;header&lt;/h4&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreH5Tags_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;This code has a &lt;h5&gt;header&lt;/h5&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreH6Tags_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;This code has a &lt;h6&gt;header&lt;/h6&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreH1TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;&quot;&quot;This code has a &lt;h1 title=&quot;header&quot;&gt;header&lt;/h1&gt;. Convert it.&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+
+	[Fact]
+	public Task Convert_WhenThereAreH2TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;&quot;&quot;This code has a &lt;h2 title=&quot;header&quot;&gt;header&lt;/h2&gt;. Convert it.&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreH3TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;&quot;&quot;This code has a &lt;h3 title=&quot;header&quot;&gt;header&lt;/h3&gt;. Convert it.&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreH4TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;&quot;&quot;This code has a &lt;h4 title=&quot;header&quot;&gt;header&lt;/h4&gt;. Convert it.&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreH5TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;&quot;&quot;This code has a &lt;h5 title=&quot;header&quot;&gt;header&lt;/h5&gt;. Convert it.&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreH6TagsWithAttributes_ThenReplaceWithMarkDownHeader()
+	{
+		const string html = &quot;&quot;&quot;This code has a &lt;h6 title=&quot;header&quot;&gt;header&lt;/h6&gt;. Convert it.&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Blockquote Tags
+		
+	[Fact]
+	public Task Convert_WhenThereAreBlockquoteTags_ThenReplaceWithMarkDownBlockQuote()
+	{
+		const string html = &quot;This code has a &lt;blockquote&gt;blockquote&lt;/blockquote&gt;. Convert it.&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsABlockquoteTagWithNestedHtml_ThenReplaceWithMarkDownBlockQuote()
+	{
+		const string html = &quot;&lt;blockquote&gt;&lt;em&gt;“Qualquer coisa que possas fazer ou sonhar, podes come&#231;&#225;-la. A ousadia encerra em si mesma genialidade, poder e magia.&lt;br /&gt;Ouse fazer, e o poder lhe ser&#225; dado!”&lt;/em&gt;&lt;br /&gt;&lt;strong&gt;— Johann Wolfgang von Goethe&lt;/strong&gt;&lt;/blockquote&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAMultilineBlockquoteTag_ThenReplaceWithMarkDownBlockQuote()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;blockquote&gt;
+		                        &lt;p class=&quot;right&quot; align=&quot;right&quot;&gt;&lt;em&gt;“Ao estipular seus objetivos, mire na Lua; pois mesmo que aconte&#231;a de voc&#234; n&#227;o alcan&#231;&#225;-los, ainda estar&#225; entre as estrelas!”&lt;/em&gt;&lt;br /&gt;
+		                        &lt;strong&gt;— Dr. Lair Ribeiro&lt;/strong&gt;&lt;/p&gt;
+		                      &lt;/blockquote&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsABlockquoteTagWithAttributes_ThenReplaceWithMarkDownBlockQuote()
+	{
+		const string html = &quot;&quot;&quot;This code has a &lt;blockquote id=&quot;thing&quot;&gt;blockquote&lt;/blockquote&gt;. Convert it.&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Paragraph Tags
+		
+	[Fact]
+	public Task Convert_WhenThereAreParagraphTags_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
+	{
+		const string html = &quot;This code has no markup.&lt;p&gt;This code is in a paragraph.&lt;/p&gt;Convert it!&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreParagraphTagsWithAttributes_ThenReplaceWithDoubleLineBreakBeforeAndOneAfter()
+	{
+		const string html = &quot;&quot;&quot;This code has no markup.&lt;p class=&quot;something&quot;&gt;This code is in a paragraph.&lt;/p&gt;Convert it!&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreParagraphTagsWithNewLinesInThem_ThenReplaceWithMarkdownParagraphButNoBreakTags()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;p&gt;
+		                      text
+		                      text
+		                      text
+		                    &lt;/p&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Horizontal Rule Tags
+		
+	[Fact]
+	public Task Convert_WhenThereAreHorizontalRuleTags_ThenReplaceWithMarkDownHorizontalRule()
+	{
+		const string html = &quot;This code is seperated by a horizontal rule.&lt;hr/&gt;Convert it!&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreHorizontalRuleTagsWithWhiteSpace_ThenReplaceWithMarkDownHorizontalRule()
+	{
+		const string html = &quot;This code is seperated by a horizontal rule.&lt;hr /&gt;Convert it!&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreHorizontalRuleTagsWithAttributes_ThenReplaceWithMarkDownHorizontalRule()
+	{
+		const string html = &quot;&quot;&quot;This code is seperated by a horizontal rule.&lt;hr class=&quot;something&quot; /&gt;Convert it!&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreHorizontalRuleTagsThatAreNonSelfClosing_ThenReplaceWithMarkDownHorizontalRule()
+	{
+		const string html = &quot;This code is seperated by a horizontal rule.&lt;hr&gt;Convert it!&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Image Tags
+		
+	[Fact]
+	public Task Convert_WhenThereAreImgTags_ThenReplaceWithMarkdownImage()
+	{
+		const string html = &quot;&quot;&quot;This code is with and image &lt;img alt=&quot;something&quot; title=&quot;convert&quot; src=&quot;https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif&quot; /&gt; Convert it!&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreImgTagsWithoutATitle_ThenReplaceWithMarkdownImage()
+	{
+		const string html = &quot;&quot;&quot;This code is with an image &lt;img alt=&quot;something&quot; src=&quot;https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif&quot; /&gt; Convert it!&quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Pre Tags
+		
+	[Fact]
+	public Task Convert_WhenThereArePreTags_ThenReplaceWithMarkdownPre()
+	{
+		const string html = &quot;&quot;&quot;
+		                    This code is with a pre tag &lt;pre&gt;
+		                    	Predefined text&lt;/pre&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreOtherTagsNestedInThePreTag_ThenReplaceWithMarkdownPre()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;pre&gt;&lt;code&gt;Install-Package Html2Markdown
+		                    &lt;/code&gt;&lt;/pre&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreMultiplePreTags_ThenReplaceWithMarkdownPre()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;h2&gt;Installing via NuGet&lt;/h2&gt;
+
+		                    &lt;pre&gt;&lt;code&gt;Install-Package Html2Markdown
+		                    &lt;/code&gt;&lt;/pre&gt;
+
+		                    &lt;h2&gt;Usage&lt;/h2&gt;
+
+		                    &lt;pre&gt;&lt;code&gt;var converter = new Converter();
+		                    var result = converter.Convert(html);
+		                    &lt;/code&gt;&lt;/pre&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Lists
+		
+	[Fact]
+	public Task Convert_WhenThereAreUnorderedLists_ThenReplaceWithMarkdownLists()
+	{
+		const string html = &quot;This code is with an unordered list.&lt;ul&gt;&lt;li&gt;Yes&lt;/li&gt;&lt;li&gt;No&lt;/li&gt;&lt;/ul&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreEmptyUnorderedLists_ThenReplaceWithNothing()
+	{
+		const string html = &quot;This code is with an unordered list.&lt;ul&gt;&lt;/ul&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreUnorderedListsWihtoutClosingTags_ThenReplaceWithMarkdownLists()
+	{
+		const string html = &quot;This code is with an unordered list.&lt;ul&gt;&lt;li&gt;Yes&lt;li&gt;No&lt;/ul&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreOrderedLists_ThenReplaceWithMarkdownLists()
+	{
+		const string html = &quot;This code is with an ordered list.&lt;ol&gt;&lt;li&gt;Yes&lt;/li&gt;&lt;li&gt;No&lt;/li&gt;&lt;/ol&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAnUnorderedListWithANestedOrderList_ThenReplaceWithMarkdownLists()
+	{
+		const string html = &quot;This code is with an unordered list.&lt;ul&gt;&lt;li&gt;Yes&lt;/li&gt;&lt;li&gt;&lt;ol&gt;&lt;li&gt;No&lt;/li&gt;&lt;li&gt;Maybe&lt;/li&gt;&lt;/ol&gt;&lt;/li&gt;&lt;/ul&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAnOrderedListWithANestedUnorderedList_ThenReplaceWithMarkdownLists()
+	{
+		const string html = &quot;This code is with an unordered list.&lt;ol&gt;&lt;li&gt;Yes&lt;/li&gt;&lt;li&gt;&lt;ul&gt;&lt;li&gt;No&lt;/li&gt;&lt;li&gt;Maybe&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ol&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAnOrderedListWithNestedParagraphs_ThenReplaceWithMarkdownLists()
+	{
+		const string html = @&quot;&lt;p&gt;This code is with an ordered list and paragraphs.&lt;/p&gt;&lt;ol&gt;&lt;li&gt;&lt;p&gt;Yes, this is a &lt;code&gt;code&lt;/code&gt; element&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;No :&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;Some code we are looking at&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ol&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAMultilineOrderedListWithNestedParagraphsAndCodeElement_ThenReplaceWithMarkdownLists()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;p&gt;This code is with an ordered list and paragraphs.&lt;/p&gt;
+		                    &lt;ol&gt;
+		                    &lt;li&gt;&lt;p&gt;Yes, this is a &lt;code&gt;code&lt;/code&gt; element&lt;/p&gt;
+		                    &lt;/li&gt;
+		                    &lt;li&gt;&lt;p&gt;No :&lt;/p&gt;
+		                    &lt;ul&gt;
+		                    &lt;li&gt;&lt;code&gt;Some code we are looking at&lt;/code&gt;&lt;/li&gt;
+		                    &lt;/ul&gt;
+		                    &lt;/li&gt;
+		                    &lt;/ol&gt;
+
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+	
+	// See issue https://github.com/baynezy/Html2Markdown/issues/395
+	[Fact]
+	public Task Convert_WhenThereAreMultipleUnorderedLists_ThenReplaceWithMarkdownLists()
+	{
+		const string html = &quot;&lt;ul&gt;&lt;ul&gt;&lt;li&gt;first list val&lt;/li&gt;&lt;/ul&gt;&lt;/ul&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+	
+	// See issue https://github.com/baynezy/Html2Markdown/issues/109
+	[Fact]
+	public Task Convert_WhenThereIsAnEmptyList_ThenRemoveTheList()
+	{
+		const string html = &quot;&lt;ul&gt;&lt;li&gt;&lt;/li&gt;&lt;/ul&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Extra HTML Removal
+		
+	[Fact]
+	public Task Convert_WhenThereIsAnHtmlDoctype_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+		                    Doctypes should be removed
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAnHtmlTag_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;html&gt;
+		                    &lt;p&gt;HTML tags should be removed&lt;/p&gt;
+		                    &lt;/html&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAnHtmlTagWithAttributes_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;pt-br&quot;&gt;
+		                    &lt;p&gt;HTML tags should be removed&lt;/p&gt;
+		                    &lt;/html&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsASingleLineComment_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;!-- a comment --&gt;
+		                    &lt;p&gt;Comments should be removed&lt;/p&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAMultiLineComment_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;!-- 
+		                    a comment
+		                    --&gt;
+		                    &lt;p&gt;Comments should be removed&lt;/p&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAHeadTag_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;head&gt;
+		                    &lt;p&gt;HTML tags should be removed&lt;/p&gt;
+		                    &lt;/head&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAHeadTagWithAttributes_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;head id=&quot;something&quot;&gt;
+		                    &lt;p&gt;HTML tags should be removed&lt;/p&gt;
+		                    &lt;/head&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAMetaTag_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;meta name=&quot;language&quot; content=&quot;pt-br&quot;&gt;
+		                    &lt;p&gt;Meta tags should be removed&lt;/p&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsATitleTag_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;title&gt;Remove me&lt;/title&gt;
+		                    &lt;p&gt;Title tags should be removed&lt;/p&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsATitleTagWithAttributes_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;title id=&quot;something&quot;&gt;Remove me&lt;/title&gt;
+		                    &lt;p&gt;Title tags should be removed&lt;/p&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsALinkTag_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://dl.dropboxusercontent.com/u/28729896/modelo-similar-blog-ss-para-sublime-text.css&quot;&gt;
+		                    &lt;p&gt;Link tags should be removed&lt;/p&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsABodyTag_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;body&gt;
+		                    &lt;p&gt;Body tags should be removed&lt;/p&gt;
+		                    &lt;/body&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsABodyTagWithAttributes_ThenRemoveFromResult()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;body id=&quot;something&quot;&gt;
+		                    &lt;p&gt;Body tags should be removed&lt;/p&gt;
+		                    &lt;/body&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAScriptTag_ThenRemoveFromResult() 
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;!DOCTYPE html&gt;
+		                    &lt;html&gt;
+		                    &lt;head&gt;
+		                    	&lt;script src=&quot;scripts/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;
+		                    	&lt;/script&gt;
+		                    &lt;/head&gt;
+		                    &lt;body&gt;
+		                    Hello World
+		                    &lt;/body&gt;
+		                    &lt;/html&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+		
+	[Fact]
+	public Task Convert_WhenAListHasNoItems_ThenRemoveTheList()
+	{
+		const string html = &quot;&lt;ul&gt;&lt;/ul&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	// See issue https://github.com/baynezy/Html2Markdown/issues/269
+	[Fact]
+	public Task Convert_Bug269()
+	{
+		const string html = &quot;&lt;ol&gt; Test &lt;/ol&gt;&quot;;
+
+		return CheckConversion(html);
+	} 
+
+	#endregion
+
+	#region Entities
+		
+	[Fact]
+	public Task Convert_WhenThereIsAnAmpersandEntity_ThenReplaceWithActualCharacter()
+	{
+		const string html = &quot;&lt;p&gt;Enties like &amp;amp; should be converted&lt;/p&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAnLessThanEntity_ThenReplaceWithActualCharacter()
+	{
+		const string html = &quot;&lt;p&gt;Enties like &amp;lt; should be converted&lt;/p&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAGreaterThanEntity_ThenReplaceWithActualCharacter()
+	{
+		const string html = &quot;&lt;p&gt;Enties like &amp;gt; should be converted&lt;/p&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsABulletEntity_ThenReplaceWithActualCharacter()
+	{
+		const string html = &quot;&lt;p&gt;Enties like &amp;#8226; should be converted&lt;/p&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	#region Complex Tests
+		
+	[Fact]
+	public Task Convert_ComplexTest_001()
+	{
+		var html =
+			&quot;&lt;p&gt;This is the second part of a two part series about building real-time web applications with server-sent events.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;ul&gt;\r\n&lt;li&gt;&lt;a href=\&quot;http://bayn.es/real-time-web-applications-with-server-sent-events-pt-1/\&quot;&gt;Building Web Apps with Server-Sent Events - Part 1&lt;/a&gt;&lt;/li&gt;\r\n&lt;/ul&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h2 id=\&quot;reconnecting\&quot;&gt;Reconnecting&lt;/h2&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;In this post we are going to look at handling reconnection if the browser loses contact with the server. Thankfully the native JavaScript functionality for SSEs (the &lt;a href=\&quot;https://developer.mozilla.org/en-US/docs/Web/API/EventSource\&quot;&gt;EventSource&lt;/a&gt;) handles this natively. You just need to make sure that your server-side implementation supports the mechanism.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;When the server reconnects your SSE end point it will send a special HTTP header &lt;code&gt;Last-Event-Id&lt;/code&gt; in the reconnection request. In the previous part of this blog series we looked at just sending events with the &lt;code&gt;data&lt;/code&gt; component. Which looked something like this:-&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;pre&gt;&lt;code&gt;data: The payload we are sending\\n\\n\r\n&lt;/code&gt;&lt;/pre&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;Now while this is enough to make the events make it to your client-side implementation. We need more information to handle reconnection. To do this we need to add an event id to the output.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;E.g.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;pre&gt;&lt;code&gt;id: 1439887379635\\n\r\ndata: The payload we are sending\\n\\n\r\n&lt;/code&gt;&lt;/pre&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;The important thing to understand here is that each event needs a unique identifier, so that the client can communicate back to the server (using the &lt;code&gt;Last-Event-Id&lt;/code&gt; header) which was the last event it received on reconnection.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h2 id=\&quot;persistence\&quot;&gt;Persistence&lt;/h2&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;In our previous example we used &lt;a href=\&quot;http://redis.io/topics/pubsub\&quot;&gt;Redis Pub/Sub&lt;/a&gt; to inform &lt;a href=\&quot;https://nodejs.org/\&quot;&gt;Node.js&lt;/a&gt; that it needs to push a new SSE to the client. Redis Pub/Sub is a topic communication which means it will be delivered to all &lt;em&gt;connected clients&lt;/em&gt;, and then it will be removed from the topic. So there is no persistence for when clients reconnect. To implement this we need to add a persistence layer and so in this demo I have chosen to use &lt;a href=\&quot;https://www.mongodb.org/\&quot;&gt;MongoDB&lt;/a&gt;.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;Essentially we will be pushing events into both Redis and MongoDB. Redis will still be our method of initiating an SSE getting sent to the browser, but we will also be be storing that event into MongoDB so we can query it on a reconnection to get anything we&#39;ve missed.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h2 id=\&quot;thecode\&quot;&gt;The Code&lt;/h2&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;OK so let us look at how we can actually implement this.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h3 id=\&quot;updateserverevent\&quot;&gt;Update ServerEvent&lt;/h3&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;We need to update the ServerEvent object to support having an &lt;code&gt;id&lt;/code&gt; for an event.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;pre&gt;&lt;code&gt;function ServerEvent(name) {\r\n    this.name = name || \&quot;\&quot;;\r\n    this.data = \&quot;\&quot;;\r\n};&quot; + Environment.NewLine + Environment.NewLine + &quot;ServerEvent.prototype.addData = function(data) {\r\n    var lines = data.split(/\\n/);&quot; + Environment.NewLine + Environment.NewLine + &quot;    for (var i = 0; i &amp;lt; lines.length; i++) {\r\n        var element = lines[i];\r\n        this.data += \&quot;data:\&quot; + element + \&quot;\\n\&quot;;\r\n    }\r\n}&quot; + Environment.NewLine + Environment.NewLine + &quot;ServerEvent.prototype.payload = function() {\r\n    var payload = \&quot;\&quot;;\r\n    if (this.name != \&quot;\&quot;) {\r\n        payload += \&quot;id: \&quot; + this.name + \&quot;\\n\&quot;;\r\n    }&quot; + Environment.NewLine + Environment.NewLine + &quot;    payload += this.data;\r\n    return payload + \&quot;\\n\&quot;;\r\n}\r\n&lt;/code&gt;&lt;/pre&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;This is pretty straightforward string manipulation and won&#39;t impress anyone, but it is foundation for what will follow.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h3 id=\&quot;storeeventsinmongodb\&quot;&gt;Store Events in MongoDB&lt;/h3&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;We need to update the &lt;code&gt;post.js&lt;/code&gt; code to also store new events in MongoDB.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;pre&gt;&lt;code&gt;app.put(\&quot;/api/post-update\&quot;, function(req, res) {\r\n    var json = req.body;\r\n    json.timestamp = Date.now();&quot; + Environment.NewLine + Environment.NewLine + &quot;    eventStorage.save(json).then(function(doc) {\r\n        dataChannel.publish(JSON.stringify(json));\r\n    }, errorHandling);&quot; + Environment.NewLine + Environment.NewLine + &quot;    res.status(204).end();\r\n});\r\n&lt;/code&gt;&lt;/pre&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;The &lt;code&gt;event-storage&lt;/code&gt; module looks as follows:&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;pre&gt;&lt;code&gt;var Q = require(\&quot;q\&quot;),\r\n    config = require(\&quot;./config\&quot;),\r\n    mongo = require(\&quot;mongojs\&quot;),\r\n    db = mongo(config.mongoDatabase),\r\n    collection = db.collection(config.mongoScoresCollection);&quot; + Environment.NewLine + Environment.NewLine + &quot;module.exports.save = function(data) {\r\n    var deferred = Q.defer();\r\n    collection.save(data, function(err, doc){\r\n        if(err) {\r\n            deferred.reject(err);\r\n        }\r\n        else {\r\n            deferred.resolve(doc);\r\n        }\r\n    });&quot; + Environment.NewLine + Environment.NewLine + &quot;    return deferred.promise;\r\n};\r\n&lt;/code&gt;&lt;/pre&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;Here we are just using basic MongoDB commands to save a new event into the collection. Yep that is it, we are now additionally persisting the events so they can be retrieved later.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h3 id=\&quot;retrievingeventsonreconnection\&quot;&gt;Retrieving Events on Reconnection&lt;/h3&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;When an &lt;code&gt;EventSource&lt;/code&gt; reconnects after a disconnection it passes a special header &lt;code&gt;Last-Event-Id&lt;/code&gt;. So we need to look for that and return the events that got broadcast while the client was disconnected.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;pre&gt;&lt;code&gt;app.get(\&quot;/api/updates\&quot;, function(req, res){\r\n    initialiseSSE(req, res);&quot; + Environment.NewLine + Environment.NewLine + &quot;    if (typeof(req.headers[\&quot;last-event-id\&quot;]) != \&quot;undefined\&quot;) {\r\n        replaySSEs(req, res);\r\n    }\r\n});&quot; + Environment.NewLine + Environment.NewLine + &quot;function replaySSEs(req, res) {\r\n    var lastId = req.headers[\&quot;last-event-id\&quot;];&quot; + Environment.NewLine + Environment.NewLine + &quot;    eventStorage.findEventsSince(lastId).then(function(docs) {\r\n        for (var index = 0; index &amp;lt; docs.length; index++) {\r\n            var doc = docs[index];\r\n            var messageEvent = new ServerEvent(doc.timestamp);\r\n            messageEvent.addData(doc.update);\r\n            outputSSE(req, res, messageEvent.payload());\r\n        }\r\n    }, errorHandling);\r\n};\r\n&lt;/code&gt;&lt;/pre&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;What we are doing here is querying MongoDB for the events that were missed. We then iterate over them and output them to the browser.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;The code for querying MongoDB is as follows:&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;pre&gt;&lt;code&gt;module.exports.findEventsSince = function(lastEventId) {\r\n    var deferred = Q.defer();&quot; + Environment.NewLine + Environment.NewLine + &quot;    collection.find({\r\n        timestamp: {$gt: Number(lastEventId)}\r\n    })\r\n    .sort({timestamp: 1}, function(err, docs) {\r\n        if (err) {\r\n            deferred.reject(err);\r\n        }\r\n        else {\r\n            deferred.resolve(docs);\r\n        }\r\n    });&quot; + Environment.NewLine + Environment.NewLine + &quot;    return deferred.promise;\r\n};\r\n&lt;/code&gt;&lt;/pre&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h2 id=\&quot;testing\&quot;&gt;Testing&lt;/h2&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;To test this you will need to run both apps at the same time.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;pre&gt;&lt;code&gt;node app.js\r\n&lt;/code&gt;&lt;/pre&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;and &lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;pre&gt;&lt;code&gt;node post.js\r\n&lt;/code&gt;&lt;/pre&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;Once they are running open two browser windows &lt;a href=\&quot;http://localhost:8181/\&quot;&gt;http://localhost:8181/&lt;/a&gt; and &lt;a href=\&quot;http://localhost:8082/api/post-update\&quot;&gt;http://localhost:8082/api/post-update&lt;/a&gt;&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;Now you can post updates as before. If you stop &lt;code&gt;app.js&lt;/code&gt; but continue posting events, when you restart &lt;code&gt;app.js&lt;/code&gt; within 10 seconds the &lt;code&gt;EventSource&lt;/code&gt; will reconnect. This will deliver all missed events.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h2 id=\&quot;conclusion\&quot;&gt;Conclusion&lt;/h2&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;This very simple code gives you a very elegant and powerful push architecture to create real-time apps.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h3 id=\&quot;improvements\&quot;&gt;Improvements&lt;/h3&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;A possible improvement would be to render the events from MongoDB server-side when the page is first output. Then we would get updates client-side as they are pushed to the browser.&lt;/p&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;h3 id=\&quot;download\&quot;&gt;Download&lt;/h3&gt;&quot; + Environment.NewLine + Environment.NewLine + &quot;&lt;p&gt;If you want to play with this application you can fork or browse it on &lt;a href=\&quot;https://github.com/baynezy/RealtimeDemo/tree/part-2\&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_ComplexTest_002()
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;p&gt;Some other HTML&lt;/p&gt;
+
+		                    &lt;blockquote&gt;
+		                    &lt;p class=&quot;right&quot; align=&quot;right&quot;&gt;&lt;em&gt;“Qualquer coisa que possas fazer ou sonhar, podes come&#231;&#225;-la. A ousadia encerra em si mesma genialidade, poder e magia.&lt;br /&gt;Ouse fazer, e o poder lhe ser&#225; dado!”&lt;/em&gt;&lt;br /&gt;&lt;strong&gt;— Johann Wolfgang von Goethe&lt;/strong&gt;&lt;/p&gt;
+		                    &lt;/blockquote&gt;
+		                    &quot;&quot;&quot;;
+
+		return CheckConversion(html);
+	}
+
+	// Issue #81 https://github.com/baynezy/Html2Markdown/issues/81
+	[Fact]
+	public void Convert_WhenConvertingContentFromIssue81_ThenShouldNotError()
+	{
+		const string content = &quot;\n\n&lt;p style=\&quot;margin:0in;font-family:Calibri;font-size:11.0pt;\&quot;&gt;&lt;span style=\&quot;font-weight:bold;\&quot;&gt;Repro steps amended functionality:&lt;/span&gt; Followed\nduplication plan. Location field now only shows location at the booking&#39;s site. Testing passed.&lt;/p&gt;\n\n&lt;p style=\&quot;margin:0in;font-family:Calibri;font-size:11.0pt;\&quot;&gt;&amp;nbsp;&lt;/p&gt;\n\n&lt;p style=\&quot;margin:0in;font-family:Calibri;font-size:11.0pt;\&quot;&gt;&lt;span style=\&quot;font-weight:bold;\&quot;&gt;Exploratory Testing&lt;/span&gt;: n/a&lt;/p&gt;\n\n&lt;p style=\&quot;margin:0in;font-family:Calibri;font-size:11.0pt;\&quot;&gt;&amp;nbsp;&lt;/p&gt;\n\n&lt;p style=\&quot;margin:0in;font-family:Calibri;font-size:11.0pt;\&quot;&gt;&lt;span style=\&quot;font-weight:bold;\&quot;&gt;Areas Affected and Tested: &lt;/span&gt;Inpatient Bookings, Bed Move screen&lt;br&gt;&lt;/p&gt;\n\n&quot;;
+
+		var converter = new Converter();
+		
+		Action action = () =&gt; converter.Convert(content);
+		
+		action.Should().NotThrow();
+	}
+
+	[Fact]
+	public Task Convert_WhenThereAreParagraphTagsEitherSideOfAList_ThenThereShouldBeAppropriateSpacing()
+	{
+		const string html = &quot;&lt;p&gt;a&lt;/p&gt;&lt;ul&gt;&lt;li&gt;First&lt;/li&gt;&lt;li&gt;Last&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;b&lt;/p&gt;&quot;;
+			
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_WhenThereIsAParagraphTagAfterAList_ThenThereShouldBeAppropriateSpacing()
+	{
+		const string html = &quot;&lt;p&gt;a&lt;/p&gt;&lt;ul&gt;&lt;li&gt;First&lt;/li&gt;&lt;li&gt;Last&lt;/li&gt;&lt;/ul&gt;b&quot;;
+			
+		return CheckConversion(html);
+	}
+
+	[Fact]
+	public Task Convert_Bug_114() // https://github.com/baynezy/Html2Markdown/issues/114
+	{
+		const string html = &quot;&quot;&quot;
+		                    &lt;html&gt;
+		                    &lt;body&gt;
+		                    &lt;h2 style=&quot;box-sizing: border-box; margin-top: 24px; margin-bottom: 16px; font-size: 1.5em; font-weight: 600; line-height: 1.25; padding-bottom: 0.3em; border-bottom: 1px solid var(--color-border-muted); color: rgb(201, 209, 217); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;Support&lt;/h2&gt;&lt;p style=&quot;box-sizing: border-box; margin-top: 0px; margin-bottom: 16px; color: rgb(201, 209, 217); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;This project will currently convert the following HTML tags:-&lt;/p&gt;
+		                    &lt;ul style=&quot;box-sizing: border-box; padding-left: 2em; margin-top: 0px; margin-bottom: 16px; color: rgb(201, 209, 217); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;
+		                    &lt;li style=&quot;box-sizing: border-box;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;a&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;strong&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;b&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;em&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;i&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;br&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;h1&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;h2&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;h3&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;h4&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;h5&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;h6&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;blockquote&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;img&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;hr&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;p&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;pre&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;ul&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;li style=&quot;box-sizing: border-box; margin-top: 0.25em;&quot;&gt;&lt;code style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; padding: 0.2em 0.4em; margin: 0px; background-color: var(--color-neutral-muted); border-radius: 6px;&quot;&gt;&amp;lt;ol&amp;gt;&lt;/code&gt;&lt;/li&gt;
+		                    &lt;/ul&gt;
+		                    &lt;h2 style=&quot;box-sizing: border-box; margin-top: 24px; margin-bottom: 16px; font-size: 1.5em; font-weight: 600; line-height: 1.25; padding-bottom: 0.3em; border-bottom: 1px solid var(--color-border-muted); color: rgb(201, 209, 217); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;a id=&quot;user-content-installing-via-nuget&quot; class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;https://github.com/baynezy/Html2Markdown#installing-via-nuget&quot; style=&quot;box-sizing: border-box; background-color: transparent; color: var(--color-accent-fg); text-decoration: none; float: left; padding-right: 4px; margin-left: -20px; line-height: 1;&quot;&gt;&lt;svg class=&quot;octicon octicon-link&quot; viewBox=&quot;0 0 16 16&quot; version=&quot;1.1&quot; width=&quot;16&quot; height=&quot;16&quot; aria-hidden=&quot;true&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Installing via NuGet&lt;/h2&gt;&lt;p style=&quot;box-sizing: border-box; margin-top: 0px; margin-bottom: 16px; color: rgb(201, 209, 217); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;a href=&quot;http://badge.fury.io/nu/Html2Markdown&quot; rel=&quot;nofollow&quot; style=&quot;box-sizing: border-box; background-color: transparent; color: var(--color-accent-fg); text-decoration: none;&quot;&gt;&lt;img src=&quot;https://camo.githubusercontent.com/2ee778ef534fdd413d5055d3202813398f39235a3d60b13974d43bc1bf1523a1/68747470733a2f2f62616467652e667572792e696f2f6e752f48746d6c324d61726b646f776e2e737667&quot; alt=&quot;NuGet version&quot; data-canonical-src=&quot;https://badge.fury.io/nu/Html2Markdown.svg&quot; style=&quot;box-sizing: content-box; border-style: none; max-width: 100%; background-color: var(--color-canvas-default);&quot;&gt;&lt;/a&gt;&lt;/p&gt;&lt;div class=&quot;highlight highlight-source-powershell position-relative&quot; style=&quot;box-sizing: border-box; position: relative !important; margin-bottom: 16px; color: rgb(201, 209, 217); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;pre style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; margin-top: 0px; margin-bottom: 0px; overflow-wrap: normal; padding: 16px; overflow: auto; line-height: 1.45; background-color: var(--color-canvas-subtle); border-radius: 6px; word-break: normal;&quot;&gt;    &lt;span class=&quot;pl-c1&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-constant);&quot;&gt;Install-Package&lt;/span&gt; Html2Markdown&lt;/pre&gt;&lt;/div&gt;&lt;h2 style=&quot;box-sizing: border-box; margin-top: 24px; margin-bottom: 16px; font-size: 1.5em; font-weight: 600; line-height: 1.25; padding-bottom: 0.3em; border-bottom: 1px solid var(--color-border-muted); color: rgb(201, 209, 217); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;a id=&quot;user-content-usage&quot; class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;https://github.com/baynezy/Html2Markdown#usage&quot; style=&quot;box-sizing: border-box; background-color: transparent; color: var(--color-accent-fg); text-decoration: none; float: left; padding-right: 4px; margin-left: -20px; line-height: 1;&quot;&gt;&lt;svg class=&quot;octicon octicon-link&quot; viewBox=&quot;0 0 16 16&quot; version=&quot;1.1&quot; width=&quot;16&quot; height=&quot;16&quot; aria-hidden=&quot;true&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Usage&lt;/h2&gt;&lt;h3 style=&quot;box-sizing: border-box; margin-top: 24px; margin-bottom: 16px; font-size: 1.25em; font-weight: 600; line-height: 1.25; color: rgb(201, 209, 217); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;a id=&quot;user-content-strings&quot; class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;https://github.com/baynezy/Html2Markdown#strings&quot; style=&quot;box-sizing: border-box; background-color: transparent; color: var(--color-accent-fg); text-decoration: none; float: left; padding-right: 4px; margin-left: -20px; line-height: 1;&quot;&gt;&lt;svg class=&quot;octicon octicon-link&quot; viewBox=&quot;0 0 16 16&quot; version=&quot;1.1&quot; width=&quot;16&quot; height=&quot;16&quot; aria-hidden=&quot;true&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Strings&lt;/h3&gt;&lt;div class=&quot;highlight highlight-source-cs position-relative&quot; style=&quot;box-sizing: border-box; position: relative !important; margin-bottom: 16px; color: rgb(201, 209, 217); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;pre style=&quot;box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, &amp;quot;SF Mono&amp;quot;, Menlo, Consolas, &amp;quot;Liberation Mono&amp;quot;, monospace; font-size: 13.6px; margin-top: 0px; margin-bottom: 0px; overflow-wrap: normal; padding: 16px; overflow: auto; line-height: 1.45; background-color: var(--color-canvas-subtle); border-radius: 6px; word-break: normal;&quot;&gt;&lt;span class=&quot;pl-k&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-keyword);&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;pl-en&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-entity);&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;pl-k&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-keyword);&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pl-s&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-string);&quot;&gt;&lt;span class=&quot;pl-pds&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-string);&quot;&gt;&quot;&lt;/span&gt;Something to &amp;lt;strong&amp;gt;convert&amp;lt;/strong&amp;gt;&lt;span class=&quot;pl-pds&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-string);&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;;
+		                    &lt;span class=&quot;pl-k&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-keyword);&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;pl-en&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-entity);&quot;&gt;converter&lt;/span&gt; &lt;span class=&quot;pl-k&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-keyword);&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pl-k&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-keyword);&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;pl-k&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-keyword);&quot;&gt;Converter&lt;/span&gt;();
+		                    &lt;span class=&quot;pl-k&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-keyword);&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;pl-en&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-entity);&quot;&gt;markdown&lt;/span&gt; &lt;span class=&quot;pl-k&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-keyword);&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pl-smi&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-storage-modifier-import);&quot;&gt;converter&lt;/span&gt;.&lt;span class=&quot;pl-en&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-entity);&quot;&gt;Convert&lt;/span&gt;(&lt;span class=&quot;pl-smi&quot; style=&quot;box-sizing: border-box; color: var(--color-prettylights-syntax-storage-modifier-import);&quot;&gt;html&lt;/span&gt;);&lt;/pre&gt;&lt;/div&gt;
+		                    &lt;/body&gt;
+		                    &lt;/html&gt;
+		                    &quot;&quot;&quot;;
+		
+		return CheckConversion(html);
+	}
+
+	#endregion
+
+	protected virtual Task CheckConversion(string html, IScheme scheme = null)
+	{
+		var converter = scheme == null ? new Converter() : new Converter(scheme);
+
+		var result = converter.Convert(html);
+
+		return Verifier.Verify(result);
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[13,2,13,3,1],[17,3,17,31,1],[19,3,19,51,1],[20,3,20,48,1],[23,3,23,60,1],[24,3,24,66,1],[27,3,27,53,1],[28,2,28,3,1],[36,2,36,3,1],[39,3,39,32,1],[40,2,40,3,1],[44,2,44,3,1],[47,3,47,32,1],[48,2,48,3,1],[52,2,52,3,1],[55,3,55,32,1],[56,2,56,3,1],[60,2,60,3,1],[63,3,63,32,1],[64,2,64,3,1],[68,2,68,3,1],[71,3,71,32,1],[72,2,72,3,1],[76,2,76,3,1],[79,3,79,32,1],[80,2,80,3,1],[84,2,84,3,1],[87,3,87,32,1],[88,2,88,3,1],[96,2,96,3,1],[99,3,99,32,1],[100,2,100,3,1],[104,2,104,3,1],[107,3,107,32,1],[108,2,108,3,1],[112,2,112,3,1],[115,3,115,32,1],[116,2,116,3,1],[120,2,120,3,1],[123,3,123,32,1],[124,2,124,3,1],[128,2,128,3,1],[131,3,131,32,1],[132,2,132,3,1],[136,2,136,3,1],[139,3,139,32,1],[140,2,140,3,1],[144,2,144,3,1],[147,3,147,32,1],[148,2,148,3,1],[152,2,152,3,1],[155,3,155,32,1],[156,2,156,3,1],[160,2,160,3,1],[163,3,163,32,1],[164,2,164,3,1],[172,2,172,3,1],[175,3,175,32,1],[176,2,176,3,1],[180,2,180,3,1],[183,3,183,32,1],[184,2,184,3,1],[188,2,188,3,1],[191,3,191,32,1],[192,2,192,3,1],[196,2,196,3,1],[199,3,199,32,1],[200,2,200,3,1],[204,2,204,3,1],[207,3,207,32,1],[208,2,208,3,1],[212,2,212,3,1],[215,3,215,32,1],[216,2,216,3,1],[224,2,224,3,1],[227,3,227,32,1],[228,2,228,3,1],[232,2,232,3,1],[235,3,235,32,1],[236,2,236,3,1],[240,2,240,3,1],[243,3,243,32,1],[244,2,244,3,1],[252,2,252,3,1],[255,3,255,32,1],[256,2,256,3,1],[260,2,260,3,1],[270,3,270,32,1],[271,2,271,3,1],[275,2,275,3,1],[285,3,285,32,1],[286,2,286,3,1],[291,2,291,3,1],[301,3,301,32,1],[302,2,302,3,1],[310,2,310,3,1],[313,3,313,32,1],[314,2,314,3,1],[318,2,318,3,1],[321,3,321,32,1],[322,2,322,3,1],[326,2,326,3,1],[329,3,329,32,1],[330,2,330,3,1],[334,2,334,3,1],[337,3,337,32,1],[338,2,338,3,1],[342,2,342,3,1],[345,3,345,32,1],[346,2,346,3,1],[350,2,350,3,1],[353,3,353,32,1],[354,2,354,3,1],[358,2,358,3,1],[361,3,361,32,1],[362,2,362,3,1],[367,2,367,3,1],[370,3,370,32,1],[371,2,371,3,1],[375,2,375,3,1],[378,3,378,32,1],[379,2,379,3,1],[383,2,383,3,1],[386,3,386,32,1],[387,2,387,3,1],[391,2,391,3,1],[394,3,394,32,1],[395,2,395,3,1],[399,2,399,3,1],[402,3,402,32,1],[403,2,403,3,1],[411,2,411,3,1],[414,3,414,32,1],[415,2,415,3,1],[419,2,419,3,1],[422,3,422,32,1],[423,2,423,3,1],[427,2,427,3,1],[435,3,435,32,1],[436,2,436,3,1],[440,2,440,3,1],[443,3,443,32,1],[444,2,444,3,1],[452,2,452,3,1],[455,3,455,32,1],[456,2,456,3,1],[460,2,460,3,1],[463,3,463,32,1],[464,2,464,3,1],[468,2,468,3,1],[477,3,477,32,1],[478,2,478,3,1],[486,2,486,3,1],[489,3,489,32,1],[490,2,490,3,1],[494,2,494,3,1],[497,3,497,32,1],[498,2,498,3,1],[502,2,502,3,1],[505,3,505,32,1],[506,2,506,3,1],[510,2,510,3,1],[513,3,513,32,1],[514,2,514,3,1],[522,2,522,3,1],[525,3,525,32,1],[526,2,526,3,1],[530,2,530,3,1],[533,3,533,32,1],[534,2,534,3,1],[542,2,542,3,1],[548,3,548,32,1],[549,2,549,3,1],[553,2,553,3,1],[559,3,559,32,1],[560,2,560,3,1],[564,2,564,3,1],[578,3,578,32,1],[579,2,579,3,1],[587,2,587,3,1],[590,3,590,32,1],[591,2,591,3,1],[595,2,595,3,1],[598,3,598,32,1],[599,2,599,3,1],[603,2,603,3,1],[606,3,606,32,1],[607,2,607,3,1],[611,2,611,3,1],[614,3,614,32,1],[615,2,615,3,1],[619,2,619,3,1],[622,3,622,32,1],[623,2,623,3,1],[627,2,627,3,1],[630,3,630,32,1],[631,2,631,3,1],[635,2,635,3,1],[638,3,638,32,1],[639,2,639,3,1],[643,2,643,3,1],[658,3,658,32,1],[659,2,659,3,1],[664,2,664,3,1],[667,3,667,32,1],[668,2,668,3,1],[673,2,673,3,1],[676,3,676,32,1],[677,2,677,3,1],[685,2,685,3,1],[691,3,691,32,1],[692,2,692,3,1],[696,2,696,3,1],[703,3,703,32,1],[704,2,704,3,1],[708,2,708,3,1],[715,3,715,32,1],[716,2,716,3,1],[720,2,720,3,1],[726,3,726,32,1],[727,2,727,3,1],[731,2,731,3,1],[739,3,739,32,1],[740,2,740,3,1],[744,2,744,3,1],[751,3,751,32,1],[752,2,752,3,1],[756,2,756,3,1],[763,3,763,32,1],[764,2,764,3,1],[768,2,768,3,1],[774,3,774,32,1],[775,2,775,3,1],[779,2,779,3,1],[785,3,785,32,1],[786,2,786,3,1],[790,2,790,3,1],[796,3,796,32,1],[797,2,797,3,1],[801,2,801,3,1],[807,3,807,32,1],[808,2,808,3,1],[812,2,812,3,1],[819,3,819,32,1],[820,2,820,3,1],[824,2,824,3,1],[831,3,831,32,1],[832,2,832,3,1],[836,2,836,3,1],[850,3,850,32,1],[851,2,851,3,1],[855,2,855,3,1],[858,3,858,32,1],[859,2,859,3,1],[864,2,864,3,1],[867,3,867,32,1],[868,2,868,3,1],[876,2,876,3,1],[879,3,879,32,1],[880,2,880,3,1],[884,2,884,3,1],[887,3,887,32,1],[888,2,888,3,1],[892,2,892,3,1],[895,3,895,32,1],[896,2,896,3,1],[900,2,900,3,1],[903,3,903,32,1],[904,2,904,3,1],[912,2,912,3,1],[913,3,914,10235,1],[916,3,916,32,1],[917,2,917,3,1],[921,2,921,3,1],[930,3,930,32,1],[931,2,931,3,1],[936,2,936,3,1],[939,3,939,35,1],[941,3,941,25,1],[941,25,941,51,1],[941,51,941,52,1],[943,3,943,30,1],[944,2,944,3,1],[948,2,948,3,1],[951,3,951,32,1],[952,2,952,3,1],[956,2,956,3,1],[959,3,959,32,1],[960,2,960,3,1],[964,2,964,3,1],[998,3,998,32,1],[999,2,999,3,1],[1004,2,1004,3,1],[1005,3,1005,76,1],[1007,3,1007,40,1],[1009,3,1009,34,1],[1010,2,1010,3,1]]);
+    </script>
+  </body>
+</html>
