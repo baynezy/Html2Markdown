@@ -676,6 +676,15 @@ public class MarkdownSchemeConverterTest
 		return CheckConversion(html);
 	}
 	
+	// See issue https://github.com/baynezy/Html2Markdown/issues/170
+	[Fact]
+	public Task Convert_WhenThereIsAnOrderedListWithValueAttribute_ThenReplaceWithNumberedMarkdownList()
+	{
+		const string html = "<ol><li>First</li><li value=\"100\">Hundredth</li></ol>";
+
+		return CheckConversion(html);
+	}
+	
 	// See issue https://github.com/baynezy/Html2Markdown/issues/110
 	[Fact]
 	public Task Convert_WhenThereAreThreeLevelNestedLists_ThenReplaceWithCorrectIndentation()
