@@ -228,7 +228,7 @@ internal static partial class HtmlParser
             ReplaceNode(node, markdown);
         }
 
-        return doc.DocumentElement?.OuterHtml ?? html;
+        return GetModifiedHtml(doc, html);
     }
 
     private static string ConvertPre(string html)
@@ -304,7 +304,7 @@ internal static partial class HtmlParser
             ReplaceNode(node, markdown);
         }
 
-        return doc.DocumentElement?.OuterHtml ?? html;
+        return GetModifiedHtml(doc, html);
     }
 
     internal static string ReplaceCode(string html, bool supportSyntaxHighlighting)
@@ -344,7 +344,7 @@ internal static partial class HtmlParser
             ReplaceNode(node, markdown);
         }
 
-        return doc.DocumentElement?.OuterHtml ?? html;
+        return GetModifiedHtml(doc, html);
     }
 
     private static string ReplaceBreakTagsWithNewLines(string code)
@@ -414,7 +414,7 @@ internal static partial class HtmlParser
             ReplaceNode(node, markdown);
         }
 
-        return doc.DocumentElement?.OuterHtml ?? html;
+        return GetModifiedHtml(doc, html);
     }
 
     internal static string ReplaceEntities(string html)
@@ -449,7 +449,7 @@ internal static partial class HtmlParser
             ReplaceNode(node, markdown);
         }
 
-        return doc.DocumentElement?.OuterHtml ?? html;
+        return GetModifiedHtml(doc, html);
     }
 
     private static string ReplaceParagraph(string html, bool nestedIntoList)
@@ -480,7 +480,7 @@ internal static partial class HtmlParser
             ReplaceNode(node, markdown);
         }
 
-        return doc.DocumentElement?.OuterHtml ?? html;
+        return GetModifiedHtml(doc, html);
     }
 
     private static bool IsEmptyLink(string linkText, string href)
@@ -492,18 +492,8 @@ internal static partial class HtmlParser
     private static IHtmlDocument GetHtmlDocument(string html)
     {
         var parser = new AngleSharp.Html.Parser.HtmlParser();
-        var config = AngleSharp.Configuration.Default;
         
-        // Parse as a fragment if it doesn't look like a complete document
-        if (!html.TrimStart().StartsWith("<!DOCTYPE", StringComparison.OrdinalIgnoreCase) && 
-            !html.TrimStart().StartsWith("<html", StringComparison.OrdinalIgnoreCase))
-        {
-            // Wrap in a temporary container for fragment parsing
-            var wrappedHtml = $"<div>{html}</div>";
-            var doc = parser.ParseDocument(wrappedHtml);
-            return doc;
-        }
-        
+        // Always parse as a document for consistency, then we'll extract content properly
         return parser.ParseDocument(html);
     }
 
@@ -521,15 +511,15 @@ internal static partial class HtmlParser
     
     private static string GetModifiedHtml(IHtmlDocument doc, string originalHtml)
     {
-        // If the original HTML was a fragment, return just the body content
+        // If the original HTML was a fragment (not a full document), extract just the body content
         if (!originalHtml.TrimStart().StartsWith("<!DOCTYPE", StringComparison.OrdinalIgnoreCase) && 
             !originalHtml.TrimStart().StartsWith("<html", StringComparison.OrdinalIgnoreCase))
         {
-            // Get the content from the temporary div we created
-            var bodyContent = doc.Body?.FirstElementChild?.InnerHtml;
-            return bodyContent ?? originalHtml;
+            // Return the innerHTML of the body, which will contain our fragment
+            return doc.Body?.InnerHtml ?? originalHtml;
         }
         
+        // For full documents, return the complete HTML
         return doc.DocumentElement?.OuterHtml ?? originalHtml;
     }
 
