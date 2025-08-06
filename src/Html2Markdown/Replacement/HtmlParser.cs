@@ -231,13 +231,14 @@ internal static partial class HtmlParser
     private static string ConvertPre(string html)
     {
         var tag = TabsToSpaces(html);
-        tag = IndentNewLines(tag);
+        tag = IndentAllLines(tag);
         return Environment.NewLine + Environment.NewLine + tag + Environment.NewLine;
     }
 
-    private static string IndentNewLines(string tag)
+    private static string IndentAllLines(string tag)
     {
-        return tag.Replace(Environment.NewLine, Environment.NewLine + "    ");
+        // Add indentation to all lines, including the first one
+        return "    " + tag.Replace(Environment.NewLine, Environment.NewLine + "    ");
     }
 
     private static string TabsToSpaces(string tag)
