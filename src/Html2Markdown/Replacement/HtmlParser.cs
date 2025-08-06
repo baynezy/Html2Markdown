@@ -1,6 +1,9 @@
 using System.Net;
 using System.Text.RegularExpressions;
-using HtmlAgilityPack;
+using AngleSharp;
+using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
 
 namespace Html2Markdown.Replacement;
 
@@ -106,17 +109,17 @@ internal static partial class HtmlParser
     {
         // Parse the HTML to get value attributes from li elements
         var doc = GetHtmlDocument(html);
-        var listNode = doc.DocumentNode.SelectSingleNode("//ol");
-        var liNodes = listNode?.SelectNodes(".//li");
+        var listNode = doc.QuerySelector("ol");
+        var liNodes = listNode?.QuerySelectorAll("li");
         orderedList = string.Empty;
 
         if (liNodes is null) return false;
         
-        // Process list items with HtmlAgilityPack to access attributes
+        // Process list items with AngleSharp to access attributes
         foreach (var liNode in liNodes)
         {
             // Check if the li has a value attribute
-            var valueAttr = liNode.Attributes.GetAttributeOrEmpty("value");
+            var valueAttr = liNode.GetAttributeOrEmpty("value");
             if (!string.IsNullOrEmpty(valueAttr) && int.TryParse(valueAttr, out var value))
             {
                 counter = value - 1; // Subtract 1 because we increment before using it
@@ -207,8 +210,8 @@ internal static partial class HtmlParser
     internal static string ReplacePre(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//pre");
-        if (nodes == null)
+        var nodes = doc.QuerySelectorAll("pre");
+        if (!nodes.Any())
         {
             return html;
         }
@@ -222,7 +225,7 @@ internal static partial class HtmlParser
                 ReplaceNode(node, markdown);
             });
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static string ConvertPre(string html)
@@ -245,8 +248,8 @@ internal static partial class HtmlParser
     internal static string ReplaceImg(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//img");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("img");
+        if (!nodes.Any())
         {
             return html;
         }
@@ -254,23 +257,23 @@ internal static partial class HtmlParser
         nodes.ToList()
             .ForEach(node =>
             {
-                var src = node.Attributes.GetAttributeOrEmpty("src");
-                var alt = node.Attributes.GetAttributeOrEmpty("alt");
-                var title = node.Attributes.GetAttributeOrEmpty("title");
+                var src = node.GetAttributeOrEmpty("src");
+                var alt = node.GetAttributeOrEmpty("alt");
+                var title = node.GetAttributeOrEmpty("title");
 
                 var markdown = $"![{alt}]({src}{(title.Length > 0 ? $" \"{title}\"" : "")})";
 
                 ReplaceNode(node, markdown);
             });
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     internal static string ReplaceAnchor(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//a");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("a");
+        if (!nodes.Any())
         {
             return html;
         }
@@ -279,8 +282,8 @@ internal static partial class HtmlParser
             .ForEach(node =>
             {
                 var linkText = node.InnerHtml;
-                var href = node.Attributes.GetAttributeOrEmpty("href");
-                var title = node.Attributes.GetAttributeOrEmpty("title");
+                var href = node.GetAttributeOrEmpty("href");
+                var title = node.GetAttributeOrEmpty("title");
 
                 var markdown = "";
 
@@ -292,15 +295,15 @@ internal static partial class HtmlParser
                 ReplaceNode(node, markdown);
             });
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     internal static string ReplaceCode(string html, bool supportSyntaxHighlighting)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//code");
+        var nodes = doc.QuerySelectorAll("code");
 
-        if (nodes is null)
+        if (!nodes.Any())
         {
             return html;
         }
@@ -329,7 +332,7 @@ internal static partial class HtmlParser
                 ReplaceNode(node, markdown);
             });
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static string ReplaceBreakTagsWithNewLines(string code)
@@ -344,14 +347,14 @@ internal static partial class HtmlParser
         return !code.Contains(Environment.NewLine);
     }
 
-    private static string GetSyntaxHighlightLanguage(HtmlNode node)
+    private static string GetSyntaxHighlightLanguage(IElement node)
     {
         // extract the language for syntax highlighting from a code tag
         // depending on the implementations, language can be declared in the tag as :
         // <code class="language-csharp">
         // <code class="lang-csharp">
         // <code class="csharp">
-        var classAttributeValue = node.Attributes["class"]?.Value;
+        var classAttributeValue = node.GetAttribute("class");
 
         if (string.IsNullOrEmpty(classAttributeValue))
         {
@@ -368,8 +371,8 @@ internal static partial class HtmlParser
     internal static string ReplaceBlockquote(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//blockquote");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("blockquote");
+        if (!nodes.Any())
         {
             return html;
         }
@@ -394,7 +397,7 @@ internal static partial class HtmlParser
                 ReplaceNode(node, markdown);
             });
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     internal static string ReplaceEntities(string html)
@@ -408,9 +411,9 @@ internal static partial class HtmlParser
     {
         var tag = $"h{headingNumber}";
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes($"//{tag}");
+        var nodes = doc.QuerySelectorAll(tag);
 
-        if (nodes is null) return html;
+        if (!nodes.Any()) return html;
 
         nodes.ToList()
             .ForEach(node =>
@@ -426,14 +429,14 @@ internal static partial class HtmlParser
                 ReplaceNode(node, markdown);
             });
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static string ReplaceParagraph(string html, bool nestedIntoList)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//p");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("p");
+        if (!nodes.Any())
         {
             return html;
         }
@@ -454,7 +457,7 @@ internal static partial class HtmlParser
                 ReplaceNode(node, markdown);
             });
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static bool IsEmptyLink(string linkText, string href)
@@ -463,18 +466,17 @@ internal static partial class HtmlParser
         return length == 0;
     }
 
-    private static HtmlDocument GetHtmlDocument(string html)
+    private static IHtmlDocument GetHtmlDocument(string html)
     {
-        var doc = new HtmlDocument();
-        doc.LoadHtml(html);
-        return doc;
+        var parser = new AngleSharp.Html.Parser.HtmlParser();
+        return parser.ParseDocument(html);
     }
 
-    private static void ReplaceNode(HtmlNode node, string markdown)
+    private static void ReplaceNode(INode node, string markdown)
     {
         if (string.IsNullOrEmpty(markdown))
         {
-            node.ParentNode.RemoveChild(node);
+            node.Parent?.RemoveChild(node);
         }
         else
         {
