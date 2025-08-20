@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Configuration for GitHub Copilot coding agent (#565)
 
+### Fixed
+
+- Pinned Stryker version to 4.7.0 as there is a bug with 4.8.0 that causes
+  the build to fail (#591)
+
 ## [7.0.5.14] - 2025-05-28
 
 ## [7.0.4.13] - 2025-05-28
