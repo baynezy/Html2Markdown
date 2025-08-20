@@ -1,5 +1,3 @@
-using JetBrains.Annotations;
-
 namespace Html2Markdown.Replacement;
 
 /// <summary>
@@ -20,6 +18,6 @@ public class CustomReplacer : IReplacer
     /// <summary>
     /// Gets or sets the custom action to be used for replacing HTML tags.
     /// </summary>
-    [PublicAPI]
+    // ReSharper disable once MemberCanBeProtected.Global
     public Func<string, string> CustomAction { get; init; }
 }

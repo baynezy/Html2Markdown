@@ -8,13 +8,14 @@ on:
 env:
   MAJOR_DOTNET_VERSION: 8
   TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
+  STRYKER_VERSION: 4.7.0
         
 jobs:
   mutation-testing:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Setup .NET Core
@@ -23,7 +24,7 @@ jobs:
           dotnet-version: ${{ env.MAJOR_DOTNET_VERSION }}.0.x
       - name: Install Stryker
         run: |
-          dotnet tool install -g dotnet-stryker
+          dotnet tool install -g dotnet-stryker --version $STRYKER_VERSION
       - name: Run Stryker
         run: |
           dotnet stryker --since:${{ inputs.comparison }}

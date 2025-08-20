@@ -30,7 +30,7 @@ jobs:
     needs: [get-version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.head_ref }}
       - name: Increment Version
@@ -38,7 +38,7 @@ jobs:
         run: |
           echo "patch_version=$(($(cat semver.json | jq -r '.patch')+1))" > $GITHUB_OUTPUT
       - name: Store New Version
-        uses: Afterlife-Guide/SemVer.Action@1.0.9.11
+        uses: Afterlife-Guide/SemVer.Action@1.1.1.16
         with:
           path: semver.json
           major-version: ${{ needs.get-version.outputs.major }}
