@@ -39,7 +39,7 @@ jobs:
       build: ${{ steps.set-version.outputs.build }}
     steps:
       - name: Get Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Get Version
         id: get-version
         uses: Afterlife-Guide/SemVer.Action@1.1.1.16
