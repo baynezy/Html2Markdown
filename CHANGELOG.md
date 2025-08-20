@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pinned Stryker version to 4.7.0 as there is a bug with 4.8.0 that causes
   the build to fail (#591)
 
+### Removed
+
+- Removed dependency on JetBrains.Annotations (#593)
+
 ## [7.0.5.14] - 2025-05-28
 
 ## [7.0.4.13] - 2025-05-28
