@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Upgraded Stryker to 4.8.0 (#600)
+
 ## [7.0.7.17] - 2025-08-20
 
 ## [7.0.6.15] - 2025-05-28

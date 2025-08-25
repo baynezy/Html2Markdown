@@ -8,7 +8,7 @@ on:
 env:
   MAJOR_DOTNET_VERSION: 8
   TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
-  STRYKER_VERSION: 4.7.0
+  STRYKER_VERSION: 4.8.1
         
 jobs:
   mutation-testing:
