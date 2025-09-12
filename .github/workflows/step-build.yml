@@ -9,6 +9,9 @@ on:
         description: 'The commit SHA to checkout'
         required: true
         type: string
+
+env:
+  CAKE_VERSION: "5.0.0"
   
 jobs:
   build-libraries:
@@ -29,10 +32,12 @@ jobs:
       uses: cake-build/cake-action@v3
       with:
         target: Restore
+        cake-version: ${{ env.CAKE_VERSION }}
     - name: Build
       uses: cake-build/cake-action@v3
       with:
         target: Build
+        cake-version: ${{ env.CAKE_VERSION }}
         arguments: |
           versionNumber: ${{inputs.version}}
     - name: Run tests
@@ -41,6 +46,7 @@ jobs:
         TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
       with:
         target: Test
+        cake-version: ${{ env.CAKE_VERSION }}
     - name: Publish Unit Test Results
       if: ${{ github.actor != 'dependabot[bot]' }}
       uses: EnricoMi/publish-unit-test-result-action/linux@v2
@@ -50,6 +56,7 @@ jobs:
       uses: cake-build/cake-action@v3
       with:
         target: Pack
+        cake-version: ${{ env.CAKE_VERSION }}
         arguments: |
           versionNumber: ${{inputs.version}}
     - name: Upload Package
