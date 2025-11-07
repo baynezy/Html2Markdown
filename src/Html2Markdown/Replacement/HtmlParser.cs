@@ -229,7 +229,6 @@ internal static partial class HtmlParser
     private static string ConvertPre(string html)
     {
         var tag = TabsToSpaces(html);
-        tag = IndentNewLines(tag);
         return Environment.NewLine + Environment.NewLine + tag + Environment.NewLine;
     }
 
