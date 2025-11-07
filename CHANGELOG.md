@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Migrated from HtmlAgilityPack to AngleSharp for HTML parsing (#issue_number)
+- Updated test expectations to align with HTML5 standard whitespace handling
 - Upgraded Stryker to 4.8.0 (#600)
 
 ## [7.0.7.17] - 2025-08-20
