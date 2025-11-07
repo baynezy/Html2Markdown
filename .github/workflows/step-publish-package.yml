@@ -24,7 +24,7 @@ jobs:
     environment: ${{ inputs.deploy-env }}
     steps:
       - name: Download Package
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ${{ inputs.package-name }}
           path: ./src/Html2Markdown/bin/Release
