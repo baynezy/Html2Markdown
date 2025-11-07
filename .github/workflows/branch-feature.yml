@@ -16,16 +16,14 @@ on:
 
 jobs:
   get-version:
-    if: startsWith(github.head_ref, 'feature/') || github.head_ref == 'master'
+    if: startsWith(github.head_ref, 'feature/') || startsWith(github.head_ref, 'copilot/') || github.head_ref == 'master'
     uses: ./.github/workflows/step-version.yml
-    secrets: inherit
     with:
       is-pre-release: true
 
   build:
     needs: [get-version]
     uses: ./.github/workflows/step-build.yml
-    secrets: inherit
     with:
       version: ${{ needs.get-version.outputs.version }}
       checkout-ref: ${{ github.head_ref }}
@@ -33,11 +31,9 @@ jobs:
   check-markdown:
     needs: [get-version]
     uses: ./.github/workflows/step-check-markdown.yml
-    secrets: inherit
     
   mutation-testing:
     needs: [get-version]
     uses: ./.github/workflows/step-mutation-testing.yml
-    secrets: inherit
     with:
       comparison: ${{ github.base_ref }}

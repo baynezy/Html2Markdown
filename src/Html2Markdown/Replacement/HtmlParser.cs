@@ -1,6 +1,9 @@
 using System.Net;
 using System.Text.RegularExpressions;
-using HtmlAgilityPack;
+using AngleSharp;
+using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
 
 namespace Html2Markdown.Replacement;
 
@@ -106,24 +109,24 @@ internal static partial class HtmlParser
     {
         // Parse the HTML to get value attributes from li elements
         var doc = GetHtmlDocument(html);
-        var listNode = doc.DocumentNode.SelectSingleNode("//ol");
-        var liNodes = listNode?.SelectNodes(".//li");
+        var listNode = doc.QuerySelector("ol");
+        var liNodes = listNode?.QuerySelectorAll("li");
         orderedList = string.Empty;
 
-        if (liNodes is null) return false;
-        
-        // Process list items with HtmlAgilityPack to access attributes
-        foreach (var liNode in liNodes)
+        if (liNodes is null || liNodes.Length == 0) return false;
+
+        // Process list items with AngleSharp to access attributes
+        foreach (var node in liNodes)
         {
             // Check if the li has a value attribute
-            var valueAttr = liNode.Attributes.GetAttributeOrEmpty("value");
+            var valueAttr = node.GetAttributeOrEmpty("value");
             if (!string.IsNullOrEmpty(valueAttr) && int.TryParse(valueAttr, out var value))
             {
                 counter = value - 1; // Subtract 1 because we increment before using it
             }
 
             var listPrefix = $"{++counter}.  ";
-            var finalList = ProcessListItem(liNode.OuterHtml);
+            var finalList = ProcessListItem(node.OuterHtml);
 
             if (!string.IsNullOrWhiteSpace(finalList))
             {
@@ -143,7 +146,6 @@ internal static partial class HtmlParser
                               : current + Environment.NewLine + item) +
                       Environment.NewLine + Environment.NewLine;
         return true;
-
     }
 
     private static string ProcessListItem(string listItemHtml)
@@ -207,34 +209,27 @@ internal static partial class HtmlParser
     internal static string ReplacePre(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//pre");
-        if (nodes == null)
+        var nodes = doc.QuerySelectorAll("pre");
+        if (nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
-            {
-                var tagContents = node.InnerHtml;
-                var markdown = ConvertPre(tagContents);
+        foreach (var element in nodes)
+        {
+            var tagContents = element.InnerHtml;
+            var markdown = ConvertPre(tagContents);
 
-                ReplaceNode(node, markdown);
-            });
+            ReplaceNode(element, markdown);
+        }
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static string ConvertPre(string html)
     {
         var tag = TabsToSpaces(html);
-        tag = IndentNewLines(tag);
         return Environment.NewLine + Environment.NewLine + tag + Environment.NewLine;
-    }
-
-    private static string IndentNewLines(string tag)
-    {
-        return tag.Replace(Environment.NewLine, Environment.NewLine + "    ");
     }
 
     private static string TabsToSpaces(string tag)
@@ -245,91 +240,88 @@ internal static partial class HtmlParser
     internal static string ReplaceImg(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//img");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("img");
+        if (nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
-            {
-                var src = node.Attributes.GetAttributeOrEmpty("src");
-                var alt = node.Attributes.GetAttributeOrEmpty("alt");
-                var title = node.Attributes.GetAttributeOrEmpty("title");
+        foreach (var element in nodes)
+        {
+            var src = element.GetAttributeOrEmpty("src");
+            var alt = element.GetAttributeOrEmpty("alt");
+            var title = element.GetAttributeOrEmpty("title");
 
-                var markdown = $"![{alt}]({src}{(title.Length > 0 ? $" \"{title}\"" : "")})";
+            var markdown = $"![{alt}]({src}{(title.Length > 0 ? $" \"{title}\"" : "")})";
 
-                ReplaceNode(node, markdown);
-            });
+            ReplaceNode(element, markdown);
+        }
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     internal static string ReplaceAnchor(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//a");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("a");
+        if (nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
+        foreach (var element in nodes)
+        {
+            var linkText = element.InnerHtml;
+            var href = element.GetAttributeOrEmpty("href");
+            var title = element.GetAttributeOrEmpty("title");
+
+            var markdown = "";
+
+            if (!IsEmptyLink(linkText, href))
             {
-                var linkText = node.InnerHtml;
-                var href = node.Attributes.GetAttributeOrEmpty("href");
-                var title = node.Attributes.GetAttributeOrEmpty("title");
+                markdown = $"[{linkText}]({href}{(title.Length > 0 ? $" \"{title}\"" : "")})";
+            }
 
-                var markdown = "";
+            ReplaceNode(element, markdown);
+        }
 
-                if (!IsEmptyLink(linkText, href))
-                {
-                    markdown = $"[{linkText}]({href}{(title.Length > 0 ? $" \"{title}\"" : "")})";
-                }
-
-                ReplaceNode(node, markdown);
-            });
-
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     internal static string ReplaceCode(string html, bool supportSyntaxHighlighting)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//code");
+        var nodes = doc.QuerySelectorAll("code");
 
-        if (nodes is null)
+        if (nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
+        foreach (var element in nodes)
+        {
+            var code = element.InnerHtml;
+            var language = supportSyntaxHighlighting ? GetSyntaxHighlightLanguage(element) : "";
+
+            string markdown;
+            if (IsSingleLineCodeBlock(code))
             {
-                var code = node.InnerHtml;
-                var language = supportSyntaxHighlighting ? GetSyntaxHighlightLanguage(node) : "";
+                markdown = "`" + code + "`";
+            }
+            else
+            {
+                markdown = ReplaceBreakTagsWithNewLines(code);
+                markdown = InitialCrLf()
+                    .Replace(markdown, "");
+                markdown = FinalCrLf()
+                    .Replace(markdown, "");
+                markdown = "```" + language + Environment.NewLine + markdown + Environment.NewLine + "```";
+            }
 
-                string markdown;
-                if (IsSingleLineCodeBlock(code))
-                {
-                    markdown = "`" + code + "`";
-                }
-                else
-                {
-                    markdown = ReplaceBreakTagsWithNewLines(code);
-                    markdown = InitialCrLf()
-                        .Replace(markdown, "");
-                    markdown = FinalCrLf()
-                        .Replace(markdown, "");
-                    markdown = "```" + language + Environment.NewLine + markdown + Environment.NewLine + "```";
-                }
+            ReplaceNode(element, markdown);
+        }
 
-                ReplaceNode(node, markdown);
-            });
-
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static string ReplaceBreakTagsWithNewLines(string code)
@@ -340,18 +332,18 @@ internal static partial class HtmlParser
 
     private static bool IsSingleLineCodeBlock(string code)
     {
-        // single line code blocks do not have new line characters
-        return !code.Contains(Environment.NewLine);
+        // single line code blocks do not have any line break characters
+        return !code.Contains('\n') && !code.Contains('\r');
     }
 
-    private static string GetSyntaxHighlightLanguage(HtmlNode node)
+    private static string GetSyntaxHighlightLanguage(IElement node)
     {
         // extract the language for syntax highlighting from a code tag
         // depending on the implementations, language can be declared in the tag as :
         // <code class="language-csharp">
         // <code class="lang-csharp">
         // <code class="csharp">
-        var classAttributeValue = node.Attributes["class"]?.Value;
+        var classAttributeValue = node.GetAttribute("class");
 
         if (string.IsNullOrEmpty(classAttributeValue))
         {
@@ -368,33 +360,28 @@ internal static partial class HtmlParser
     internal static string ReplaceBlockquote(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//blockquote");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("blockquote");
+        if (nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
-            {
-                var quote = node.InnerHtml;
-                var lines = quote.TrimStart()
-                    .Split([Environment.NewLine], StringSplitOptions.None);
-                var markdown = "";
+        foreach (var element in nodes)
+        {
+            var quote = element.InnerHtml;
+            var lines = quote.TrimStart()
+                .Split('\n');
+            var markdown = lines.Aggregate("", (current, line) => current + $"> {line.TrimEnd()}{Environment.NewLine}");
 
-                lines.ToList()
-                    .ForEach(line => { markdown += $"> {line.TrimEnd()}{Environment.NewLine}"; });
+            markdown = EmptyQuoteLines()
+                .Replace(markdown, "");
 
-                markdown = EmptyQuoteLines()
-                    .Replace(markdown, "");
+            markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine + Environment.NewLine;
 
-                markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine +
-                           Environment.NewLine;
+            ReplaceNode(element, markdown);
+        }
 
-                ReplaceNode(node, markdown);
-            });
-
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     internal static string ReplaceEntities(string html)
@@ -408,53 +395,50 @@ internal static partial class HtmlParser
     {
         var tag = $"h{headingNumber}";
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes($"//{tag}");
+        var nodes = doc.QuerySelectorAll(tag);
 
-        if (nodes is null) return html;
+        if (nodes.Length == 0) return html;
 
-        nodes.ToList()
-            .ForEach(node =>
-            {
-                var text = node.InnerHtml;
-                var htmlRemoved = HtmlTags()
-                    .Replace(text, "");
-                var markdown = Spaces()
-                    .Replace(htmlRemoved, " ");
-                markdown = markdown.Replace(Environment.NewLine, " ");
-                markdown = Environment.NewLine + Environment.NewLine + new string('#', headingNumber) + " " + markdown +
-                           Environment.NewLine + Environment.NewLine;
-                ReplaceNode(node, markdown);
-            });
+        foreach (var element in nodes)
+        {
+            var text = element.InnerHtml;
+            var htmlRemoved = HtmlTags()
+                .Replace(text, "");
+            var markdown = Spaces()
+                .Replace(htmlRemoved, " ");
+            markdown = markdown.Replace(Environment.NewLine, " ");
+            markdown = Environment.NewLine + Environment.NewLine + new string('#', headingNumber) + " " + markdown + Environment.NewLine + Environment.NewLine;
+            ReplaceNode(element, markdown);
+        }
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static string ReplaceParagraph(string html, bool nestedIntoList)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//p");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("p");
+        if (nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
-            {
-                var text = node.InnerHtml;
-                var markdown = Spaces()
-                    .Replace(text, " ");
-                markdown = markdown.Replace(Environment.NewLine, " ");
+        foreach (var element in nodes)
+        {
+            var text = element.InnerHtml;
+            var markdown = Spaces()
+                .Replace(text, " ");
+            markdown = markdown.Replace(Environment.NewLine, " ");
 
-                //If a paragraph is contained in a list, we don't want to add new line characters
-                var openingTag = nestedIntoList ? "" : Environment.NewLine + Environment.NewLine;
-                var closingTag = nestedIntoList ? "" : Environment.NewLine;
+            //If a paragraph is contained in a list, we don't want to add new line characters
+            var openingTag = nestedIntoList ? "" : Environment.NewLine + Environment.NewLine;
+            var closingTag = nestedIntoList ? "" : Environment.NewLine;
 
-                markdown = openingTag + markdown + closingTag;
-                ReplaceNode(node, markdown);
-            });
+            markdown = openingTag + markdown + closingTag;
+            ReplaceNode(element, markdown);
+        }
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static bool IsEmptyLink(string linkText, string href)
@@ -463,18 +447,23 @@ internal static partial class HtmlParser
         return length == 0;
     }
 
-    private static HtmlDocument GetHtmlDocument(string html)
+    private static IHtmlDocument GetHtmlDocument(string html)
     {
-        var doc = new HtmlDocument();
-        doc.LoadHtml(html);
-        return doc;
+        var context = BrowsingContext.New(Configuration.Default);
+        var parser = context.GetService<IHtmlParser>();
+        if (parser is null)
+        {
+            throw new InvalidOperationException("HTML parser service is not available.");
+        }
+
+        return parser.ParseDocument(html);
     }
 
-    private static void ReplaceNode(HtmlNode node, string markdown)
+    private static void ReplaceNode(IElement node, string markdown)
     {
         if (string.IsNullOrEmpty(markdown))
         {
-            node.ParentNode.RemoveChild(node);
+            node.Remove();
         }
         else
         {
