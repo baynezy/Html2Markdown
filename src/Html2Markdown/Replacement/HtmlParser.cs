@@ -464,7 +464,11 @@ internal static partial class HtmlParser
     {
         var context = BrowsingContext.New(Configuration.Default);
         var parser = context.GetService<IHtmlParser>();
-        return parser!.ParseDocument(html);
+        if (parser is null)
+        {
+            throw new InvalidOperationException("HTML parser service is not available.");
+        }
+        return parser.ParseDocument(html);
     }
 
     private static void ReplaceNode(AngleSharp.Dom.IElement node, string markdown)
