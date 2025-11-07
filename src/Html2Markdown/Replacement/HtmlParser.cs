@@ -113,7 +113,7 @@ internal static partial class HtmlParser
         orderedList = string.Empty;
 
         if (liNodes is null || liNodes.Length == 0) return false;
-        
+
         // Process list items with AngleSharp to access attributes
         foreach (var liNode in liNodes.OfType<AngleSharp.Dom.IElement>())
         {
@@ -145,7 +145,6 @@ internal static partial class HtmlParser
                               : current + Environment.NewLine + item) +
                       Environment.NewLine + Environment.NewLine;
         return true;
-
     }
 
     private static string ProcessListItem(string listItemHtml)
@@ -338,8 +337,8 @@ internal static partial class HtmlParser
 
     private static bool IsSingleLineCodeBlock(string code)
     {
-        // single line code blocks do not have new line characters
-        return !code.Contains(Environment.NewLine);
+        // single line code blocks do not have any line break characters
+        return !code.Contains('\n') && !code.Contains('\r');
     }
 
     private static string GetSyntaxHighlightLanguage(AngleSharp.Dom.IElement node)
@@ -376,7 +375,7 @@ internal static partial class HtmlParser
         {
             var quote = node.InnerHtml;
             var lines = quote.TrimStart()
-                .Split([Environment.NewLine], StringSplitOptions.None);
+                .Split('\n');
             var markdown = "";
 
             foreach (var line in lines)
@@ -468,6 +467,7 @@ internal static partial class HtmlParser
         {
             throw new InvalidOperationException("HTML parser service is not available.");
         }
+
         return parser.ParseDocument(html);
     }
 
