@@ -232,11 +232,6 @@ internal static partial class HtmlParser
         return Environment.NewLine + Environment.NewLine + tag + Environment.NewLine;
     }
 
-    private static string IndentNewLines(string tag)
-    {
-        return tag.Replace(Environment.NewLine, Environment.NewLine + "    ");
-    }
-
     private static string TabsToSpaces(string tag)
     {
         return tag.Replace("\t", "    ");
