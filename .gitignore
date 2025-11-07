@@ -516,3 +516,4 @@ docs/
 ## dotCover
 dotCover.Output/
 dotCover.Output.html
+*.dcvr
