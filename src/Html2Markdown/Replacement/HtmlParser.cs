@@ -1,6 +1,8 @@
 using System.Net;
 using System.Text.RegularExpressions;
-using HtmlAgilityPack;
+using AngleSharp;
+using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
 
 namespace Html2Markdown.Replacement;
 
@@ -106,17 +108,17 @@ internal static partial class HtmlParser
     {
         // Parse the HTML to get value attributes from li elements
         var doc = GetHtmlDocument(html);
-        var listNode = doc.DocumentNode.SelectSingleNode("//ol");
-        var liNodes = listNode?.SelectNodes(".//li");
+        var listNode = doc.QuerySelector("ol");
+        var liNodes = listNode?.QuerySelectorAll("li");
         orderedList = string.Empty;
 
-        if (liNodes is null) return false;
+        if (liNodes is null || liNodes.Length == 0) return false;
         
-        // Process list items with HtmlAgilityPack to access attributes
-        foreach (var liNode in liNodes)
+        // Process list items with AngleSharp to access attributes
+        foreach (var liNode in liNodes.OfType<AngleSharp.Dom.IElement>())
         {
             // Check if the li has a value attribute
-            var valueAttr = liNode.Attributes.GetAttributeOrEmpty("value");
+            var valueAttr = liNode.GetAttributeOrEmpty("value");
             if (!string.IsNullOrEmpty(valueAttr) && int.TryParse(valueAttr, out var value))
             {
                 counter = value - 1; // Subtract 1 because we increment before using it
@@ -207,22 +209,21 @@ internal static partial class HtmlParser
     internal static string ReplacePre(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//pre");
-        if (nodes == null)
+        var nodes = doc.QuerySelectorAll("pre");
+        if (nodes is null || nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
-            {
-                var tagContents = node.InnerHtml;
-                var markdown = ConvertPre(tagContents);
+        foreach (var node in nodes.OfType<AngleSharp.Dom.IElement>())
+        {
+            var tagContents = node.InnerHtml;
+            var markdown = ConvertPre(tagContents);
 
-                ReplaceNode(node, markdown);
-            });
+            ReplaceNode(node, markdown);
+        }
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static string ConvertPre(string html)
@@ -245,91 +246,88 @@ internal static partial class HtmlParser
     internal static string ReplaceImg(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//img");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("img");
+        if (nodes is null || nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
-            {
-                var src = node.Attributes.GetAttributeOrEmpty("src");
-                var alt = node.Attributes.GetAttributeOrEmpty("alt");
-                var title = node.Attributes.GetAttributeOrEmpty("title");
+        foreach (var node in nodes.OfType<AngleSharp.Dom.IElement>())
+        {
+            var src = node.GetAttributeOrEmpty("src");
+            var alt = node.GetAttributeOrEmpty("alt");
+            var title = node.GetAttributeOrEmpty("title");
 
-                var markdown = $"![{alt}]({src}{(title.Length > 0 ? $" \"{title}\"" : "")})";
+            var markdown = $"![{alt}]({src}{(title.Length > 0 ? $" \"{title}\"" : "")})";
 
-                ReplaceNode(node, markdown);
-            });
+            ReplaceNode(node, markdown);
+        }
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     internal static string ReplaceAnchor(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//a");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("a");
+        if (nodes is null || nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
+        foreach (var node in nodes.OfType<AngleSharp.Dom.IElement>())
+        {
+            var linkText = node.InnerHtml;
+            var href = node.GetAttributeOrEmpty("href");
+            var title = node.GetAttributeOrEmpty("title");
+
+            var markdown = "";
+
+            if (!IsEmptyLink(linkText, href))
             {
-                var linkText = node.InnerHtml;
-                var href = node.Attributes.GetAttributeOrEmpty("href");
-                var title = node.Attributes.GetAttributeOrEmpty("title");
+                markdown = $"[{linkText}]({href}{(title.Length > 0 ? $" \"{title}\"" : "")})";
+            }
 
-                var markdown = "";
+            ReplaceNode(node, markdown);
+        }
 
-                if (!IsEmptyLink(linkText, href))
-                {
-                    markdown = $"[{linkText}]({href}{(title.Length > 0 ? $" \"{title}\"" : "")})";
-                }
-
-                ReplaceNode(node, markdown);
-            });
-
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     internal static string ReplaceCode(string html, bool supportSyntaxHighlighting)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//code");
+        var nodes = doc.QuerySelectorAll("code");
 
-        if (nodes is null)
+        if (nodes is null || nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
+        foreach (var node in nodes.OfType<AngleSharp.Dom.IElement>())
+        {
+            var code = node.InnerHtml;
+            var language = supportSyntaxHighlighting ? GetSyntaxHighlightLanguage(node) : "";
+
+            string markdown;
+            if (IsSingleLineCodeBlock(code))
             {
-                var code = node.InnerHtml;
-                var language = supportSyntaxHighlighting ? GetSyntaxHighlightLanguage(node) : "";
+                markdown = "`" + code + "`";
+            }
+            else
+            {
+                markdown = ReplaceBreakTagsWithNewLines(code);
+                markdown = InitialCrLf()
+                    .Replace(markdown, "");
+                markdown = FinalCrLf()
+                    .Replace(markdown, "");
+                markdown = "```" + language + Environment.NewLine + markdown + Environment.NewLine + "```";
+            }
 
-                string markdown;
-                if (IsSingleLineCodeBlock(code))
-                {
-                    markdown = "`" + code + "`";
-                }
-                else
-                {
-                    markdown = ReplaceBreakTagsWithNewLines(code);
-                    markdown = InitialCrLf()
-                        .Replace(markdown, "");
-                    markdown = FinalCrLf()
-                        .Replace(markdown, "");
-                    markdown = "```" + language + Environment.NewLine + markdown + Environment.NewLine + "```";
-                }
+            ReplaceNode(node, markdown);
+        }
 
-                ReplaceNode(node, markdown);
-            });
-
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static string ReplaceBreakTagsWithNewLines(string code)
@@ -344,14 +342,14 @@ internal static partial class HtmlParser
         return !code.Contains(Environment.NewLine);
     }
 
-    private static string GetSyntaxHighlightLanguage(HtmlNode node)
+    private static string GetSyntaxHighlightLanguage(AngleSharp.Dom.IElement node)
     {
         // extract the language for syntax highlighting from a code tag
         // depending on the implementations, language can be declared in the tag as :
         // <code class="language-csharp">
         // <code class="lang-csharp">
         // <code class="csharp">
-        var classAttributeValue = node.Attributes["class"]?.Value;
+        var classAttributeValue = node.GetAttribute("class");
 
         if (string.IsNullOrEmpty(classAttributeValue))
         {
@@ -368,33 +366,34 @@ internal static partial class HtmlParser
     internal static string ReplaceBlockquote(string html)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//blockquote");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("blockquote");
+        if (nodes is null || nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
+        foreach (var node in nodes.OfType<AngleSharp.Dom.IElement>())
+        {
+            var quote = node.InnerHtml;
+            var lines = quote.TrimStart()
+                .Split([Environment.NewLine], StringSplitOptions.None);
+            var markdown = "";
+
+            foreach (var line in lines)
             {
-                var quote = node.InnerHtml;
-                var lines = quote.TrimStart()
-                    .Split([Environment.NewLine], StringSplitOptions.None);
-                var markdown = "";
+                markdown += $"> {line.TrimEnd()}{Environment.NewLine}";
+            }
 
-                lines.ToList()
-                    .ForEach(line => { markdown += $"> {line.TrimEnd()}{Environment.NewLine}"; });
+            markdown = EmptyQuoteLines()
+                .Replace(markdown, "");
 
-                markdown = EmptyQuoteLines()
-                    .Replace(markdown, "");
+            markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine +
+                       Environment.NewLine;
 
-                markdown = Environment.NewLine + Environment.NewLine + markdown + Environment.NewLine +
-                           Environment.NewLine;
+            ReplaceNode(node, markdown);
+        }
 
-                ReplaceNode(node, markdown);
-            });
-
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     internal static string ReplaceEntities(string html)
@@ -408,53 +407,51 @@ internal static partial class HtmlParser
     {
         var tag = $"h{headingNumber}";
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes($"//{tag}");
+        var nodes = doc.QuerySelectorAll(tag);
 
-        if (nodes is null) return html;
+        if (nodes is null || nodes.Length == 0) return html;
 
-        nodes.ToList()
-            .ForEach(node =>
-            {
-                var text = node.InnerHtml;
-                var htmlRemoved = HtmlTags()
-                    .Replace(text, "");
-                var markdown = Spaces()
-                    .Replace(htmlRemoved, " ");
-                markdown = markdown.Replace(Environment.NewLine, " ");
-                markdown = Environment.NewLine + Environment.NewLine + new string('#', headingNumber) + " " + markdown +
-                           Environment.NewLine + Environment.NewLine;
-                ReplaceNode(node, markdown);
-            });
+        foreach (var node in nodes.OfType<AngleSharp.Dom.IElement>())
+        {
+            var text = node.InnerHtml;
+            var htmlRemoved = HtmlTags()
+                .Replace(text, "");
+            var markdown = Spaces()
+                .Replace(htmlRemoved, " ");
+            markdown = markdown.Replace(Environment.NewLine, " ");
+            markdown = Environment.NewLine + Environment.NewLine + new string('#', headingNumber) + " " + markdown +
+                       Environment.NewLine + Environment.NewLine;
+            ReplaceNode(node, markdown);
+        }
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static string ReplaceParagraph(string html, bool nestedIntoList)
     {
         var doc = GetHtmlDocument(html);
-        var nodes = doc.DocumentNode.SelectNodes("//p");
-        if (nodes is null)
+        var nodes = doc.QuerySelectorAll("p");
+        if (nodes is null || nodes.Length == 0)
         {
             return html;
         }
 
-        nodes.ToList()
-            .ForEach(node =>
-            {
-                var text = node.InnerHtml;
-                var markdown = Spaces()
-                    .Replace(text, " ");
-                markdown = markdown.Replace(Environment.NewLine, " ");
+        foreach (var node in nodes.OfType<AngleSharp.Dom.IElement>())
+        {
+            var text = node.InnerHtml;
+            var markdown = Spaces()
+                .Replace(text, " ");
+            markdown = markdown.Replace(Environment.NewLine, " ");
 
-                //If a paragraph is contained in a list, we don't want to add new line characters
-                var openingTag = nestedIntoList ? "" : Environment.NewLine + Environment.NewLine;
-                var closingTag = nestedIntoList ? "" : Environment.NewLine;
+            //If a paragraph is contained in a list, we don't want to add new line characters
+            var openingTag = nestedIntoList ? "" : Environment.NewLine + Environment.NewLine;
+            var closingTag = nestedIntoList ? "" : Environment.NewLine;
 
-                markdown = openingTag + markdown + closingTag;
-                ReplaceNode(node, markdown);
-            });
+            markdown = openingTag + markdown + closingTag;
+            ReplaceNode(node, markdown);
+        }
 
-        return doc.DocumentNode.OuterHtml;
+        return doc.Body?.InnerHtml ?? html;
     }
 
     private static bool IsEmptyLink(string linkText, string href)
@@ -463,18 +460,18 @@ internal static partial class HtmlParser
         return length == 0;
     }
 
-    private static HtmlDocument GetHtmlDocument(string html)
+    private static IHtmlDocument GetHtmlDocument(string html)
     {
-        var doc = new HtmlDocument();
-        doc.LoadHtml(html);
-        return doc;
+        var context = BrowsingContext.New(Configuration.Default);
+        var parser = context.GetService<IHtmlParser>();
+        return parser!.ParseDocument(html);
     }
 
-    private static void ReplaceNode(HtmlNode node, string markdown)
+    private static void ReplaceNode(AngleSharp.Dom.IElement node, string markdown)
     {
         if (string.IsNullOrEmpty(markdown))
         {
-            node.ParentNode.RemoveChild(node);
+            node.Remove();
         }
         else
         {
