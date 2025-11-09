@@ -8,7 +8,7 @@ on:
 env:
   MAJOR_DOTNET_VERSION: 8
   TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
-  STRYKER_VERSION: 4.7.0
+  STRYKER_VERSION: 4.8.1
         
 jobs:
   mutation-testing:
@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.MAJOR_DOTNET_VERSION }}.0.x
       - name: Install Stryker
@@ -29,7 +29,7 @@ jobs:
         run: |
           dotnet stryker --since:${{ inputs.comparison }}
       - name: Upload Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Mutation-Report
           path: ./StrykerOutput/*/reports/mutation-report.html
