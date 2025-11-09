@@ -17,7 +17,11 @@ on:
         description: 'The name of the package to push'
         required: true
         type: string
-  
+    secrets: 
+      nuget-api-key:
+        description: 'API Key for NuGet'
+        required: true
+
 jobs:
   push-package:
     runs-on: ubuntu-latest
@@ -33,5 +37,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Push package to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.nuget-api-key }}
         run: |
-          dotnet nuget push $(find ./src/Html2Markdown/bin/Release/*.nupkg) --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push $(find ./src/Html2Markdown/bin/Release/*.nupkg) --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json

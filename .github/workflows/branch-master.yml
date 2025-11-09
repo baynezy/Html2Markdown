@@ -15,7 +15,6 @@ jobs:
   build:
     needs: [get-version]
     uses: ./.github/workflows/step-build.yml
-    secrets: inherit
     with:
       version: ${{ needs.get-version.outputs.version }}
       checkout-ref: ${{ github.base_ref }}
@@ -23,7 +22,6 @@ jobs:
   publish-to-nuget:
     needs: [get-version,build]
     uses: ./.github/workflows/step-publish.yml
-    secrets: inherit
     with:
       deploy-env: nuget
       deploy-branch: ${{ github.base_ref }}

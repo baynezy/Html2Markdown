@@ -26,8 +26,10 @@ jobs:
         run: |
           dotnet tool install -g dotnet-stryker --version $STRYKER_VERSION
       - name: Run Stryker
+        env:
+          COMPARISON: ${{ inputs.comparison }}
         run: |
-          dotnet stryker --since:${{ inputs.comparison }}
+          dotnet stryker --since:$COMPARISON
       - name: Upload Report
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:

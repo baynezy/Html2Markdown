@@ -15,7 +15,6 @@ jobs:
   build:
     needs: [get-version]
     uses: ./.github/workflows/step-build.yml
-    secrets: inherit
     with:
       version: ${{ needs.get-version.outputs.version }}
       checkout-ref: ${{ github.event.pull_request.head.sha }}
@@ -23,6 +22,5 @@ jobs:
   mutation-testing:
     needs: [get-version]
     uses: ./.github/workflows/step-mutation-testing.yml
-    secrets: inherit
     with:
       comparison: ${{ github.base_ref }}
