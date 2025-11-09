@@ -17,7 +17,8 @@ on:
 jobs:    
   publish-package:
     uses: ./.github/workflows/step-publish-package.yml
-    secrets: inherit
+    secrets:
+      nuget-api-key: ${{ secrets.NUGET_API_KEY }}
     with:
       deploy-env: ${{ inputs.deploy-env }}
       deploy-branch: ${{ inputs.deploy-branch }}

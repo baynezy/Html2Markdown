@@ -23,7 +23,6 @@ jobs:
   build:
     needs: [get-version]
     uses: ./.github/workflows/step-build.yml
-    secrets: inherit
     with:
       version: ${{ needs.get-version.outputs.version }}
       checkout-ref: ${{ github.head_ref }}

@@ -15,7 +15,6 @@ jobs:
   build:
     needs: [get-version]
     uses: ./.github/workflows/step-build.yml
-    secrets: inherit
     with:
       version: ${{ needs.get-version.outputs.version }}
       checkout-ref: ${{ github.head_ref }}
@@ -23,7 +22,6 @@ jobs:
   check-markdown:
     needs: [get-version]
     uses: ./.github/workflows/step-check-markdown.yml
-    secrets: inherit
     
   update-metadata:
     if: github.event.action == 'opened'
@@ -57,4 +55,6 @@ jobs:
           git commit --message "Bump Version to ${{ needs.get-version.outputs.major }}.${{ needs.get-version.outputs.minor }}.${{ steps.increment_version.outputs.patch_version }}.${{ github.run_number }}"
 
       - name: Push Version
-        run: git push origin ${{ github.head_ref }}
+        env:
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+        run: git push origin $GITHUB_HEAD_REF

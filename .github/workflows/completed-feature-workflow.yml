@@ -13,8 +13,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - name: Extract Issue Number
+        env:
+          GITHUB_PULL_REQUEST_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         shell: bash
-        run: echo "##[set-output name=issue;]$(echo ${{ github.event.pull_request.head.ref }} | sed 's|[^0-9]||g')"
+        run: echo "##[set-output name=issue;]$(echo $GITHUB_PULL_REQUEST_HEAD_REF | sed 's|[^0-9]||g')"
         id: extract_issue
       - name: Output Issue Number
         run: echo "Issue Number- ${{ steps.extract_issue.outputs.issue }}"
