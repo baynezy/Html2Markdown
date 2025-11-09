@@ -39,10 +39,10 @@ jobs:
       build: ${{ steps.set-version.outputs.build }}
     steps:
       - name: Get Code
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - name: Get Version
         id: get-version
-        uses: Afterlife-Guide/SemVer.Action@1.2.1.19
+        uses: Afterlife-Guide/SemVer.Action@a62c1899c671a07f16d200cfc7edaf6b6eaf081b # 1.2.1.19
         with:
           path: 'semver.json'
       - id: set-version

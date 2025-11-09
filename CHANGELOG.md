@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- Pinned all third-party GitHub Actions to full commit SHA1 hashes for improved security
+
 ### Changed
 
 - Migrated from HtmlAgilityPack to AngleSharp for HTML parsing (#580)

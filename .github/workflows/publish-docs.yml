@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: github-pages
     steps:
-      - uses: DenverCoder1/doxygen-github-pages-action@v2.0.0
+      - uses: DenverCoder1/doxygen-github-pages-action@a30f9538f8ef1305aeceb563018f452c7a62d200 # v2.0.0
         with:
           github_token: ${{ secrets.PUBLISH_DOCS_TOKEN }}
           branch: gh-pages
