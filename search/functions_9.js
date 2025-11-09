@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['paragraphtagreplacer_0',['ParagraphTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_paragraph_tag_replacer.html#abba65d8b39df5e07e6aa86fac8fa60e2',1,'Html2Markdown::Replacement::ParagraphTagReplacer']]],
-  ['pretagreplacer_1',['PreTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_pre_tag_replacer.html#ad63edb8d1f20e10f5e747b59db0aaef5',1,'Html2Markdown::Replacement::PreTagReplacer']]]
+  ['markdown_0',['Markdown',['../class_html2_markdown_1_1_scheme_1_1_markdown.html#a22cbe5ae9fa89e9e261292aa52c56272',1,'Html2Markdown::Scheme::Markdown']]],
+  ['metatagreplacer_1',['MetaTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_meta_tag_replacer.html#aa4cef00a61243774315f0a42fafdfbef',1,'Html2Markdown::Replacement::MetaTagReplacer']]]
 ];

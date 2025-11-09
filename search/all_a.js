@@ -1,10 +1,7 @@
 var searchData=
 [
-  ['paragraphtagreplacer_0',['ParagraphTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_paragraph_tag_replacer.html',1,'Html2Markdown.Replacement.ParagraphTagReplacer'],['../class_html2_markdown_1_1_replacement_1_1_paragraph_tag_replacer.html#abba65d8b39df5e07e6aa86fac8fa60e2',1,'Html2Markdown.Replacement.ParagraphTagReplacer.ParagraphTagReplacer()']]],
-  ['paragraphtagreplacer_2ecs_1',['ParagraphTagReplacer.cs',['../_paragraph_tag_replacer_8cs.html',1,'']]],
-  ['pattern_2',['Pattern',['../class_html2_markdown_1_1_replacement_1_1_pattern_replacer.html#a7bb9331762dfbb691e1cf100ab803b37',1,'Html2Markdown::Replacement::PatternReplacer']]],
-  ['patternreplacer_3',['PatternReplacer',['../class_html2_markdown_1_1_replacement_1_1_pattern_replacer.html',1,'Html2Markdown::Replacement']]],
-  ['patternreplacer_2ecs_4',['PatternReplacer.cs',['../_pattern_replacer_8cs.html',1,'']]],
-  ['pretagreplacer_5',['PreTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_pre_tag_replacer.html',1,'Html2Markdown.Replacement.PreTagReplacer'],['../class_html2_markdown_1_1_replacement_1_1_pre_tag_replacer.html#ad63edb8d1f20e10f5e747b59db0aaef5',1,'Html2Markdown.Replacement.PreTagReplacer.PreTagReplacer()']]],
-  ['pretagreplacer_2ecs_6',['PreTagReplacer.cs',['../_pre_tag_replacer_8cs.html',1,'']]]
+  ['markdown_0',['Markdown',['../class_html2_markdown_1_1_scheme_1_1_markdown.html',1,'Html2Markdown.Scheme.Markdown'],['../class_html2_markdown_1_1_scheme_1_1_markdown.html#a22cbe5ae9fa89e9e261292aa52c56272',1,'Html2Markdown.Scheme.Markdown.Markdown()']]],
+  ['markdown_2ecs_1',['Markdown.cs',['../_markdown_8cs.html',1,'']]],
+  ['metatagreplacer_2',['MetaTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_meta_tag_replacer.html',1,'Html2Markdown.Replacement.MetaTagReplacer'],['../class_html2_markdown_1_1_replacement_1_1_meta_tag_replacer.html#aa4cef00a61243774315f0a42fafdfbef',1,'Html2Markdown.Replacement.MetaTagReplacer.MetaTagReplacer()']]],
+  ['metatagreplacer_2ecs_3',['MetaTagReplacer.cs',['../_meta_tag_replacer_8cs.html',1,'']]]
 ];

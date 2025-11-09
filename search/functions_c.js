@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['titletagreplacer_0',['TitleTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_title_tag_replacer.html#abe4a8e31f0e8418da573c22e236068dd',1,'Html2Markdown::Replacement::TitleTagReplacer']]]
+  ['scripttagreplacer_0',['ScriptTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_script_tag_replacer.html#a74205a2fe6ebccdaea1715a9164c4f19',1,'Html2Markdown::Replacement::ScriptTagReplacer']]],
+  ['strongtagreplacer_1',['StrongTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_strong_tag_replacer.html#a3428cb73d3c8d26b274a6e1b59ba4f61',1,'Html2Markdown::Replacement::StrongTagReplacer']]]
 ];

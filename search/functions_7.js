@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['linktagreplacer_0',['LinkTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_link_tag_replacer.html#ae19100717d8d91c652631c95844354f7',1,'Html2Markdown::Replacement::LinkTagReplacer']]]
+  ['imagetagreplacer_0',['ImageTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_image_tag_replacer.html#a7db5e2c9a9f8b923a0a67797a8182b08',1,'Html2Markdown::Replacement::ImageTagReplacer']]]
 ];

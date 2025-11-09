@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['blockquotetagreplacer_0',['BlockquoteTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_blockquote_tag_replacer.html#a94810807c39be23400880402b5af428e',1,'Html2Markdown.Replacement.BlockquoteTagReplacer.BlockquoteTagReplacer()'],['../class_html2_markdown_1_1_replacement_1_1_blockquote_tag_replacer.html',1,'Html2Markdown.Replacement.BlockquoteTagReplacer']]],
-  ['blockquotetagreplacer_2ecs_1',['BlockquoteTagReplacer.cs',['../_blockquote_tag_replacer_8cs.html',1,'']]],
-  ['bodytagreplacer_2',['BodyTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_body_tag_replacer.html#a204cb937df9ec3560d5c530233511298',1,'Html2Markdown.Replacement.BodyTagReplacer.BodyTagReplacer()'],['../class_html2_markdown_1_1_replacement_1_1_body_tag_replacer.html',1,'Html2Markdown.Replacement.BodyTagReplacer']]],
-  ['bodytagreplacer_2ecs_3',['BodyTagReplacer.cs',['../_body_tag_replacer_8cs.html',1,'']]],
-  ['breaktagreplacer_4',['BreakTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_break_tag_replacer.html#a3ddd39ebf545f58a021d14c2a3a46176',1,'Html2Markdown.Replacement.BreakTagReplacer.BreakTagReplacer()'],['../class_html2_markdown_1_1_replacement_1_1_break_tag_replacer.html',1,'Html2Markdown.Replacement.BreakTagReplacer']]],
-  ['breaktagreplacer_2ecs_5',['BreakTagReplacer.cs',['../_break_tag_replacer_8cs.html',1,'']]]
+  ['abstractscheme_0',['AbstractScheme',['../class_html2_markdown_1_1_scheme_1_1_abstract_scheme.html',1,'Html2Markdown::Scheme']]],
+  ['abstractscheme_2ecs_1',['AbstractScheme.cs',['../_abstract_scheme_8cs.html',1,'']]],
+  ['addreplacementgroup_2',['AddReplacementGroup',['../class_html2_markdown_1_1_scheme_1_1_abstract_scheme.html#a709edbf8966fc43b6e748a69f61f1f61',1,'Html2Markdown::Scheme::AbstractScheme']]],
+  ['addreplacer_3',['AddReplacer',['../class_html2_markdown_1_1_replacement_1_1_composite_replacer.html#a35eefde7b32441629ef82a9c94cecd06',1,'Html2Markdown.Replacement.CompositeReplacer.AddReplacer()'],['../class_html2_markdown_1_1_scheme_1_1_abstract_scheme.html#ab32df6bd81c999554ba06992f64316ff',1,'Html2Markdown.Scheme.AbstractScheme.AddReplacer()']]],
+  ['anchortagreplacer_4',['AnchorTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_anchor_tag_replacer.html#addf3273d7f9b6709900c2d309ac8e3e1',1,'Html2Markdown.Replacement.AnchorTagReplacer.AnchorTagReplacer()'],['../class_html2_markdown_1_1_replacement_1_1_anchor_tag_replacer.html',1,'Html2Markdown.Replacement.AnchorTagReplacer']]],
+  ['anchortagreplacer_2ecs_5',['AnchorTagReplacer.cs',['../_anchor_tag_replacer_8cs.html',1,'']]],
+  ['anglesharpextensions_2ecs_6',['AngleSharpExtensions.cs',['../_angle_sharp_extensions_8cs.html',1,'']]]
 ];
