@@ -8,8 +8,8 @@ on:
       - 'test/**'
       - '**.sln'
       - '.github/workflows/static-analysis.yml'
-  pull_request: 
-    types: [opened, synchronize, reopened]
+  pull_request:
+    types: [ opened, synchronize, reopened ]
     paths:
       - 'src/**'
       - 'test/**'
@@ -57,7 +57,7 @@ jobs:
       - name: Install dotCover
         shell: bash
         run: |
-          dotnet tool install --global jetbrains.dotcover.commandlinetools
+          dotnet tool install --global jetbrains.dotcover.commandlinetools --version 2025.1.5
       - name: Build, run code coverage, and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
