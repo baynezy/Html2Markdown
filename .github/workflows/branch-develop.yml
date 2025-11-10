@@ -20,22 +20,24 @@ jobs:
       is-pre-release: true
 
   build:
-    needs: [get-version]
+    needs: [ get-version ]
     uses: ./.github/workflows/step-build.yml
     with:
       version: ${{ needs.get-version.outputs.version }}
       checkout-ref: ${{ github.base_ref }}
 
   publish-to-nuget:
-    needs: [get-version,build]
+    needs: [ get-version,build ]
     uses: ./.github/workflows/step-publish.yml
+    secrets:
+      nuget-api-key: ${{ secrets.NUGET_API_KEY }}
     with:
       deploy-env: nuget-beta
       deploy-branch: ${{ github.base_ref }}
       version: ${{ needs.get-version.outputs.version }}
   
   tag-release:
-    needs: [get-version,publish-to-nuget]
+    needs: [ get-version,publish-to-nuget ]
     uses: ./.github/workflows/step-tag-release.yml
     with:
       version: ${{ needs.get-version.outputs.version }}
