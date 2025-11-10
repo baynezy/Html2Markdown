@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.1.1.19] - 2025-11-10
+
 ### Security
 
 - Pinned all third-party GitHub Actions to full commit SHA1 hashes for improved security (#643)
@@ -531,7 +533,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.1.0.18...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.1.1.19...HEAD
+[7.1.1.19]: https://github.com/baynezy/Html2Markdown/compare/7.1.0.18...7.1.1.19
 [7.1.0.18]: https://github.com/baynezy/Html2Markdown/compare/7.0.7.17...7.1.0.18
 [7.0.7.17]: https://github.com/baynezy/Html2Markdown/compare/7.0.6.15...7.0.7.17
 [7.0.6.15]: https://github.com/baynezy/Html2Markdown/compare/7.0.5.14...7.0.6.15
