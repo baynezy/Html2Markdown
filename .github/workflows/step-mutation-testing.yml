@@ -15,21 +15,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           fetch-depth: 0
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5
         with:
           dotnet-version: ${{ env.MAJOR_DOTNET_VERSION }}.0.x
       - name: Install Stryker
         run: |
           dotnet tool install -g dotnet-stryker --version $STRYKER_VERSION
       - name: Run Stryker
+        env:
+          COMPARISON: ${{ inputs.comparison }}
         run: |
-          dotnet stryker --since:${{ inputs.comparison }}
+          dotnet stryker --since:$COMPARISON
       - name: Upload Report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: Mutation-Report
           path: ./StrykerOutput/*/reports/mutation-report.html

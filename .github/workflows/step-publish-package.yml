@@ -17,21 +17,27 @@ on:
         description: 'The name of the package to push'
         required: true
         type: string
-  
+    secrets: 
+      nuget-api-key:
+        description: 'API Key for NuGet'
+        required: true
+
 jobs:
   push-package:
     runs-on: ubuntu-latest
     environment: ${{ inputs.deploy-env }}
     steps:
       - name: Download Package
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
         with:
           name: ${{ inputs.package-name }}
           path: ./src/Html2Markdown/bin/Release
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5
         with:
           dotnet-version: 8.0.x
       - name: Push package to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.nuget-api-key }}
         run: |
-          dotnet nuget push $(find ./src/Html2Markdown/bin/Release/*.nupkg) --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push $(find ./src/Html2Markdown/bin/Release/*.nupkg) --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json

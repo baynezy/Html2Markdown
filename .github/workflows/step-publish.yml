@@ -13,11 +13,16 @@ on:
         description: 'The version number to use for the build'
         required: true
         type: string
-  
-jobs:    
+    secrets:
+      nuget-api-key:
+        required: true
+        description: 'API Key for NuGet.org'
+
+jobs:
   publish-package:
     uses: ./.github/workflows/step-publish-package.yml
-    secrets: inherit
+    secrets:
+      nuget-api-key: ${{ secrets.nuget-api-key }}
     with:
       deploy-env: ${{ inputs.deploy-env }}
       deploy-branch: ${{ inputs.deploy-branch }}

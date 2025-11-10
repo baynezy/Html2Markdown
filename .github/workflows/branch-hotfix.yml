@@ -15,7 +15,6 @@ jobs:
   build:
     needs: [get-version]
     uses: ./.github/workflows/step-build.yml
-    secrets: inherit
     with:
       version: ${{ needs.get-version.outputs.version }}
       checkout-ref: ${{ github.head_ref }}
@@ -23,14 +22,13 @@ jobs:
   check-markdown:
     needs: [get-version]
     uses: ./.github/workflows/step-check-markdown.yml
-    secrets: inherit
     
   update-metadata:
     if: github.event.action == 'opened'
     needs: [get-version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           ref: ${{ github.head_ref }}
       - name: Increment Version
@@ -38,7 +36,7 @@ jobs:
         run: |
           echo "patch_version=$(($(cat semver.json | jq -r '.patch')+1))" > $GITHUB_OUTPUT
       - name: Store New Version
-        uses: Afterlife-Guide/SemVer.Action@1.2.1.19
+        uses: Afterlife-Guide/SemVer.Action@873a19adf850ae07d8e7a0f50d8af98fcf2b5d16 # 1.2.1.19
         with:
           path: semver.json
           major-version: ${{ needs.get-version.outputs.major }}
@@ -46,7 +44,7 @@ jobs:
           patch-version: ${{ steps.increment_version.outputs.patch_version }}
           build-version: ${{ github.run_number }}
       - name: Update changelog
-        uses: thomaseizinger/keep-a-changelog-new-release@3.1.0
+        uses: thomaseizinger/keep-a-changelog-new-release@f62c3c390716df5af712ba5d94f4f4a8efc1306d # 3.1.0
         with:
           tag: ${{ needs.get-version.outputs.major }}.${{ needs.get-version.outputs.minor }}.${{ steps.increment_version.outputs.patch_version }}.${{ github.run_number }}
       - name: Commit Changes
@@ -57,4 +55,6 @@ jobs:
           git commit --message "Bump Version to ${{ needs.get-version.outputs.major }}.${{ needs.get-version.outputs.minor }}.${{ steps.increment_version.outputs.patch_version }}.${{ github.run_number }}"
 
       - name: Push Version
-        run: git push origin ${{ github.head_ref }}
+        env:
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+        run: git push origin $GITHUB_HEAD_REF

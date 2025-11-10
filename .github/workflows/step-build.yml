@@ -18,43 +18,43 @@ jobs:
       run: |
         echo "Branch: ${{ inputs.checkout-ref }}"
     - name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       with:
         ref: ${{ inputs.checkout-ref }}
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5
       with:
         dotnet-version: 8.0.x
     - name: Restore
-      uses: cake-build/cake-action@v3
+      uses: cake-build/cake-action@d218f1133bb74a1df0b08c89cfd8fc100c09e1a0 # v3
       with:
         target: Restore
     - name: Build
-      uses: cake-build/cake-action@v3
+      uses: cake-build/cake-action@d218f1133bb74a1df0b08c89cfd8fc100c09e1a0 # v3
       with:
         target: Build
         arguments: |
           versionNumber: ${{inputs.version}}
     - name: Run tests
-      uses: cake-build/cake-action@v3
+      uses: cake-build/cake-action@d218f1133bb74a1df0b08c89cfd8fc100c09e1a0 # v3
       env: 
         TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
       with:
         target: Test
     - name: Publish Unit Test Results
       if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: EnricoMi/publish-unit-test-result-action/linux@v2
+      uses: EnricoMi/publish-unit-test-result-action/linux@34d7c956a59aed1bfebf31df77b8de55db9bbaaf # v2
       with:
         files: "**/TestResults/*.xml"
     - name: Build NuGet Package
-      uses: cake-build/cake-action@v3
+      uses: cake-build/cake-action@d218f1133bb74a1df0b08c89cfd8fc100c09e1a0 # v3
       with:
         target: Pack
         arguments: |
           versionNumber: ${{inputs.version}}
     - name: Upload Package
       if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
       with:
         name: Html2Markdown
         path: ./src/Html2Markdown/bin/Release/*.nupkg
