@@ -13,12 +13,12 @@ on:
         description: 'The version number to use for the build'
         required: true
         type: string
-    secrets: 
-        nuget-api-key:
+    secrets:
+      nuget-api-key:
         required: true
         description: 'API Key for NuGet.org'
-  
-jobs:    
+
+jobs:
   publish-package:
     uses: ./.github/workflows/step-publish-package.yml
     secrets:
