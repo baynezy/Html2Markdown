@@ -13,6 +13,10 @@ on:
       - '.github/workflows/step-*.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  workflows: write
+
 jobs:
   get-version:
     uses: ./.github/workflows/step-version.yml
