@@ -1,0 +1,15 @@
+{
+  "runtimeOptions": {
+    "tfm": "net8.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "8.0.0"
+    },
+    "$schema": "https://gist.githubusercontent.com/natemcmaster/0bdee16450f8ec1823f2c11af880ceeb/raw/runtimeconfig.template.schema.json",
+    "rollForwardOnNoCandidateFx": 2,
+    "configProperties": {
+      "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false
+    }
+  }
+}

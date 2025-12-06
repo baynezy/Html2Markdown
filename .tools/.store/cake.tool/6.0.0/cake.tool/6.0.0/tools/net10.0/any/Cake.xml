@@ -1,0 +1,681 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cake</name>
+    </assembly>
+    <members>
+        <member name="T:Cake.Commands.DefaultCommand">
+            <summary>
+            The default command for executing Cake scripts.
+            </summary>
+        </member>
+        <member name="M:Cake.Commands.DefaultCommand.#ctor(Cake.Features.Building.IBuildFeature,Cake.Features.Bootstrapping.IBootstrapFeature,Cake.Cli.ICakeVersionFeature,Cake.Cli.ICakeInfoFeature,Cake.Core.IConsole,Cake.Core.Diagnostics.ICakeLog)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Commands.DefaultCommand"/> class.
+            </summary>
+            <param name="builder">The build feature.</param>
+            <param name="bootstrapper">The bootstrap feature.</param>
+            <param name="version">The version feature.</param>
+            <param name="info">The info feature.</param>
+            <param name="console">The console.</param>
+            <param name="log">The log.</param>
+        </member>
+        <member name="M:Cake.Commands.DefaultCommand.Execute(Spectre.Console.Cli.CommandContext,Cake.Commands.DefaultCommandSettings,System.Threading.CancellationToken)">
+            <summary>
+            Executes the command with the specified context and settings.
+            </summary>
+            <param name="context">The command context.</param>
+            <param name="settings">The command settings.</param>
+            <param name="cancellationToken">The cancellation token to monitor for cancel requests.</param>
+            <returns>The exit code.</returns>
+        </member>
+        <member name="T:Cake.Commands.DefaultCommandSettings">
+            <summary>
+            Settings for the default command.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.Script">
+            <summary>
+            Gets or sets the Cake script to execute.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.Bootstrap">
+            <summary>
+            Gets or sets a value indicating whether to bootstrap modules without running the build.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.SkipBootstrap">
+            <summary>
+            Gets or sets a value indicating whether to skip bootstrapping when running the build.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.Debug">
+            <summary>
+            Gets or sets a value indicating whether to launch the script in debug mode.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.Verbosity">
+            <summary>
+            Gets or sets the verbosity level for logging.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.Description">
+            <summary>
+            Gets or sets a value indicating whether to show descriptions for each task.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.Tree">
+            <summary>
+            Gets or sets a value indicating whether to show the task dependency tree.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.DryRun">
+            <summary>
+            Gets or sets a value indicating whether to perform a dry run.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.Exclusive">
+            <summary>
+            Gets or sets a value indicating whether to execute the target task without any dependencies.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.ShowVersion">
+            <summary>
+            Gets or sets a value indicating whether to display version information.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.ShowInfo">
+            <summary>
+            Gets or sets a value indicating whether to display additional information about Cake.
+            </summary>
+        </member>
+        <member name="P:Cake.Commands.DefaultCommandSettings.Recompile">
+            <summary>
+            Gets or sets a value indicating whether to force the script to be recompiled if caching is enabled.
+            </summary>
+        </member>
+        <member name="T:Cake.Features.Bootstrapping.IBootstrapFeature">
+            <summary>
+            Represents a feature for bootstrapping Cake modules.
+            </summary>
+        </member>
+        <member name="M:Cake.Features.Bootstrapping.IBootstrapFeature.Run(Cake.Core.ICakeArguments,Cake.Features.Bootstrapping.BootstrapFeatureSettings)">
+            <summary>
+            Runs the bootstrap feature with the specified arguments and settings.
+            </summary>
+            <param name="arguments">The Cake arguments.</param>
+            <param name="settings">The bootstrap feature settings.</param>
+            <returns>The exit code.</returns>
+        </member>
+        <member name="T:Cake.Features.Bootstrapping.BootstrapFeature">
+            <summary>
+            Represents a feature for bootstrapping Cake modules.
+            </summary>
+        </member>
+        <member name="M:Cake.Features.Bootstrapping.BootstrapFeature.#ctor(Cake.Core.IO.IFileSystem,Cake.Core.ICakeEnvironment,Cake.Infrastructure.IContainerConfigurator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Features.Bootstrapping.BootstrapFeature"/> class.
+            </summary>
+            <param name="fileSystem">The file system.</param>
+            <param name="environment">The Cake environment.</param>
+            <param name="configurator">The container configurator.</param>
+        </member>
+        <member name="M:Cake.Features.Bootstrapping.BootstrapFeature.Run(Cake.Core.ICakeArguments,Cake.Features.Bootstrapping.BootstrapFeatureSettings)">
+            <summary>
+            Runs the bootstrap feature with the specified arguments and settings.
+            </summary>
+            <param name="arguments">The Cake arguments.</param>
+            <param name="settings">The bootstrap feature settings.</param>
+            <returns>The exit code.</returns>
+        </member>
+        <member name="T:Cake.Features.Bootstrapping.BootstrapFeatureSettings">
+            <summary>
+            Settings for the bootstrap feature.
+            </summary>
+        </member>
+        <member name="P:Cake.Features.Bootstrapping.BootstrapFeatureSettings.Script">
+            <summary>
+            Gets or sets the script file path.
+            </summary>
+        </member>
+        <member name="P:Cake.Features.Bootstrapping.BootstrapFeatureSettings.Verbosity">
+            <summary>
+            Gets or sets the verbosity level.
+            </summary>
+        </member>
+        <member name="T:Cake.Features.Building.IBuildFeature">
+            <summary>
+            Represents a feature for building Cake scripts.
+            </summary>
+        </member>
+        <member name="M:Cake.Features.Building.IBuildFeature.Run(Cake.Core.ICakeArguments,Cake.Features.Building.BuildFeatureSettings)">
+            <summary>
+            Runs the build feature with the specified arguments and settings.
+            </summary>
+            <param name="arguments">The Cake arguments.</param>
+            <param name="settings">The build feature settings.</param>
+            <returns>The exit code.</returns>
+        </member>
+        <member name="T:Cake.Features.Building.BuildFeature">
+            <summary>
+            Represents a feature for building Cake scripts.
+            </summary>
+        </member>
+        <member name="M:Cake.Features.Building.BuildFeature.#ctor(Cake.Core.IO.IFileSystem,Cake.Core.ICakeEnvironment,Cake.Infrastructure.IContainerConfigurator,Cake.Infrastructure.Composition.IModuleSearcher,Cake.Core.Diagnostics.ICakeLog)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Features.Building.BuildFeature"/> class.
+            </summary>
+            <param name="fileSystem">The file system.</param>
+            <param name="environment">The Cake environment.</param>
+            <param name="configurator">The container configurator.</param>
+            <param name="searcher">The module searcher.</param>
+            <param name="log">The log.</param>
+        </member>
+        <member name="M:Cake.Features.Building.BuildFeature.Run(Cake.Core.ICakeArguments,Cake.Features.Building.BuildFeatureSettings)">
+            <summary>
+            Runs the build feature with the specified arguments and settings.
+            </summary>
+            <param name="arguments">The Cake arguments.</param>
+            <param name="settings">The build feature settings.</param>
+            <returns>The exit code.</returns>
+        </member>
+        <member name="T:Cake.Features.Building.BuildFeatureSettings">
+            <summary>
+            Settings for the build feature.
+            </summary>
+        </member>
+        <member name="P:Cake.Features.Building.BuildFeatureSettings.BuildHostKind">
+            <summary>
+            Gets the build host kind.
+            </summary>
+        </member>
+        <member name="P:Cake.Features.Building.BuildFeatureSettings.Script">
+            <summary>
+            Gets or sets the script file path.
+            </summary>
+        </member>
+        <member name="P:Cake.Features.Building.BuildFeatureSettings.Verbosity">
+            <summary>
+            Gets or sets the verbosity level.
+            </summary>
+        </member>
+        <member name="P:Cake.Features.Building.BuildFeatureSettings.Debug">
+            <summary>
+            Gets or sets a value indicating whether to run in debug mode.
+            </summary>
+        </member>
+        <member name="P:Cake.Features.Building.BuildFeatureSettings.Exclusive">
+            <summary>
+            Gets or sets a value indicating whether to run exclusively.
+            </summary>
+        </member>
+        <member name="P:Cake.Features.Building.BuildFeatureSettings.NoBootstrapping">
+            <summary>
+            Gets or sets a value indicating whether to skip bootstrapping.
+            </summary>
+        </member>
+        <member name="M:Cake.Features.Building.BuildFeatureSettings.#ctor(Cake.Features.Building.BuildHostKind)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Features.Building.BuildFeatureSettings"/> class.
+            </summary>
+            <param name="buildHostKind">The build host kind.</param>
+        </member>
+        <member name="T:Cake.Features.Building.BuildHostKind">
+            <summary>
+            Represents the kind of build host.
+            </summary>
+        </member>
+        <member name="F:Cake.Features.Building.BuildHostKind.Build">
+            <summary>
+            Standard build host.
+            </summary>
+        </member>
+        <member name="F:Cake.Features.Building.BuildHostKind.DryRun">
+            <summary>
+            Dry run host.
+            </summary>
+        </member>
+        <member name="F:Cake.Features.Building.BuildHostKind.Description">
+            <summary>
+            Description host.
+            </summary>
+        </member>
+        <member name="F:Cake.Features.Building.BuildHostKind.Tree">
+            <summary>
+            Tree host.
+            </summary>
+        </member>
+        <member name="T:Cake.Features.Feature">
+            <summary>
+            Represents a base feature for Cake.
+            </summary>
+        </member>
+        <member name="M:Cake.Features.Feature.#ctor(Cake.Core.IO.IFileSystem,Cake.Core.ICakeEnvironment,Cake.Infrastructure.IContainerConfigurator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Features.Feature"/> class.
+            </summary>
+            <param name="fileSystem">The file system.</param>
+            <param name="environment">The Cake environment.</param>
+            <param name="configurator">The container configurator.</param>
+        </member>
+        <member name="M:Cake.Features.Feature.CreateScope(Cake.Core.Configuration.ICakeConfiguration,Cake.Core.ICakeArguments,System.Action{Cake.Core.Composition.ICakeContainerRegistrar})">
+            <summary>
+            Creates a container scope with the specified configuration and arguments.
+            </summary>
+            <param name="configuration">The Cake configuration.</param>
+            <param name="arguments">The Cake arguments.</param>
+            <param name="action">An optional action to configure the container registrar.</param>
+            <returns>A container scope.</returns>
+        </member>
+        <member name="M:Cake.Features.Feature.ReadConfiguration(Cake.Core.ICakeArguments,Cake.Core.IO.DirectoryPath)">
+            <summary>
+            Reads the Cake configuration from the specified arguments and root directory.
+            </summary>
+            <param name="arguments">The Cake arguments.</param>
+            <param name="root">The root directory.</param>
+            <returns>The Cake configuration.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.CakeConfigurationExtensions">
+            <summary>
+            Contains extension methods for <see cref="T:Cake.Core.Configuration.ICakeConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.CakeConfigurationExtensions.GetScriptCachePath(Cake.Core.Configuration.ICakeConfiguration,Cake.Core.IO.DirectoryPath,Cake.Core.ICakeEnvironment)">
+            <summary>
+            Gets the script cache directory path.
+            </summary>
+            <param name="configuration">The Cake configuration.</param>
+            <param name="defaultRoot">The default root path.</param>
+            <param name="environment">The environment.</param>
+            <returns>The script cache directory path.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Composition.AutofacTypeRegistrar">
+            <summary>
+            Represents an Autofac-based type registrar.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeRegistrar.#ctor(Autofac.ContainerBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Infrastructure.Composition.AutofacTypeRegistrar"/> class.
+            </summary>
+            <param name="builder">The container builder.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeRegistrar.RegisterModule(Cake.Core.Composition.ICakeModule)">
+            <summary>
+            Registers a Cake module.
+            </summary>
+            <param name="module">The module to register.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeRegistrar.Register(System.Type,System.Type)">
+            <summary>
+            Registers a service with its implementation.
+            </summary>
+            <param name="service">The service type.</param>
+            <param name="implementation">The implementation type.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeRegistrar.RegisterType(System.Type)">
+            <summary>
+            Registers a type for dependency injection.
+            </summary>
+            <param name="type">The type to register.</param>
+            <returns>A registration builder.</returns>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeRegistrar.RegisterInstance(System.Type,System.Object)">
+            <summary>
+            Registers an instance for a service.
+            </summary>
+            <param name="service">The service type.</param>
+            <param name="implementation">The implementation instance.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeRegistrar.RegisterLazy(System.Type,System.Func{System.Object})">
+            <summary>
+            Registers a lazy factory for a service.
+            </summary>
+            <param name="service">The service type.</param>
+            <param name="factory">The factory function.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeRegistrar.RegisterInstance``1(``0)">
+            <summary>
+            Registers an instance for a service.
+            </summary>
+            <typeparam name="TImplementation">The implementation type.</typeparam>
+            <param name="instance">The instance to register.</param>
+            <returns>A registration builder.</returns>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeRegistrar.BuildContainer">
+            <summary>
+            Builds the container.
+            </summary>
+            <returns>The built container.</returns>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeRegistrar.Build">
+            <summary>
+            Builds the type resolver.
+            </summary>
+            <returns>The type resolver.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Composition.AutofacTypeResolver">
+            <summary>
+            Represents an Autofac-based type resolver.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeResolver.#ctor(Autofac.ILifetimeScope)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Infrastructure.Composition.AutofacTypeResolver"/> class.
+            </summary>
+            <param name="scope">The lifetime scope.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.AutofacTypeResolver.Resolve(System.Type)">
+            <summary>
+            Resolves a type from the container.
+            </summary>
+            <param name="type">The type to resolve.</param>
+            <returns>The resolved instance or null if not found.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Composition.ContainerRegistrationBuilder`2">
+            <summary>
+            Represents a container registration builder.
+            </summary>
+            <typeparam name="T">The type being registered.</typeparam>
+            <typeparam name="TActivator">The activator data type.</typeparam>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.ContainerRegistrationBuilder`2.#ctor(Autofac.Builder.IRegistrationBuilder{`0,`1,Autofac.Builder.SingleRegistrationStyle})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Infrastructure.Composition.ContainerRegistrationBuilder`2"/> class.
+            </summary>
+            <param name="registration">The registration builder.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.ContainerRegistrationBuilder`2.As(System.Type)">
+            <summary>
+            Registers the type as the specified service type.
+            </summary>
+            <param name="type">The service type.</param>
+            <returns>The registration builder.</returns>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.ContainerRegistrationBuilder`2.AsSelf">
+            <summary>
+            Registers the type as itself.
+            </summary>
+            <returns>The registration builder.</returns>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.ContainerRegistrationBuilder`2.Singleton">
+            <summary>
+            Registers the type as a singleton.
+            </summary>
+            <returns>The registration builder.</returns>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.ContainerRegistrationBuilder`2.Transient">
+            <summary>
+            Registers the type as transient.
+            </summary>
+            <returns>The registration builder.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Composition.ModuleLoader">
+            <summary>
+            Represents a module loader for Cake modules.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.ModuleLoader.#ctor(Autofac.IContainer)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Infrastructure.Composition.ModuleLoader"/> class.
+            </summary>
+            <param name="container">The container.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.ModuleLoader.LoadModules(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Loads modules from the specified types.
+            </summary>
+            <param name="types">The module types to load.</param>
+            <returns>An enumerable of loaded modules.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Composition.IModuleSearcher">
+            <summary>
+            Represents a module searcher for finding Cake modules.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.IModuleSearcher.FindModuleTypes(Cake.Core.IO.DirectoryPath,Cake.Core.Configuration.ICakeConfiguration)">
+            <summary>
+            Finds module types in the specified directory.
+            </summary>
+            <param name="root">The root directory.</param>
+            <param name="configuration">The Cake configuration.</param>
+            <returns>A collection of module types.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Composition.ModuleSearcher">
+            <summary>
+            Represents a module searcher for finding Cake modules.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.ModuleSearcher.#ctor(Cake.Core.IO.IFileSystem,Cake.Core.ICakeEnvironment,Cake.Core.Diagnostics.ICakeLog)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Infrastructure.Composition.ModuleSearcher"/> class.
+            </summary>
+            <param name="fileSystem">The file system.</param>
+            <param name="environment">The Cake environment.</param>
+            <param name="log">The log.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Composition.ModuleSearcher.FindModuleTypes(Cake.Core.IO.DirectoryPath,Cake.Core.Configuration.ICakeConfiguration)">
+            <summary>
+            Finds module types in the specified directory.
+            </summary>
+            <param name="root">The root directory.</param>
+            <param name="configuration">The Cake configuration.</param>
+            <returns>A collection of module types.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.ContainerConfigurator">
+            <summary>
+            Represents a container configurator for Cake.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.ContainerConfigurator.Configure(Cake.Core.Composition.ICakeContainerRegistrar,Cake.Core.Configuration.ICakeConfiguration,Cake.Core.ICakeArguments)">
+            <summary>
+            Configures the container with the specified registrar, configuration, and arguments.
+            </summary>
+            <param name="registrar">The container registrar.</param>
+            <param name="configuration">The Cake configuration.</param>
+            <param name="arguments">The Cake arguments.</param>
+        </member>
+        <member name="T:Cake.Infrastructure.IContainerConfigurator">
+            <summary>
+            Responsible for registering all dependencies
+            that is required for executing a script.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.IContainerConfigurator.Configure(Cake.Core.Composition.ICakeContainerRegistrar,Cake.Core.Configuration.ICakeConfiguration,Cake.Core.ICakeArguments)">
+            <summary>
+            Configures the container with the specified registrar, configuration, and arguments.
+            </summary>
+            <param name="registrar">The container registrar.</param>
+            <param name="configuration">The Cake configuration.</param>
+            <param name="arguments">The Cake arguments.</param>
+        </member>
+        <member name="T:Cake.Infrastructure.IScriptHostSettings">
+            <summary>
+            Represents settings for a script host.
+            </summary>
+        </member>
+        <member name="P:Cake.Infrastructure.IScriptHostSettings.Debug">
+            <summary>
+            Gets a value indicating whether to run in debug mode.
+            </summary>
+        </member>
+        <member name="P:Cake.Infrastructure.IScriptHostSettings.Script">
+            <summary>
+            Gets the script file path.
+            </summary>
+        </member>
+        <member name="T:Cake.Infrastructure.Scripting.ReferenceAssemblyResolver">
+            <summary>
+            Represents a reference assembly resolver for Cake scripts.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.ReferenceAssemblyResolver.#ctor(Cake.Core.Diagnostics.ICakeLog)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Infrastructure.Scripting.ReferenceAssemblyResolver"/> class.
+            </summary>
+            <param name="log">The log.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.ReferenceAssemblyResolver.GetReferenceAssemblies">
+            <summary>
+            Gets the reference assemblies.
+            </summary>
+            <returns>An array of reference assemblies.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Scripting.RoslynCodeGenerator">
+            <summary>
+            Represents a Roslyn-based code generator for Cake scripts.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.RoslynCodeGenerator.Generate(Cake.Core.Scripting.Script)">
+            <summary>
+            Generates code from the specified script.
+            </summary>
+            <param name="script">The script to generate code from.</param>
+            <returns>The generated code.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Scripting.RoslynScriptEngine">
+            <summary>
+            Represents a Roslyn-based script engine for Cake.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.RoslynScriptEngine.#ctor(Cake.Core.Reflection.IAssemblyLoader,Cake.Infrastructure.IScriptHostSettings,Cake.Core.Configuration.ICakeConfiguration,Cake.Core.Diagnostics.ICakeLog)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Infrastructure.Scripting.RoslynScriptEngine"/> class.
+            </summary>
+            <param name="loader">The assembly loader.</param>
+            <param name="settings">The script host settings.</param>
+            <param name="configuration">The Cake configuration.</param>
+            <param name="log">The log.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.RoslynScriptEngine.CreateSession(Cake.Core.Scripting.IScriptHost)">
+            <summary>
+            Creates a script session for the specified host.
+            </summary>
+            <param name="host">The script host.</param>
+            <returns>A script session.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Scripting.RoslynScriptSession">
+            <summary>
+            Represents a Roslyn-based script session for Cake.
+            </summary>
+        </member>
+        <member name="P:Cake.Infrastructure.Scripting.RoslynScriptSession.ReferencePaths">
+            <summary>
+            Gets the reference paths.
+            </summary>
+        </member>
+        <member name="P:Cake.Infrastructure.Scripting.RoslynScriptSession.References">
+            <summary>
+            Gets the references.
+            </summary>
+        </member>
+        <member name="P:Cake.Infrastructure.Scripting.RoslynScriptSession.Namespaces">
+            <summary>
+            Gets the namespaces.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.RoslynScriptSession.#ctor(Cake.Core.Scripting.IScriptHost,Cake.Core.Reflection.IAssemblyLoader,Cake.Core.Configuration.ICakeConfiguration,Cake.Core.Diagnostics.ICakeLog,Cake.Infrastructure.IScriptHostSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Infrastructure.Scripting.RoslynScriptSession"/> class.
+            </summary>
+            <param name="host">The script host.</param>
+            <param name="loader">The assembly loader.</param>
+            <param name="configuration">The Cake configuration.</param>
+            <param name="log">The log.</param>
+            <param name="settings">The script host settings.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.RoslynScriptSession.AddReference(System.Reflection.Assembly)">
+            <summary>
+            Adds an assembly reference.
+            </summary>
+            <param name="assembly">The assembly to add.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.RoslynScriptSession.AddReference(Cake.Core.IO.FilePath)">
+            <summary>
+            Adds a reference from the specified file path.
+            </summary>
+            <param name="path">The file path to add as a reference.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.RoslynScriptSession.ImportNamespace(System.String)">
+            <summary>
+            Imports a namespace.
+            </summary>
+            <param name="namespace">The namespace to import.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.RoslynScriptSession.Execute(Cake.Core.Scripting.Script)">
+            <summary>
+            Executes the specified script.
+            </summary>
+            <param name="script">The script to execute.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.RoslynScriptSession.GetScriptHash(Cake.Core.Scripting.Script)">
+            <summary>
+            Gets the hash for the specified script.
+            </summary>
+            <param name="script">The script to get the hash for.</param>
+            <returns>The script hash.</returns>
+        </member>
+        <member name="T:Cake.Infrastructure.Scripting.ScriptAssemblyResolver">
+            <summary>
+            Represents a script assembly resolver for Cake.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.ScriptAssemblyResolver.#ctor(Cake.Core.ICakeEnvironment,Cake.Core.Diagnostics.ICakeLog)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Infrastructure.Scripting.ScriptAssemblyResolver"/> class.
+            </summary>
+            <param name="environment">The Cake environment.</param>
+            <param name="log">The log.</param>
+        </member>
+        <member name="M:Cake.Infrastructure.Scripting.ScriptAssemblyResolver.Dispose">
+            <summary>
+            Disposes the script assembly resolver.
+            </summary>
+        </member>
+        <member name="T:Cake.Infrastructure.Utilities.FastHash">
+            <summary>
+            Optimized hash generator. Using SHA512 since it is FIPS compliant.
+            </summary>
+        </member>
+        <member name="M:Cake.Infrastructure.Utilities.FastHash.GenerateHash(System.Byte[])">
+            <summary>
+            Generates a hash of the passed byte arrays.
+            </summary>
+            <param name="input">The binary data to hash.</param>
+            <returns>The hash value.</returns>
+        </member>
+        <member name="M:Cake.Infrastructure.Utilities.FastHash.GenerateHash(System.Collections.Generic.IEnumerable{System.Byte[]})">
+            <summary>
+            Generates a hash of the passed byte arrays.
+            </summary>
+            <param name="inputs">The binary data to hash.</param>
+            <returns>The hash value.</returns>
+        </member>
+        <member name="T:Cake.Program">
+            <summary>
+            The main program class for Cake.
+            </summary>
+        </member>
+        <member name="M:Cake.Program.#ctor(System.Action{Autofac.ContainerBuilder},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Program"/> class.
+            </summary>
+            <param name="overrides">Optional container builder overrides.</param>
+            <param name="propagateExceptions">Whether to propagate exceptions.</param>
+        </member>
+        <member name="M:Cake.Program.Main(System.String[])">
+            <summary>
+            The main entry point for the application.
+            </summary>
+            <param name="args">The command line arguments.</param>
+            <returns>The exit code.</returns>
+        </member>
+        <member name="M:Cake.Program.Run(System.String[])">
+            <summary>
+            Runs the program with the specified arguments.
+            </summary>
+            <param name="args">The command line arguments.</param>
+            <returns>The exit code.</returns>
+        </member>
+    </members>
+</doc>

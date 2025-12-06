@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cake.DotNetTool.Module</name>
+    </assembly>
+    <members>
+        <member name="T:Cake.DotNetTool.Module.DotNetToolContentResolver">
+            <summary>
+            Locates and lists contents of dotnet Tool Packages.
+            </summary>
+        </member>
+        <member name="M:Cake.DotNetTool.Module.DotNetToolContentResolver.#ctor(Cake.Core.IO.IFileSystem,Cake.Core.ICakeEnvironment,Cake.Core.IO.IGlobber,Cake.Core.Diagnostics.ICakeLog,Cake.Core.Configuration.ICakeConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.DotNetTool.Module.DotNetToolContentResolver"/> class.
+            </summary>
+            <param name="fileSystem">The file system.</param>
+            <param name="environment">The environment.</param>
+            <param name="globber">The Globber.</param>
+            <param name="log">The Log.</param>
+            <param name="config">the configuration.</param>
+        </member>
+        <member name="M:Cake.DotNetTool.Module.DotNetToolContentResolver.GetFiles(Cake.Core.Packaging.PackageReference,Cake.Core.Packaging.PackageType)">
+            <summary>
+            Collects all the files for the given dotnet Tool Package.
+            </summary>
+            <param name="package">The dotnet Tool Package.</param>
+            <param name="type">The type of dotnet Tool Package.</param>
+            <returns>All the files for the Package.</returns>
+        </member>
+        <member name="T:Cake.DotNetTool.Module.DotNetToolModule">
+            <summary>
+            The module responsible for registering
+            default types in the Cake.DotNetTool.Module assembly.
+            </summary>
+        </member>
+        <member name="M:Cake.DotNetTool.Module.DotNetToolModule.Register(Cake.Core.Composition.ICakeContainerRegistrar)">
+            <summary>
+            Performs custom registrations in the provided registrar.
+            </summary>
+            <param name="registrar">The container registrar.</param>
+        </member>
+        <member name="T:Cake.DotNetTool.Module.DotNetToolOperation">
+            <summary>
+            Represents dotnet tool operation.
+            </summary>
+        </member>
+        <member name="F:Cake.DotNetTool.Module.DotNetToolOperation.Install">
+            <summary>
+            Install operation.
+            </summary>
+        </member>
+        <member name="F:Cake.DotNetTool.Module.DotNetToolOperation.Uninstall">
+            <summary>
+            Uninstall operation.
+            </summary>
+        </member>
+        <member name="F:Cake.DotNetTool.Module.DotNetToolOperation.Update">
+            <summary>
+            Update operation.
+            </summary>
+        </member>
+        <member name="T:Cake.DotNetTool.Module.DotNetToolPackage">
+            <summary>
+            Represents a dotnet tool package.
+            </summary>
+        </member>
+        <member name="P:Cake.DotNetTool.Module.DotNetToolPackage.Id">
+            <summary>
+            Gets or sets the tool package ID.
+            </summary>
+            <value>The tool package ID.</value>
+        </member>
+        <member name="P:Cake.DotNetTool.Module.DotNetToolPackage.Version">
+            <summary>
+            Gets or sets the tool package version.
+            </summary>
+            <value>The tool package version.</value>
+        </member>
+        <member name="P:Cake.DotNetTool.Module.DotNetToolPackage.ShortCode">
+            <summary>
+            Gets or sets the tool package short code.
+            </summary>
+            <value>The tool package short code.</value>
+        </member>
+        <member name="T:Cake.DotNetTool.Module.DotNetToolPackageInstaller">
+            <summary>
+            Installer for dotnet Tool Packages.
+            </summary>
+        </member>
+        <member name="M:Cake.DotNetTool.Module.DotNetToolPackageInstaller.#ctor(Cake.Core.ICakeEnvironment,Cake.Core.IO.IProcessRunner,Cake.Core.Diagnostics.ICakeLog,Cake.DotNetTool.Module.IDotNetToolContentResolver,Cake.Core.Configuration.ICakeConfiguration,Cake.Core.IO.IFileSystem)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.DotNetTool.Module.DotNetToolPackageInstaller"/> class.
+            </summary>
+            <param name="environment">The environment.</param>
+            <param name="processRunner">The process runner.</param>
+            <param name="log">The log.</param>
+            <param name="contentResolver">The DotNetTool Package Content Resolver.</param>
+            <param name="config">the configuration.</param>
+            <param name="fileSystem">The file system.</param>
+        </member>
+        <member name="M:Cake.DotNetTool.Module.DotNetToolPackageInstaller.CanInstall(Cake.Core.Packaging.PackageReference,Cake.Core.Packaging.PackageType)">
+            <summary>
+            Determines whether this instance can install the specified resource.
+            </summary>
+            <param name="package">The package reference.</param>
+            <param name="type">The package type.</param>
+            <returns><c>true</c> if this installer can install the specified resource; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Cake.DotNetTool.Module.DotNetToolPackageInstaller.Install(Cake.Core.Packaging.PackageReference,Cake.Core.Packaging.PackageType,Cake.Core.IO.DirectoryPath)">
+            <summary>
+            Installs the specified resource at the given location.
+            </summary>
+            <param name="package">The package reference.</param>
+            <param name="type">The package type.</param>
+            <param name="path">The location where to install the package.</param>
+            <returns>The installed files.</returns>
+        </member>
+        <member name="T:Cake.DotNetTool.Module.IDotNetToolContentResolver">
+            <summary>
+            Represents a file locator for dotnet Tool packages that returns relevant
+            files given the resource type.
+            </summary>
+        </member>
+        <member name="M:Cake.DotNetTool.Module.IDotNetToolContentResolver.GetFiles(Cake.Core.Packaging.PackageReference,Cake.Core.Packaging.PackageType)">
+            <summary>
+            Gets the relevant files for a dotnet Tool package
+            given a resource type.
+            </summary>
+            <param name="package">The package.</param>
+            <param name="type">The resource type.</param>
+            <returns>A collection of files.</returns>
+        </member>
+    </members>
+</doc>
