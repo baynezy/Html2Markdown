@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - name: Get Version
         id: get-version
-        uses: Afterlife-Guide/SemVer.Action@9102e863e95f47d9687e4bdd67efe81f8c0d1baf # 1.2.2.14
+        uses: Afterlife-Guide/SemVer.Action@288a02559813fbd67393b5bd001cd796f1665905 # 1.3.0.15
         with:
           path: 'semver.json'
       - id: set-version
