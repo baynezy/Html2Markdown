@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Added global.json to specify .NET SDK 9.0.100 for mutation testing compatibility
+
 ## [7.1.1.19] - 2025-11-10
 
 ### Security
