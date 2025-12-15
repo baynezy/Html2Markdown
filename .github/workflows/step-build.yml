@@ -54,7 +54,7 @@ jobs:
           versionNumber: ${{inputs.version}}
     - name: Upload Package
       if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v5
       with:
         name: Html2Markdown
         path: ./src/Html2Markdown/bin/Release/*.nupkg
