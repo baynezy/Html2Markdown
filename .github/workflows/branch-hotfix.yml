@@ -7,10 +7,6 @@ on:
       - master
   workflow_dispatch:
 
-permissions:
-  contents: write
-  workflows: write
-
 jobs:
   get-version:
     if: startsWith(github.head_ref, 'hotfix/')
