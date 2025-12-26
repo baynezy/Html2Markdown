@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [7.1.2.20] - 2025-12-26
+
 ### Fixed
 
 - Added global.json to specify .NET SDK 9.0.100 for mutation testing compatibility (#681)
@@ -537,7 +539,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.1.1.19...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.1.2.20...HEAD
+[7.1.2.20]: https://github.com/baynezy/Html2Markdown/compare/7.1.1.19...7.1.2.20
 [7.1.1.19]: https://github.com/baynezy/Html2Markdown/compare/7.1.0.18...7.1.1.19
 [7.1.0.18]: https://github.com/baynezy/Html2Markdown/compare/7.0.7.17...7.1.0.18
 [7.0.7.17]: https://github.com/baynezy/Html2Markdown/compare/7.0.6.15...7.0.7.17
