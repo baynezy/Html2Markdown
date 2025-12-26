@@ -28,12 +28,12 @@ jobs:
     environment: ${{ inputs.deploy-env }}
     steps:
       - name: Download Package
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v6
         with:
           name: ${{ inputs.package-name }}
           path: ./src/Html2Markdown/bin/Release
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5
+        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
           dotnet-version: 8.0.x
       - name: Push package to NuGet
