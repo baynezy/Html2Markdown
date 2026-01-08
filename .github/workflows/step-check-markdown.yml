@@ -1,4 +1,4 @@
-﻿on:
+on:
   workflow_call:
 
 jobs:
@@ -6,7 +6,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
           - name: markdownlint-cli
-            uses: nosborn/github-action-markdown-cli@f5d8cad27b5690b173425c45f762f8662ecf47e8 # v3.3.0
+            uses: nosborn/github-action-markdown-cli@9b5e871c11cc0649c5ac2526af22e23525fa344d # v3.3.0
             with:
               files: .
               config_file: .markdownlint.json
