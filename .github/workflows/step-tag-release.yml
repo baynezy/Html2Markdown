@@ -5,6 +5,10 @@ on:
         required: true
         description: 'Version to deploy'
         type: string
+    secrets:
+      github-token:
+        required: true
+        description: 'GitHub token with permission to create tags for commits that update workflows'
   
 jobs:
   tag:
@@ -12,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v5
+        with:
+          token: ${{ secrets.github-token }}
       - name: Create tag
         env:
           VERSION: ${{ inputs.version }}

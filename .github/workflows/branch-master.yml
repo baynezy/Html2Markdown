@@ -32,6 +32,8 @@ jobs:
   tag-release:
     needs: [ get-version,publish-to-nuget ]
     uses: ./.github/workflows/step-tag-release.yml
+    secrets:
+      github-token: ${{ secrets.CREATE_PR_TOKEN }}
     with:
       version: ${{ needs.get-version.outputs.version }}
   
