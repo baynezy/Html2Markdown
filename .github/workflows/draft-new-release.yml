@@ -41,7 +41,7 @@ jobs:
         id: make-commit
         run: |
           git config --global user.name "GitHub Action Bot"
-          git config --global user.email "no-reply@after-life.co"
+          git config --global user.email "baynezy@gmail.com"
           git add CHANGELOG.md semver.json
           git commit --message "Prepare release ${{ github.event.inputs.major_version }}.${{ github.event.inputs.minor_version }}.${{ github.event.inputs.patch_version }}.${{ github.run_number }}"
 

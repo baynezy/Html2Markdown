@@ -25,6 +25,6 @@ jobs:
         run: |
           gh auth setup-git
           git config --global user.name "GitHub Action Bot"
-          git config --global user.email "no-reply@after-life.co"
+          git config --global user.email "baynezy@gmail.com"
           git tag -a "$VERSION" -m "Version $VERSION created via GitHub Actions"
           git push origin "$VERSION"
