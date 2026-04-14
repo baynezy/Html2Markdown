@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Updated the release tagging workflow to use the repository automation token so tags can still be created when the tagged commit includes workflow changes (#742)
+- Updated the release tagging workflow to explicitly authenticate tag pushes with the repository automation token so tags can still be created when the tagged commit includes workflow changes (#742)
 
 ## [7.1.2.20] - 2025-12-26
 
