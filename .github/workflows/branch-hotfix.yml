@@ -50,7 +50,7 @@ jobs:
       - name: Commit Changes
         run: |
           git config --global user.name "GitHub Action Bot"
-          git config --global user.email "no-reply@after-life.co"
+          git config --global user.email "baynezy@gmail.com"
           git add CHANGELOG.md semver.json
           git commit --message "Bump Version to ${{ needs.get-version.outputs.major }}.${{ needs.get-version.outputs.minor }}.${{ steps.increment_version.outputs.patch_version }}.${{ github.run_number }}"
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Replaced the legacy workflow git email address with `baynezy@gmail.com` in GitHub Actions workflows (#692)
+
 ## [7.1.2.20] - 2025-12-26
 
 ### Fixed
