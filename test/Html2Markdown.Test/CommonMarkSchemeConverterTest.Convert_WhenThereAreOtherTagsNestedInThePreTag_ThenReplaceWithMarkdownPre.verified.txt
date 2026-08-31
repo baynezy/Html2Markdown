@@ -1,3 +1,0 @@
-﻿```
-Install-Package Html2Markdown
-```

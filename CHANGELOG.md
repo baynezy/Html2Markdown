@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Now uses AngleSharp to load the HTML into a graph to no longer need Regex for parsing (#68)
+- Utilises depth first search to allow elements to know how their ancestors are to allow custom behaviour (#45)
+- No longer converts Markdown inside block level elements (#35)
+
 ### Fixed
 
 - Replaced the legacy workflow git email address with `baynezy@gmail.com` in GitHub Actions workflows (#692)

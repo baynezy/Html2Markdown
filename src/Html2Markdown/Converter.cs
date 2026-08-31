@@ -1,39 +1,46 @@
 using System.IO;
-using System.Text.RegularExpressions;
-using Html2Markdown.Replacement;
-using Html2Markdown.Scheme;
 
 namespace Html2Markdown;
 
 /// <summary>
-/// An Html to Markdown converter.
+/// An HTML to Markdown converter.
 /// </summary>
-public partial class Converter
+public class Converter
 {
-	private readonly IList<IReplacer> _replacers;
-		
-	/// <summary>
-	/// Create a Converter with the standard Markdown conversion scheme
-	/// </summary>
-	public Converter() 
-	{
-		_replacers = new Markdown().Replacers();
-	}
+    private readonly IReadOnlyCollection<IHtmlTagRenderer> _tagRenderers;
+
+    /// <summary>
+    /// Initialises a new instance of the <see cref="Converter"/> class with the default conversion options.
+    /// </summary>
+    public Converter() : this(new ConverterOptions())
+    {
+    }
+
+    /// <summary>
+    /// Initialises a new instance of the <see cref="Converter"/> class.
+    /// </summary>
+    /// <param name="options">The options used to configure conversion.</param>
+    public Converter(ConverterOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+
+        _tagRenderers = [.. options.TagRenderers];
+        if (_tagRenderers.Any(renderer => renderer is null))
+        {
+            throw new ArgumentException("Tag renderers cannot contain null.", nameof(options));
+        }
+
+        if (_tagRenderers.Any(renderer => string.IsNullOrWhiteSpace(renderer.TagName)))
+        {
+            throw new ArgumentException("Tag renderer names cannot be empty.", nameof(options));
+        }
+    }
 
 	/// <summary>
-	/// Create a converter with a custom conversion scheme
-	/// </summary>
-	/// <param name="scheme">Conversion scheme to control conversion</param>
-	public Converter(IScheme scheme)
-	{
-		_replacers = scheme.Replacers();
-	}
-
-	/// <summary>
-	/// Converts Html contained in a file to a Markdown string
+	/// Converts HTML contained in a file to a Markdown string
 	/// </summary>
 	/// <param name="path">The path to the file which is being converted</param>
-	/// <returns>A Markdown representation of the passed in Html</returns>
+	/// <returns>A Markdown representation of the passed in HTML</returns>
 	public string ConvertFile(string path)
 	{
 		using var stream = new FileStream(path, FileMode.Open);
@@ -43,41 +50,23 @@ public partial class Converter
 		return Convert(html);
 	}
 
-	private static string StandardiseWhitespace(string html)
-	{
-		return MatchCarriageReturn().Replace(html, "$1\r\n");
-	}
-
 	/// <summary>
-	/// Converts an Html string to a Markdown string
+	/// Converts an HTML string to a Markdown string
 	/// </summary>
-	/// <param name="html">The Html string you wish to convert</param>
-	/// <returns>A Markdown representation of the passed in Html</returns>
+	/// <param name="html">The HTML string you wish to convert</param>
+	/// <returns>A Markdown representation of the passed in HTML</returns>
 	public string Convert(string html)
 	{
-		return CleanWhiteSpace(_replacers.Aggregate(html, (current, element) => element.Replace(current)));
+        ArgumentNullException.ThrowIfNull(html);
+
+		return HtmlToMarkdownConverter.Convert(html, _tagRenderers);
 	}
 
-	private static string CleanWhiteSpace(string markdown)
-	{
-		var cleaned = MatchCarriageReturnsWithSpacesInBetween().Replace(markdown, Environment.NewLine + Environment.NewLine);
-		cleaned = MatchThreeCarriageReturns().Replace(cleaned, Environment.NewLine + Environment.NewLine);
-		cleaned = MatchBlockQuotes().Replace(cleaned, "> " + Environment.NewLine + Environment.NewLine);
-		cleaned = MatchCarriageReturnsAtTheBeginning().Replace(cleaned, "");
-		cleaned = MatchCarriageReturnsAtTheEnd().Replace(cleaned, "");
-		return cleaned.Trim();
-	}
-
-    [GeneratedRegex(@"([^\r])\n")]
-    private static partial Regex MatchCarriageReturn();
-    [GeneratedRegex(@"\r?\n\s+\r?\n")]
-    private static partial Regex MatchCarriageReturnsWithSpacesInBetween();
-    [GeneratedRegex(@"(\r?\n){3,}")]
-    private static partial Regex MatchThreeCarriageReturns();
-    [GeneratedRegex(@"(> \r?\n){2,}")]
-    private static partial Regex MatchBlockQuotes();
-    [GeneratedRegex(@"^(\r?\n)+")]
-    private static partial Regex MatchCarriageReturnsAtTheBeginning();
-    [GeneratedRegex(@"(\r?\n)+$")]
-    private static partial Regex MatchCarriageReturnsAtTheEnd();
+    private static string StandardiseWhitespace(string html)
+    {
+        return html
+            .Replace("\r\n", "\n")
+            .Replace("\r", "\n")
+            .Replace("\n", Environment.NewLine);
+    }
 }
