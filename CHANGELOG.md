@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added optional GitHub-Flavoured Markdown table conversion with alignment and span support (#612)
+
 ### Changed
 
 - Now uses AngleSharp to load the HTML into a graph to no longer need Regex for parsing (#68)
