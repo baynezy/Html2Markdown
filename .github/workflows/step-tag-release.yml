@@ -5,6 +5,9 @@ on:
         required: true
         description: 'Version to deploy'
         type: string
+    secrets:
+      create-pr-token:
+        required: true
   
 jobs:
   tag:
@@ -16,7 +19,7 @@ jobs:
           persist-credentials: false
       - name: Create tag
         env:
-          GH_TOKEN: ${{ secrets.CREATE_PR_TOKEN }}
+          GH_TOKEN: ${{ secrets.create-pr-token }}
           VERSION: ${{ inputs.version }}
         run: |
           gh auth setup-git

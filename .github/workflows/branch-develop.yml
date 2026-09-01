@@ -41,5 +41,7 @@ jobs:
     permissions:
       contents: write
     uses: ./.github/workflows/step-tag-release.yml
+    secrets:
+      create-pr-token: ${{ secrets.CREATE_PR_TOKEN }}
     with:
       version: ${{ needs.get-version.outputs.version }}
