@@ -23,6 +23,6 @@ jobs:
         with:
           ref: ${{ inputs.checkout-ref }}
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@9a946fdbd5fb07b82b2f5a4466058b876ab72bb2 # v4
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v4
         with:
           dotnet-version: 8.0.x
