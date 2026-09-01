@@ -16,7 +16,7 @@ jobs:
           persist-credentials: false
       - name: Create tag
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.CREATE_PR_TOKEN }}
           VERSION: ${{ inputs.version }}
         run: |
           gh auth setup-git
