@@ -8,6 +8,7 @@ namespace Html2Markdown;
 public class Converter
 {
     private readonly IReadOnlyCollection<IHtmlTagRenderer> _tagRenderers;
+    private readonly bool _convertTables;
 
     /// <summary>
     /// Initialises a new instance of the <see cref="Converter"/> class with the default conversion options.
@@ -34,6 +35,8 @@ public class Converter
         {
             throw new ArgumentException("Tag renderer names cannot be empty.", nameof(options));
         }
+
+        _convertTables = options.ConvertTables;
     }
 
 	/// <summary>
@@ -59,7 +62,7 @@ public class Converter
 	{
         ArgumentNullException.ThrowIfNull(html);
 
-		return HtmlToMarkdownConverter.Convert(html, _tagRenderers);
+		return HtmlToMarkdownConverter.Convert(html, _tagRenderers, _convertTables);
 	}
 
     private static string StandardiseWhitespace(string html)

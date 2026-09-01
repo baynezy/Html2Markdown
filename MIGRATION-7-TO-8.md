@@ -83,15 +83,30 @@ regex-based handling of comments, entities, whitespace, or nesting in version
 7.
 
 Version 8 preserves the original HTML, including its contents, for these block
-elements:
+elements by default:
 
 - `<div>`
 - `<table>`
 - `<iframe>`
 - `<canvas>`
 
-Update downstream consumers if they previously expected the contents of these
-elements to be converted to Markdown or discarded.
+Set `ConverterOptions.ConvertTables` to `true` when table content should be
+converted to GitHub-Flavoured Markdown:
+
+```csharp
+var options = new ConverterOptions { ConvertTables = true };
+var converter = new Converter(options);
+var markdown = converter.Convert("<table><tr><th>Name</th></tr><tr><td>Sam</td></tr></table>");
+```
+
+Enabled table conversion supports headers, cell alignment, `rowspan`, and
+`colspan`. Markdown cannot represent merged cells directly, so positions
+covered by a span become empty cells. Tables without a header receive an empty
+synthetic header. Tables containing multiline cell content remain raw HTML.
+
+Update downstream consumers if they expected table contents to be converted to
+Markdown or discarded without enabling this option. Continue to review documents
+that contain tables when upgrading.
 
 ## Validate before deployment
 

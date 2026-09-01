@@ -4,13 +4,18 @@ internal sealed class MarkdownRenderer
 {
     private readonly Dictionary<string, IHtmlTagRenderer> _tagRenderers;
 
-    internal MarkdownRenderer(IEnumerable<IHtmlTagRenderer> customTagRenderers)
+    internal MarkdownRenderer(IEnumerable<IHtmlTagRenderer> customTagRenderers, bool convertTables)
     {
         ArgumentNullException.ThrowIfNull(customTagRenderers);
 
         _tagRenderers = HtmlTagRenderers.Defaults.ToDictionary(
             renderer => renderer.TagName,
             StringComparer.OrdinalIgnoreCase);
+
+        if (convertTables)
+        {
+            _tagRenderers["table"] = new MarkdownTableTagRenderer();
+        }
 
         foreach (var renderer in customTagRenderers)
         {

@@ -42,7 +42,8 @@ This project will currently convert the following HTML tags:-
 - `<ol>`
 
 The converter preserves the original HTML for `<div>`, `<table>`, `<iframe>`, and
-`<canvas>` elements, including their contents.
+`<canvas>` elements, including their contents. Set `ConverterOptions.ConvertTables`
+to convert supported tables to GitHub-Flavoured Markdown instead.
 
 ## Installing via NuGet
 
@@ -101,6 +102,24 @@ public sealed class MarkTagRenderer : IHtmlTagRenderer
 If a custom renderer uses the same `TagName` as a built-in renderer, the custom
 renderer replaces the built-in behaviour for that tag. Tag names are matched
 case-insensitively, and options are copied when the `Converter` is constructed.
+
+### Tables
+
+Tables are preserved as raw HTML by default. Enable GitHub-Flavoured Markdown
+table conversion when needed:
+
+```csharp
+var options = new ConverterOptions { ConvertTables = true };
+var converter = new Converter(options);
+var markdown = converter.Convert("<table><tr><th>Name</th></tr><tr><td>Sam</td></tr></table>");
+```
+
+Enabled conversion creates a GitHub-Flavoured Markdown pipe table. It supports
+headers, `align="left"`, `align="center"`, and `align="right"`, plus `rowspan`
+and `colspan`; spanned positions are represented by empty Markdown cells.
+Tables without a header use an empty synthetic header, and captions are emitted
+after the table. Tables with multiline cell content remain raw HTML because they
+cannot be represented safely as a Markdown table.
 
 ### Documentation
 
