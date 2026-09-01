@@ -1,6 +1,0 @@
-﻿So this text has multiline code.
-```
-<p>
-	Some code we are looking at
-</p>
-```

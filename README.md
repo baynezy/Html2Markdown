@@ -41,6 +41,9 @@ This project will currently convert the following HTML tags:-
 - `<ul>`
 - `<ol>`
 
+The converter preserves the original HTML for `<div>`, `<table>`, `<iframe>`, and
+`<canvas>` elements, including their contents.
+
 ## Installing via NuGet
 
 [![NuGet version](https://badge.fury.io/nu/Html2Markdown.svg)](http://badge.fury.io/nu/Html2Markdown)
@@ -67,21 +70,46 @@ var converter = new Converter();
 var markdown = converter.ConvertFile(path);
 ```
 
+### Custom tags
+
+Register tag renderers when you need to add support for an unsupported tag or
+replace the default behaviour for a supported tag. Custom renderers receive the
+current HTML element and a rendering context that can render child nodes through
+the active renderer set.
+
+```csharp
+using AngleSharp.Dom;
+using Html2Markdown;
+
+var options = new ConverterOptions();
+options.TagRenderers.Add(new MarkTagRenderer());
+
+var converter = new Converter(options);
+var markdown = converter.Convert("<mark>highlighted</mark>");
+
+public sealed class MarkTagRenderer : IHtmlTagRenderer
+{
+    public string TagName => "mark";
+
+    public string Render(IElement element, HtmlTagRenderingContext context)
+    {
+        return $"=={context.RenderChildren(element)}==";
+    }
+}
+```
+
+If a custom renderer uses the same `TagName` as a built-in renderer, the custom
+renderer replaces the built-in behaviour for that tag. Tag names are matched
+case-insensitively, and options are copied when the `Converter` is constructed.
+
 ### Documentation
 
 [Library Documentation](https://baynezy.github.io/Html2Markdown/)
 
-## Customise
+### Migrating from version 7
 
-### Create new `IScheme` implementation
-
-Create your own implementation of `IScheme` and construct `Converter` with that.
-
-```csharp
-var html = "Something to <strong>convert</strong>";
-var converter = new Converter(customConversionScheme);
-var markdown = converter.Convert(html);
-```
+Version 8 is a breaking release. Read the [version 7 to 8 migration guide](MIGRATION-7-TO-8.md)
+before upgrading.
 
 ## Try it
 

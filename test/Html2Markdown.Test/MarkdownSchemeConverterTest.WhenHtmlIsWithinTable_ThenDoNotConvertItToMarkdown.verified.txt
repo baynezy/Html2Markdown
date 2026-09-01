@@ -1,0 +1,6 @@
+**Some text**
+<table>
+    <tbody><tr>
+        <td><strong>Some text</strong></td>
+    </tr>
+</tbody></table>

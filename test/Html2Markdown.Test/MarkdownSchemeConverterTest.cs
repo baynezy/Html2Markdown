@@ -1,33 +1,8 @@
 using System;
-using Html2Markdown.Scheme;
-
 namespace Html2Markdown.Test;
 
 public class MarkdownSchemeConverterTest
 {
-
-	#region Schemes
-
-	[Fact]
-	public void Converter_WhenProvidingMarkdownAsACustomScheme_ThenShouldConvertEquivalentlyToNoScheme()
-	{
-		// arrange
-		const string html = """So this is <a href="http://www.simonbaynes.com/">a link</a>. Convert it""";
-
-		var scheme = new Markdown();
-
-		var converterWithScheme = new Converter(scheme);
-		var converterWithoutScheme = new Converter();
-		
-		// act
-		var resultWithScheme = converterWithScheme.Convert(html);
-		var resultWithoutScheme = converterWithoutScheme.Convert(html);
-		
-		// assert
-		resultWithoutScheme.Should().Be(resultWithScheme);
-	}
-
-	#endregion
 
 	#region Links
 		
@@ -944,6 +919,47 @@ public class MarkdownSchemeConverterTest
 
 	#endregion
 
+    #region Block Level Elements
+
+    [Fact]
+    public Task Convert_WhenHtmlIsWithinDiv_ThenDoNotConvertItToMarkdown()
+    {
+        const string html = """
+                            <strong>Some text</strong>
+                            <div><strong>Some text</strong></div>";
+                            """;
+
+        return CheckConversion(html);
+    }
+    
+    [Fact]
+    public Task WhenHtmlIsWithinTable_ThenDoNotConvertItToMarkdown()
+    {
+        const string html = """
+                            <strong>Some text</strong>
+                            <table>
+                                <tr>
+                                    <td><strong>Some text</strong></td>
+                                </tr>
+                            </table>
+                            """;
+
+        return CheckConversion(html);
+    }
+    
+    [Fact]
+    public Task WhenHtmlIsWithinIframe_ThenDoNotConvertItToMarkdown()
+    {
+        const string html = """
+                            <strong>Some text</strong>
+                            <iframe src="https://www.youtube.com/embed/1w8Z0UOXVaY" frameborder="0" allowfullscreen></iframe>
+                            """;
+
+        return CheckConversion(html);
+    }
+
+    #endregion
+
 	#region Complex Tests
 		
 	[Fact]
@@ -1039,9 +1055,9 @@ public class MarkdownSchemeConverterTest
 
 	#endregion
 
-	protected virtual Task CheckConversion(string html, IScheme scheme = null)
+    private static Task CheckConversion(string html)
 	{
-		var converter = scheme == null ? new Converter() : new Converter(scheme);
+		var converter = new Converter();
 
 		var result = converter.Convert(html);
 

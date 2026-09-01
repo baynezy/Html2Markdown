@@ -1,4 +1,0 @@
-﻿This code has no markup.
-
-This code is in a paragraph.
-Convert it!
