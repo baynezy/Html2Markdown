@@ -6,9 +6,9 @@ on:
         description: 'The comparison to use for the mutation testing'
         required: true
 env:
-  MAJOR_DOTNET_VERSION: 8
+  MAJOR_DOTNET_VERSION: 10
   TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
-  STRYKER_VERSION: 4.8.1
+  STRYKER_VERSION: 4.16.0
         
 jobs:
   mutation-testing:

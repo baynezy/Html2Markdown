@@ -1,3 +1,5 @@
+using Html2Markdown.Observability;
+
 namespace Html2Markdown.Renderers;
 
 internal sealed class MarkdownRenderer
@@ -53,6 +55,9 @@ internal sealed class MarkdownRenderer
 
     private string RenderElement(IElement element, ConversionContext context)
     {
+        ActivityConfig.RenderedElementsCounter.Add(1, new KeyValuePair<string, object>("tag", element.LocalName));
+        using var activity = ActivityConfig.ActivitySource.StartActivity($"Render {element.LocalName}");
+        
         return _tagRenderers.TryGetValue(element.LocalName, out var renderer)
             ? renderer.Render(element, new HtmlTagRenderingContext(this, context))
             : RenderChildren(element, context);

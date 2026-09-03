@@ -105,6 +105,33 @@ Tables without a header use an empty synthetic header, and captions are emitted
 after the table. Tables with multiline cell content remain raw HTML because they
 cannot be represented safely as a Markdown table.
 
+## Observability
+
+The library emits OpenTelemetry-compatible traces and metrics through the built-in
+.NET diagnostics APIs, so no additional package reference is required. Telemetry is
+only collected when your application subscribes to it.
+
+Both the `ActivitySource` and the `Meter` are named `Html2Markdown`, which is
+exposed as `Html2Markdown.Observability.ActivityConfig.ServiceName`.
+
+| Signal | Name                     | Details                                                                                       |
+|--------|--------------------------|-----------------------------------------------------------------------------------------------|
+| Trace  | `Render <tag>`           | An activity is started for each HTML element that is rendered, for example `Render strong`.    |
+| Metric | `html.elements.rendered` | Counter of rendered HTML elements, tagged with `tag` (the element's local name, e.g. `p`).     |
+
+Subscribe with the OpenTelemetry SDK:
+
+```csharp
+using Html2Markdown.Observability;
+
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing => tracing.AddSource(ActivityConfig.ServiceName))
+    .WithMetrics(metrics => metrics.AddMeter(ActivityConfig.ServiceName));
+```
+
+Nested elements produce nested activities, so a rendered document forms a trace
+tree that mirrors the structure of the source HTML.
+
 ## Try it
 
 This library is showcased at [http://html2markdown.bayn.es](http://html2markdown.bayn.es).

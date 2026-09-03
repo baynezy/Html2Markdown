@@ -108,6 +108,26 @@ Update downstream consumers if they expected table contents to be converted to
 Markdown or discarded without enabling this option. Continue to review documents
 that contain tables when upgrading.
 
+## Optional observability
+
+Version 8 emits OpenTelemetry-compatible traces and metrics using the built-in
+.NET diagnostics APIs. No action is required when upgrading: the library takes
+no new package dependency, and nothing is collected unless your application
+subscribes to it.
+
+The `ActivitySource` and `Meter` are both named `Html2Markdown`, exposed as
+`Html2Markdown.Observability.ActivityConfig.ServiceName`. An activity named
+`Render <tag>` is started for each rendered element, and the
+`html.elements.rendered` counter records rendered elements tagged with `tag`.
+
+```csharp
+using Html2Markdown.Observability;
+
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing => tracing.AddSource(ActivityConfig.ServiceName))
+    .WithMetrics(metrics => metrics.AddMeter(ActivityConfig.ServiceName));
+```
+
 ## Validate before deployment
 
 Run representative production HTML through version 8 and compare the resulting

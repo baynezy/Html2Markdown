@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added optional GitHub-Flavoured Markdown table conversion with alignment and span support (#612)
+- OTEL support (#72)
 
 ### Changed
 
