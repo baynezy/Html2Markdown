@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced the legacy workflow git email address with `baynezy@gmail.com` in GitHub Actions workflows (#692)
 - Updated the release tagging workflow to explicitly authenticate tag pushes with the repository automation token so tags can still be created when the tagged commit includes workflow changes (#742)
 - Reverted the release tagging workflow to use the built-in `GITHUB_TOKEN` instead of the `CREATE_PR_TOKEN` automation token, which was being rejected with a 403 permission error when pushing release tags
+- Re-authenticated release tag pushes with the `CREATE_PR_TOKEN` automation token, as the built-in `GITHUB_TOKEN` can never push a ref pointing at a commit that touches `.github/workflows` files, regardless of granted permissions
 
 ## [7.1.2.20] - 2025-12-26
 

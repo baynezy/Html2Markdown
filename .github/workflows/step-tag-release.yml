@@ -5,7 +5,16 @@ on:
         required: true
         description: 'Version to deploy'
         type: string
-  
+    secrets:
+      gh-token:
+        required: true
+        description: >-
+          Personal access token used to push the release tag. The built-in
+          GITHUB_TOKEN can never push a ref pointing at a commit that touches
+          files under .github/workflows, so this must be a token with the
+          classic 'workflow' scope (or 'Contents: write' + 'Workflows: write'
+          for a fine-grained PAT).
+
 jobs:
   tag:
     runs-on: ubuntu-latest
@@ -16,7 +25,7 @@ jobs:
           persist-credentials: false
       - name: Create tag
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.gh-token }}
           VERSION: ${{ inputs.version }}
         run: |
           gh auth setup-git
