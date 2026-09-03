@@ -33,6 +33,7 @@ jobs:
     needs: [ get-version,publish-to-nuget ]
     permissions:
       contents: write
+      workflows: write
     uses: ./.github/workflows/step-tag-release.yml
     with:
       version: ${{ needs.get-version.outputs.version }}
