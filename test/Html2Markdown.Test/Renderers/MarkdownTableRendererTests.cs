@@ -1,3 +1,4 @@
+using System;
 using Html2Markdown.Renderers;
 
 namespace Html2Markdown.Test.Renderers;
@@ -35,11 +36,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Name | City |
                 | --- | --- |
                 | Sam | London |
-                """);
+                """));
     }
 
     [Fact]
@@ -53,11 +54,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 |  |  |
                 | --- | --- |
                 | A | B |
-                """);
+                """));
     }
 
     [Fact]
@@ -79,10 +80,10 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Left | Centre | Right |
                 | :--- | :--: | ---: |
-                """);
+                """));
     }
 
     [Fact]
@@ -102,12 +103,12 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Header |  | Last |
                 | --- | --- | --- |
                 | Tall | Middle | End |
                 |  | Next | Final |
-                """);
+                """));
     }
 
     [Fact]
@@ -126,11 +127,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Spanning |  |  |
                 | --- | --- | --- |
                 |  |  | After span |
-                """);
+                """));
     }
 
     [Fact]
@@ -144,11 +145,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Heading |
                 | --- |
                 |  |
-                """);
+                """));
     }
 
     [Fact]
@@ -162,11 +163,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Heading |
                 | --- |
                 | **Bold** \| text |
-                """);
+                """));
     }
 
     [Fact]
@@ -213,11 +214,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Preferred |
                 | --- |
                 | Body heading |
-                """);
+                """));
     }
 
     [Fact]
@@ -236,11 +237,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Preferred |
                 | --- |
                 | Later heading |
-                """);
+                """));
     }
 
     [Fact]
@@ -254,11 +255,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Heading | Also heading |
                 | --- | --- |
                 | Value | Other value |
-                """);
+                """));
     }
 
     [Fact]
@@ -286,11 +287,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 |  |  |  |
                 | :--- | :--: | ---: |
                 | A | B | C |
-                """);
+                """));
     }
 
     [Fact]
@@ -309,12 +310,12 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 |  |
                 | :--- |
                 | First |
                 | Second |
-                """);
+                """));
     }
 
     [Fact]
@@ -328,11 +329,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Heading |  |
                 | :--- | --- |
                 | First | Second |
-                """);
+                """));
     }
 
     [Fact]
@@ -346,11 +347,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | One | Two |
                 | --- | --- |
                 | Only |  |
-                """);
+                """));
     }
 
     [Fact]
@@ -364,13 +365,13 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Heading |
                 | --- |
                 | Value |
 
                 Summary
-                """);
+                """));
     }
 
     [Fact]
@@ -415,11 +416,11 @@ public class MarkdownTableRendererTests
 
         // assert
         markdown.Should()
-            .Be("""
+            .Be(NormaliseLineEndings("""
                 | Heading |
                 | --- |
                 | Value |
-                """);
+                """));
     }
 
     [Fact]
@@ -445,4 +446,7 @@ public class MarkdownTableRendererTests
 
         return new Converter(options);
     }
+
+    private static string NormaliseLineEndings(string value) =>
+        value.ReplaceLineEndings(Environment.NewLine);
 }

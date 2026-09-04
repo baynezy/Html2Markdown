@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added optional GitHub-Flavoured Markdown table conversion with alignment and span support (#612)
 - OTEL support (#72)
 - A GitHub release is now created automatically when a release or hotfix is merged to `master`, using the changelog entries as the release notes (#786)
+- Support for .NET 9 and .NET 10 (#789)
 
 ### Changed
 
