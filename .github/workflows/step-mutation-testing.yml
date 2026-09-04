@@ -6,20 +6,20 @@ on:
         description: 'The comparison to use for the mutation testing'
         required: true
 env:
-  MAJOR_DOTNET_VERSION: 8
+  MAJOR_DOTNET_VERSION: 10
   TestPath: /home/runner/work/Html2Markdown/Html2Markdown/test/Html2Markdown.Test/Files/
-  STRYKER_VERSION: 4.8.1
+  STRYKER_VERSION: 4.16.0
         
 jobs:
   mutation-testing:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v5
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
         with:
           fetch-depth: 0
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v5
         with:
           dotnet-version: ${{ env.MAJOR_DOTNET_VERSION }}.0.x
       - name: Install Stryker
@@ -31,7 +31,8 @@ jobs:
         run: |
           dotnet stryker --since:$COMPARISON
       - name: Upload Report
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v5
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v5
         with:
           name: Mutation-Report
           path: ./StrykerOutput/*/reports/mutation-report.html

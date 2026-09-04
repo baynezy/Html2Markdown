@@ -1,6 +1,0 @@
-﻿a
-
-*   First
-*   Last
-
-b

@@ -1,4 +1,0 @@
-﻿This code is with an ordered list.
-
-1.  Yes
-2.  No

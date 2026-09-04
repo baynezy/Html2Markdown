@@ -2,14 +2,17 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\src\Html2Markdown\Html2Markdown.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="8.0.0-alpha.1"/>
-        <PackageReference Include="JunitXml.TestLogger" Version="7.1.0"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>
-        <PackageReference Include="Verify.Xunit" Version="31.9.2"/>
-        <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+        <PackageReference Include="JunitXml.TestLogger" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.9.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0"/>
+        <PackageReference Include="Verify.Xunit" Version="31.12.5"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -21,6 +24,18 @@
 
     <ItemGroup>
         <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="TestResults\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="TestResults\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="TestResults\**" />
     </ItemGroup>
 
 </Project>

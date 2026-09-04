@@ -31,15 +31,45 @@ jobs:
   
   tag-release:
     needs: [ get-version,publish-to-nuget ]
+    permissions:
+      contents: write
     uses: ./.github/workflows/step-tag-release.yml
     with:
+      deploy-env: nuget
       version: ${{ needs.get-version.outputs.version }}
+    secrets:
+      APP_ID: ${{ vars.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+
+  publish-release:
+    needs: [ get-version,tag-release ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.get-version.outputs.version }}
+        run: |
+          if gh release view "$VERSION" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release edit "$VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --draft=false \
+            --latest
+          else
+            gh release create "$VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$VERSION" \
+            --generate-notes \
+            --latest
+          fi
   
   merge-master-to-develop:
     needs: [ publish-to-nuget ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
       - name: Create Pull Request
         env:
           GH_TOKEN: ${{ secrets.CREATE_PR_TOKEN }}

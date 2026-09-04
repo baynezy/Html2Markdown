@@ -1,5 +1,0 @@
-﻿This code is with an unordered list.
-
-*   Yes
-*   1.  No
-    2.  Maybe

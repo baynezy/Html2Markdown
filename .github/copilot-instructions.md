@@ -41,6 +41,18 @@ This document contains guidelines that GitHub Copilot should follow when assisti
 3. If that produces errors, fix those errors and build again. Repeat until the build is successful.
 4. Run tests using the Cake build script with `dotnet cake --testFilter="Category!=LocalTest"`.
 
+## Mutation Testing
+
+All changes must maintain a mutation score of at least 80% (the break threshold in `stryker-config.json`). This is enforced by the `step-mutation-testing.yml` workflow, so it must be verified locally before opening a Pull Request.
+
+1. Install Stryker `dotnet tool install -g dotnet-stryker --version 4.8.1`.
+2. Run mutation testing against the target branch with `dotnet stryker --since:develop` (use the branch the work will be merged into).
+3. If the score is below the break threshold, open the generated report in `StrykerOutput/<timestamp>/reports/mutation-report.html` and review the surviving mutants.
+4. Add or improve unit tests to kill the surviving mutants. Never weaken the thresholds or exclude code to pass the check.
+5. Repeat until the run succeeds, and delete the `StrykerOutput` folder before committing.
+
+Note that mutants in constructors invoked from static initialisers (for example the renderers in `HtmlTagRenderers.Defaults`) are only attributed to the first test that runs. Construct such types directly within a test to make them reliably testable.
+
 ## Changelog Updates
 
 For all Pull Requests created:

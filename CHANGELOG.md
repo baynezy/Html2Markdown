@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [8.0.0.21] - 2026-09-04
+
+### Added
+
+- Added optional GitHub-Flavoured Markdown table conversion with alignment and span support (#612)
+- OTEL support (#72)
+- A GitHub release is now created automatically when a release or hotfix is merged to `master`, using the changelog entries as the release notes (#786)
+- Support for .NET 9 and .NET 10 (#789)
+
+### Changed
+
+- Now uses AngleSharp to load the HTML into a graph to no longer need Regex for parsing (#68)
+- Utilises depth first search to allow elements to know how their ancestors are to allow custom behaviour (#45)
+- No longer converts Markdown inside block level elements (#35)
+
+### Fixed
+
+- Replaced the legacy workflow git email address with `baynezy@gmail.com` in GitHub Actions workflows (#692)
+- Updated the release tagging workflow to explicitly authenticate tag pushes with the repository automation token so tags can still be created when the tagged commit includes workflow changes (#742)
+- Reverted the release tagging workflow to use the built-in `GITHUB_TOKEN` instead of the `CREATE_PR_TOKEN` automation token, which was being rejected with a 403 permission error when pushing release tags
+
 ## [7.1.2.20] - 2025-12-26
 
 ### Fixed
@@ -539,7 +560,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/7.1.2.20...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/8.0.0.21...HEAD
+[8.0.0.21]: https://github.com/baynezy/Html2Markdown/compare/7.1.2.20...8.0.0.21
 [7.1.2.20]: https://github.com/baynezy/Html2Markdown/compare/7.1.1.19...7.1.2.20
 [7.1.1.19]: https://github.com/baynezy/Html2Markdown/compare/7.1.0.18...7.1.1.19
 [7.1.0.18]: https://github.com/baynezy/Html2Markdown/compare/7.0.7.17...7.1.0.18

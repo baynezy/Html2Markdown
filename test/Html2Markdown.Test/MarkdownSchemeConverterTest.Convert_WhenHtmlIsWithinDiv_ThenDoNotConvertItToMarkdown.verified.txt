@@ -1,0 +1,2 @@
+**Some text**
+<div><strong>Some text</strong></div>";

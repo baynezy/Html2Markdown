@@ -167,7 +167,7 @@ To test this you will need to run both apps at the same time.
 node app.js
 ```
 
-and 
+and
 
 ```
 node post.js
