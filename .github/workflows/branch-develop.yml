@@ -42,6 +42,7 @@ jobs:
       contents: write
     uses: ./.github/workflows/step-tag-release.yml
     with:
+      deploy-env: nuget-beta
       version: ${{ needs.get-version.outputs.version }}
     secrets:
       APP_ID: ${{ vars.APP_ID }}
