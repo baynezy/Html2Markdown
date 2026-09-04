@@ -5,12 +5,13 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AspireUseCliBundle>true</AspireUseCliBundle>
+        <AspireUseCliBundle>false</AspireUseCliBundle>
+        <NoWarn>$(NoWarn);ASPIRE010</NoWarn>
         <UserSecretsId>8f4c0c39-6d6e-4120-89ae-06e77675f4e3</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TestWebApp\TestWebApp.csproj" />
+        <ProjectReference Include="..\TestWebApp\TestWebApp.csproj"/>
     </ItemGroup>
 
 </Project>

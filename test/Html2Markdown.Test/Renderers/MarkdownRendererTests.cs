@@ -9,6 +9,7 @@ namespace Html2Markdown.Test.Renderers;
 
 using Html2Markdown.Renderers;
 
+[Collection(nameof(MarkdownRendererTests))]
 public class MarkdownRendererTests
 {
     private readonly HtmlParser _parser = new();
