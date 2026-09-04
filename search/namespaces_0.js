@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['commonmark_0',['CommonMark',['../namespace_html2_markdown_1_1_replacement_1_1_common_mark.html',1,'Html2Markdown::Replacement']]],
-  ['html2markdown_1',['Html2Markdown',['../namespace_html2_markdown.html',1,'']]],
-  ['replacement_2',['Replacement',['../namespace_html2_markdown_1_1_replacement.html',1,'Html2Markdown']]],
-  ['scheme_3',['Scheme',['../namespace_html2_markdown_1_1_scheme.html',1,'Html2Markdown']]]
+  ['html2markdown_0',['Html2Markdown',['../namespace_html2_markdown.html',1,'']]],
+  ['observability_1',['Observability',['../namespace_html2_markdown_1_1_observability.html',1,'Html2Markdown']]],
+  ['renderers_2',['Renderers',['../namespace_html2_markdown_1_1_renderers.html',1,'Html2Markdown']]]
 ];

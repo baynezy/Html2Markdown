@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['textformattingreplacementgroup_0',['TextFormattingReplacementGroup',['../class_html2_markdown_1_1_replacement_1_1_text_formatting_replacement_group.html',1,'Html2Markdown::Replacement']]],
-  ['titletagreplacer_1',['TitleTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_title_tag_replacer.html',1,'Html2Markdown::Replacement']]]
+  ['rawhtmltagrenderer_0',['RawHtmlTagRenderer',['../class_html2_markdown_1_1_renderers_1_1_raw_html_tag_renderer.html',1,'Html2Markdown::Renderers']]]
 ];

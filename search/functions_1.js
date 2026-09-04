@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['addreplacementgroup_0',['AddReplacementGroup',['../class_html2_markdown_1_1_scheme_1_1_abstract_scheme.html#a709edbf8966fc43b6e748a69f61f1f61',1,'Html2Markdown::Scheme::AbstractScheme']]],
-  ['addreplacer_1',['AddReplacer',['../class_html2_markdown_1_1_replacement_1_1_composite_replacer.html#a35eefde7b32441629ef82a9c94cecd06',1,'Html2Markdown.Replacement.CompositeReplacer.AddReplacer()'],['../class_html2_markdown_1_1_scheme_1_1_abstract_scheme.html#ab32df6bd81c999554ba06992f64316ff',1,'Html2Markdown.Scheme.AbstractScheme.AddReplacer()']]],
-  ['anchortagreplacer_2',['AnchorTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_anchor_tag_replacer.html#addf3273d7f9b6709900c2d309ac8e3e1',1,'Html2Markdown::Replacement::AnchorTagReplacer']]]
+  ['canvastagrenderer_0',['CanvasTagRenderer',['../class_html2_markdown_1_1_renderers_1_1_canvas_tag_renderer.html#aba1fce68ffda7d4ec69b73df9ba76948',1,'Html2Markdown::Renderers::CanvasTagRenderer']]],
+  ['convert_1',['Convert',['../class_html2_markdown_1_1_converter.html#a13b4b716ef0f710e0488aa07f3365d12',1,'Html2Markdown::Converter']]],
+  ['converter_2',['Converter',['../class_html2_markdown_1_1_converter.html#a2230f42c940b1a0fb353c2df97075fbe',1,'Html2Markdown.Converter.Converter()'],['../class_html2_markdown_1_1_converter.html#a0c1268b3aa6c6a361de53e674a71b149',1,'Html2Markdown.Converter.Converter(ConverterOptions options)']]],
+  ['convertfile_3',['ConvertFile',['../class_html2_markdown_1_1_converter.html#a749e3b2228154fab2433526a1c08b27e',1,'Html2Markdown::Converter']]]
 ];

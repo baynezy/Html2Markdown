@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['illegalhtmlreplacementgroup_0',['IllegalHtmlReplacementGroup',['../class_html2_markdown_1_1_replacement_1_1_illegal_html_replacement_group.html',1,'Html2Markdown::Replacement']]],
-  ['imagetagreplacer_1',['ImageTagReplacer',['../class_html2_markdown_1_1_replacement_1_1_image_tag_replacer.html',1,'Html2Markdown::Replacement']]],
-  ['ireplacementgroup_2',['IReplacementGroup',['../interface_html2_markdown_1_1_replacement_1_1_i_replacement_group.html',1,'Html2Markdown::Replacement']]],
-  ['ireplacer_3',['IReplacer',['../interface_html2_markdown_1_1_replacement_1_1_i_replacer.html',1,'Html2Markdown::Replacement']]],
-  ['ischeme_4',['IScheme',['../interface_html2_markdown_1_1_scheme_1_1_i_scheme.html',1,'Html2Markdown::Scheme']]]
+  ['ignoredtagrenderer_0',['IgnoredTagRenderer',['../class_html2_markdown_1_1_renderers_1_1_ignored_tag_renderer.html',1,'Html2Markdown::Renderers']]],
+  ['ihtmltagrenderer_1',['IHtmlTagRenderer',['../interface_html2_markdown_1_1_i_html_tag_renderer.html',1,'Html2Markdown']]],
+  ['imagetagrenderer_2',['ImageTagRenderer',['../class_html2_markdown_1_1_renderers_1_1_image_tag_renderer.html',1,'Html2Markdown::Renderers']]],
+  ['includedframetagrenderer_3',['IncludedFrameTagRenderer',['../class_html2_markdown_1_1_renderers_1_1_included_frame_tag_renderer.html',1,'Html2Markdown::Renderers']]],
+  ['italictagrenderer_4',['ItalicTagRenderer',['../class_html2_markdown_1_1_renderers_1_1_italic_tag_renderer.html',1,'Html2Markdown::Renderers']]]
 ];

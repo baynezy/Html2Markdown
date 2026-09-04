@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['textformattingreplacementgroup_2ecs_0',['TextFormattingReplacementGroup.cs',['../_text_formatting_replacement_group_8cs.html',1,'']]],
-  ['titletagreplacer_2ecs_1',['TitleTagReplacer.cs',['../_title_tag_replacer_8cs.html',1,'']]]
+  ['rawhtmltagrenderer_2ecs_0',['RawHtmlTagRenderer.cs',['../_raw_html_tag_renderer_8cs.html',1,'']]]
 ];

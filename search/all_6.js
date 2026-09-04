@@ -1,4 +1,29 @@
 var searchData=
 [
-  ['globalusings_2ecs_0',['GlobalUsings.cs',['../_global_usings_8cs.html',1,'']]]
+  ['heading1tagrenderer_0',['Heading1TagRenderer',['../class_html2_markdown_1_1_renderers_1_1_heading1_tag_renderer.html#a39877e704b6b917dda370275192ac693',1,'Html2Markdown.Renderers.Heading1TagRenderer.Heading1TagRenderer()'],['../class_html2_markdown_1_1_renderers_1_1_heading1_tag_renderer.html',1,'Html2Markdown.Renderers.Heading1TagRenderer']]],
+  ['heading1tagrenderer_2ecs_1',['Heading1TagRenderer.cs',['../_heading1_tag_renderer_8cs.html',1,'']]],
+  ['heading2tagrenderer_2',['Heading2TagRenderer',['../class_html2_markdown_1_1_renderers_1_1_heading2_tag_renderer.html#a9db173a9a1c74af465ad648774be5c29',1,'Html2Markdown.Renderers.Heading2TagRenderer.Heading2TagRenderer()'],['../class_html2_markdown_1_1_renderers_1_1_heading2_tag_renderer.html',1,'Html2Markdown.Renderers.Heading2TagRenderer']]],
+  ['heading2tagrenderer_2ecs_3',['Heading2TagRenderer.cs',['../_heading2_tag_renderer_8cs.html',1,'']]],
+  ['heading3tagrenderer_4',['Heading3TagRenderer',['../class_html2_markdown_1_1_renderers_1_1_heading3_tag_renderer.html#ad4e85e7b8a5abc14e14dd65d4122444e',1,'Html2Markdown.Renderers.Heading3TagRenderer.Heading3TagRenderer()'],['../class_html2_markdown_1_1_renderers_1_1_heading3_tag_renderer.html',1,'Html2Markdown.Renderers.Heading3TagRenderer']]],
+  ['heading3tagrenderer_2ecs_5',['Heading3TagRenderer.cs',['../_heading3_tag_renderer_8cs.html',1,'']]],
+  ['heading4tagrenderer_6',['Heading4TagRenderer',['../class_html2_markdown_1_1_renderers_1_1_heading4_tag_renderer.html#a5ebadcbda5592a7b014058304ef51370',1,'Html2Markdown.Renderers.Heading4TagRenderer.Heading4TagRenderer()'],['../class_html2_markdown_1_1_renderers_1_1_heading4_tag_renderer.html',1,'Html2Markdown.Renderers.Heading4TagRenderer']]],
+  ['heading4tagrenderer_2ecs_7',['Heading4TagRenderer.cs',['../_heading4_tag_renderer_8cs.html',1,'']]],
+  ['heading5tagrenderer_8',['Heading5TagRenderer',['../class_html2_markdown_1_1_renderers_1_1_heading5_tag_renderer.html#a1b00224025f45d478d322ab4be9f8768',1,'Html2Markdown.Renderers.Heading5TagRenderer.Heading5TagRenderer()'],['../class_html2_markdown_1_1_renderers_1_1_heading5_tag_renderer.html',1,'Html2Markdown.Renderers.Heading5TagRenderer']]],
+  ['heading5tagrenderer_2ecs_9',['Heading5TagRenderer.cs',['../_heading5_tag_renderer_8cs.html',1,'']]],
+  ['heading6tagrenderer_10',['Heading6TagRenderer',['../class_html2_markdown_1_1_renderers_1_1_heading6_tag_renderer.html#abe15ea50ba31cfdc39162a9dcb31a665',1,'Html2Markdown.Renderers.Heading6TagRenderer.Heading6TagRenderer()'],['../class_html2_markdown_1_1_renderers_1_1_heading6_tag_renderer.html',1,'Html2Markdown.Renderers.Heading6TagRenderer']]],
+  ['heading6tagrenderer_2ecs_11',['Heading6TagRenderer.cs',['../_heading6_tag_renderer_8cs.html',1,'']]],
+  ['headingtagrenderer_12',['HeadingTagRenderer',['../class_html2_markdown_1_1_renderers_1_1_heading_tag_renderer.html#a5786a575c748eb884f55dd14091e95d1',1,'Html2Markdown.Renderers.HeadingTagRenderer.HeadingTagRenderer()'],['../class_html2_markdown_1_1_renderers_1_1_heading_tag_renderer.html',1,'Html2Markdown.Renderers.HeadingTagRenderer']]],
+  ['headingtagrenderer_2ecs_13',['HeadingTagRenderer.cs',['../_heading_tag_renderer_8cs.html',1,'']]],
+  ['headtagrenderer_14',['HeadTagRenderer',['../class_html2_markdown_1_1_renderers_1_1_head_tag_renderer.html#a03d0c7c5f00b65a4212c52016fb29f13',1,'Html2Markdown.Renderers.HeadTagRenderer.HeadTagRenderer()'],['../class_html2_markdown_1_1_renderers_1_1_head_tag_renderer.html',1,'Html2Markdown.Renderers.HeadTagRenderer']]],
+  ['headtagrenderer_2ecs_15',['HeadTagRenderer.cs',['../_head_tag_renderer_8cs.html',1,'']]],
+  ['horizontalruletagrenderer_16',['HorizontalRuleTagRenderer',['../class_html2_markdown_1_1_renderers_1_1_horizontal_rule_tag_renderer.html',1,'Html2Markdown::Renderers']]],
+  ['horizontalruletagrenderer_2ecs_17',['HorizontalRuleTagRenderer.cs',['../_horizontal_rule_tag_renderer_8cs.html',1,'']]],
+  ['html2markdown_18',['Html2Markdown',['../namespace_html2_markdown.html',1,'']]],
+  ['html2markdown_19',['HTML2Markdown',['../index.html',1,'']]],
+  ['htmltagrenderers_2ecs_20',['HtmlTagRenderers.cs',['../_html_tag_renderers_8cs.html',1,'']]],
+  ['htmltagrenderingcontext_21',['HtmlTagRenderingContext',['../class_html2_markdown_1_1_html_tag_rendering_context.html',1,'Html2Markdown']]],
+  ['htmltagrenderingcontext_2ecs_22',['HtmlTagRenderingContext.cs',['../_html_tag_rendering_context_8cs.html',1,'']]],
+  ['htmltomarkdownconverter_2ecs_23',['HtmlToMarkdownConverter.cs',['../_html_to_markdown_converter_8cs.html',1,'']]],
+  ['observability_24',['Observability',['../namespace_html2_markdown_1_1_observability.html',1,'Html2Markdown']]],
+  ['renderers_25',['Renderers',['../namespace_html2_markdown_1_1_renderers.html',1,'Html2Markdown']]]
 ];

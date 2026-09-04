@@ -103,6 +103,7 @@ Support</h1>
 <li><code>&lt;ul&gt;</code></li>
 <li><code>&lt;ol&gt;</code></li>
 </ul>
+<p>The converter preserves the original HTML for <code>&lt;div&gt;</code>, <code>&lt;table&gt;</code>, <code>&lt;iframe&gt;</code>, and <code>&lt;canvas&gt;</code> elements, including their contents. Set <code>ConverterOptions.ConvertTables</code> to convert supported tables to GitHub-Flavoured Markdown instead.</p>
 <h1><a class="anchor" id="autotoc_md3"></a>
 Installing via NuGet</h1>
 <pre class="fragment">Install-Package Html2Markdown
@@ -118,13 +119,67 @@ Files</h2>
 <pre class="fragment">var path = "file.html";
 var converter = new Converter();
 var markdown = converter.ConvertFile(path);
-</pre> <h1><a class="anchor" id="autotoc_md7"></a>
+</pre> <h2><a class="anchor" id="autotoc_md7"></a>
+Custom tags</h2>
+<p>Register tag renderers when you need to add support for an unsupported tag or replace the default behaviour for a supported tag. Custom renderers receive the current HTML element and a rendering context that can render child nodes through the active renderer set.</p>
+<div class="fragment"><div class="line"><span class="keyword">using </span>AngleSharp.Dom;</div>
+<div class="line"><span class="keyword">using </span><a class="code hl_namespace" href="namespace_html2_markdown.html">Html2Markdown</a>;</div>
+<div class="line"> </div>
+<div class="line">var options = <span class="keyword">new</span> <a class="code hl_class" href="class_html2_markdown_1_1_converter_options.html">ConverterOptions</a>();</div>
+<div class="line">options.TagRenderers.Add(<span class="keyword">new</span> MarkTagRenderer());</div>
+<div class="line"> </div>
+<div class="line">var converter = <span class="keyword">new</span> <a class="code hl_class" href="class_html2_markdown_1_1_converter.html">Converter</a>(options);</div>
+<div class="line">var markdown = converter.Convert(<span class="stringliteral">&quot;&lt;mark&gt;highlighted&lt;/mark&gt;&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">public</span> sealed <span class="keyword">class </span>MarkTagRenderer : <a class="code hl_interface" href="interface_html2_markdown_1_1_i_html_tag_renderer.html">IHtmlTagRenderer</a></div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">public</span> <span class="keywordtype">string</span> TagName =&gt; <span class="stringliteral">&quot;mark&quot;</span>;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keyword">public</span> <span class="keywordtype">string</span> Render(IElement element, <a class="code hl_class" href="class_html2_markdown_1_1_html_tag_rendering_context.html">HtmlTagRenderingContext</a> context)</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keywordflow">return</span> $<span class="stringliteral">&quot;=={context.RenderChildren(element)}==&quot;</span>;</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="ttc" id="aclass_html2_markdown_1_1_converter_html"><div class="ttname"><a href="class_html2_markdown_1_1_converter.html">Html2Markdown.Converter</a></div><div class="ttdoc">An HTML to Markdown converter.</div><div class="ttdef"><b>Definition:</b> Converter.cs:9</div></div>
+<div class="ttc" id="aclass_html2_markdown_1_1_converter_options_html"><div class="ttname"><a href="class_html2_markdown_1_1_converter_options.html">Html2Markdown.ConverterOptions</a></div><div class="ttdoc">Configures HTML to Markdown conversion.</div><div class="ttdef"><b>Definition:</b> ConverterOptions.cs:7</div></div>
+<div class="ttc" id="aclass_html2_markdown_1_1_html_tag_rendering_context_html"><div class="ttname"><a href="class_html2_markdown_1_1_html_tag_rendering_context.html">Html2Markdown.HtmlTagRenderingContext</a></div><div class="ttdoc">Provides rendering helpers for custom HTML tag renderers.</div><div class="ttdef"><b>Definition:</b> HtmlTagRenderingContext.cs:9</div></div>
+<div class="ttc" id="ainterface_html2_markdown_1_1_i_html_tag_renderer_html"><div class="ttname"><a href="interface_html2_markdown_1_1_i_html_tag_renderer.html">Html2Markdown.IHtmlTagRenderer</a></div><div class="ttdoc">Renders a supported HTML element to Markdown.</div><div class="ttdef"><b>Definition:</b> IHtmlTagRenderer.cs:7</div></div>
+<div class="ttc" id="anamespace_html2_markdown_html"><div class="ttname"><a href="namespace_html2_markdown.html">Html2Markdown</a></div><div class="ttdef"><b>Definition:</b> Converter.cs:3</div></div>
+</div><!-- fragment --><p>If a custom renderer uses the same <code>TagName</code> as a built-in renderer, the custom renderer replaces the built-in behaviour for that tag. Tag names are matched case-insensitively, and options are copied when the <code>Converter</code> is constructed.</p>
+<h2><a class="anchor" id="autotoc_md8"></a>
+Tables</h2>
+<p>Tables are preserved as raw HTML by default. Enable GitHub-Flavoured Markdown table conversion when needed:</p>
+<div class="fragment"><div class="line">var options = <span class="keyword">new</span> <a class="code hl_class" href="class_html2_markdown_1_1_converter_options.html">ConverterOptions</a> { ConvertTables = <span class="keyword">true</span> };</div>
+<div class="line">var converter = <span class="keyword">new</span> <a class="code hl_class" href="class_html2_markdown_1_1_converter.html">Converter</a>(options);</div>
+<div class="line">var markdown = converter.Convert(<span class="stringliteral">&quot;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Sam&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&quot;</span>);</div>
+</div><!-- fragment --><p>Enabled conversion creates a GitHub-Flavoured Markdown pipe table. It supports headers, <code>align="left"</code>, <code>align="center"</code>, and <code>align="right"</code>, plus <code>rowspan</code> and <code>colspan</code>; spanned positions are represented by empty Markdown cells. Tables without a header use an empty synthetic header, and captions are emitted after the table. Tables with multiline cell content remain raw HTML because they cannot be represented safely as a Markdown table.</p>
+<h1><a class="anchor" id="autotoc_md9"></a>
+Observability</h1>
+<p>The library emits OpenTelemetry-compatible traces and metrics through the built-in .NET diagnostics APIs, so no additional package reference is required. Telemetry is only collected when your application subscribes to it.</p>
+<p>Both the <code>ActivitySource</code> and the <code>Meter</code> are named <code><a class="el" href="namespace_html2_markdown.html">Html2Markdown</a></code>, which is exposed as <code>Html2Markdown.Observability.ActivityConfig.ServiceName</code>.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Signal   </th><th class="markdownTableHeadNone">Name   </th><th class="markdownTableHeadNone">Details    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Trace   </td><td class="markdownTableBodyNone"><code>Render &lt;tag&gt;</code>   </td><td class="markdownTableBodyNone">An activity is started for each HTML element that is rendered, for example <code>Render strong</code>.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Metric   </td><td class="markdownTableBodyNone"><code>html.elements.rendered</code>   </td><td class="markdownTableBodyNone">Counter of rendered HTML elements, tagged with <code>tag</code> (the element's local name, e.g. <code>p</code>).   </td></tr>
+</table>
+<p>Subscribe with the OpenTelemetry SDK:</p>
+<div class="fragment"><div class="line"><span class="keyword">using </span><a class="code hl_namespace" href="namespace_html2_markdown_1_1_observability.html">Html2Markdown.Observability</a>;</div>
+<div class="line"> </div>
+<div class="line">builder.Services.AddOpenTelemetry()</div>
+<div class="line">    .WithTracing(tracing =&gt; tracing.AddSource(ActivityConfig.ServiceName))</div>
+<div class="line">    .WithMetrics(metrics =&gt; metrics.AddMeter(ActivityConfig.ServiceName));</div>
+<div class="ttc" id="anamespace_html2_markdown_1_1_observability_html"><div class="ttname"><a href="namespace_html2_markdown_1_1_observability.html">Html2Markdown.Observability</a></div><div class="ttdef"><b>Definition:</b> ActivityConfig.cs:4</div></div>
+</div><!-- fragment --><p>Nested elements produce nested activities, so a rendered document forms a trace tree that mirrors the structure of the source HTML.</p>
+<h1><a class="anchor" id="autotoc_md10"></a>
 Try it</h1>
 <p>This library is showcased at <a href="http://html2markdown.bayn.es">http://html2markdown.bayn.es</a>.</p>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Contributing</h1>
 <p>For those interested in contributing then <a href="http://bit.ly/html2md-contributing">please read the guidelines</a></p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 License</h1>
 <p>This project is licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>. </p>
 </div></div><!-- PageDoc -->
