@@ -27,6 +27,8 @@ jobs:
     if: github.event.action == 'opened'
     needs: [get-version]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
         with:
@@ -44,7 +46,8 @@ jobs:
           patch-version: ${{ steps.increment_version.outputs.patch_version }}
           build-version: ${{ github.run_number }}
       - name: Update changelog
-        uses: thomaseizinger/keep-a-changelog-new-release@f62c3c390716df5af712ba5d94f4f4a8efc1306d # 3.1.0
+        id: changelog
+        uses: baynezy/ChangeLogger.Action@6e3ad430f08e13698bb01027a13ba4349b0143cc # 1.2.4.10
         with:
           tag: ${{ needs.get-version.outputs.major }}.${{ needs.get-version.outputs.minor }}.${{ steps.increment_version.outputs.patch_version }}.${{ github.run_number }}
       - name: Commit Changes
@@ -58,3 +61,23 @@ jobs:
         env:
           GITHUB_HEAD_REF: ${{ github.head_ref }}
         run: git push origin $GITHUB_HEAD_REF
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.get-version.outputs.major }}.${{ needs.get-version.outputs.minor }}.${{ steps.increment_version.outputs.patch_version }}.${{ github.run_number }}
+          NOTES: ${{ steps.changelog.outputs.release-notes }}
+        run: |
+          if gh release view "$VERSION" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release edit "$VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$VERSION" \
+            --notes "$NOTES"
+          else
+            gh release create "$VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --draft \
+            --target master \
+            --title "$VERSION" \
+            --notes "$NOTES"
+          fi

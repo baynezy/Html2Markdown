@@ -37,8 +37,32 @@ jobs:
     with:
       version: ${{ needs.get-version.outputs.version }}
     secrets:
-      APP_ID: ${{ secrets.APP_ID }}
+      APP_ID: ${{ vars.APP_ID }}
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+
+  publish-release:
+    needs: [ get-version,tag-release ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.get-version.outputs.version }}
+        run: |
+          if gh release view "$VERSION" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release edit "$VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --draft=false \
+            --latest
+          else
+            gh release create "$VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$VERSION" \
+            --generate-notes \
+            --latest
+          fi
   
   merge-master-to-develop:
     needs: [ publish-to-nuget ]
