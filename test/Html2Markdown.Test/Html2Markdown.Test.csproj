@@ -2,11 +2,14 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\src\Html2Markdown\Html2Markdown.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="8.0.0-alpha.1"/>
         <PackageReference Include="JunitXml.TestLogger" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.9.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0"/>
         <PackageReference Include="Verify.Xunit" Version="31.12.5"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0">

@@ -1,0 +1,33 @@
+﻿@page "/markdown"
+@using Html2Markdown
+
+@rendermode InteractiveServer
+
+<PageTitle>Markdown Converter</PageTitle>
+
+<h1>Markdown Converter</h1>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label class="form-label" for="html-value">HTML</label>
+        <textarea id="html-value" class="form-control" rows="@Rows" @bind="_htmlValue"></textarea>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="markdown-value">Markdown</label>
+        <textarea id="markdown-value" class="form-control" rows="@Rows" readonly>@_markdownValue</textarea>
+    </div>
+</div>
+
+<button class="btn btn-primary mt-3" @onclick="Convert">Convert HTML to Markdown</button>
+
+@code{
+    private const int Rows = 16;
+    private string _htmlValue = string.Empty;
+    private string _markdownValue = string.Empty;
+
+    private void Convert()
+    {
+        var converter = new Converter();
+        _markdownValue = converter.Convert(_htmlValue);
+    }
+}
