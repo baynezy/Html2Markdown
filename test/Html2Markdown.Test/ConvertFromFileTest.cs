@@ -11,6 +11,14 @@ public class ConvertFromFileTest {
 		return CheckFileConversion(sourcePath);
 	}
 
+	[Fact]
+	public Task ConvertFile_WhenFileHasMixedLineEndings_ThenStandardiseThemBeforeConverting()
+	{
+		var sourcePath = _testPath + "TestHtmlMixedLineEndings.txt";
+
+		return CheckFileConversion(sourcePath);
+	}
+
 	private static string TestPath()
 	{
 		const string route = @"..\..\..\Files\";
