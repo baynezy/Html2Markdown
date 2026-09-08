@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Optimised `Converter.StandardiseWhitespace` to normalise line endings in a single pass instead of three sequential `string.Replace` calls, reducing allocations when converting large HTML files (#808)
+- Removed the LINQ `Where` filter from `MarkdownFormatting.NormaliseBlockWhitespace` to avoid allocating an enumerable and enumerator on every conversion (#809)
 
 ## [8.0.0.21] - 2026-09-04
 
