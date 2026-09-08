@@ -31,8 +31,13 @@ internal static class MarkdownFormatting
     {
         StringBuilder builder = new();
         var consecutiveNewLines = 0;
-        foreach (var character in markdown.Where(character => character != '\r'))
+        foreach (var character in markdown)
         {
+            if (character == '\r')
+            {
+                continue;
+            }
+
             if (character == '\n')
             {
                 consecutiveNewLines++;

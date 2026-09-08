@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Removed the LINQ `Where` filter from `MarkdownFormatting.NormaliseBlockWhitespace` to avoid allocating an enumerable and enumerator on every conversion (#809)
+
 ## [8.0.0.21] - 2026-09-04
 
 ### Added
