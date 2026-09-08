@@ -67,9 +67,28 @@ public class Converter
 
     private static string StandardiseWhitespace(string html)
     {
-        return html
-            .Replace("\r\n", "\n")
-            .Replace("\r", "\n")
-            .Replace("\n", Environment.NewLine);
+        var newLine = Environment.NewLine;
+        var builder = new StringBuilder(html.Length);
+
+        for (var i = 0; i < html.Length; i++)
+        {
+            var current = html[i];
+            switch (current)
+            {
+                case '\r' when i + 1 < html.Length && html[i + 1] == '\n':
+                    builder.Append(newLine);
+                    i++;
+                    break;
+                case '\r':
+                case '\n':
+                    builder.Append(newLine);
+                    break;
+                default:
+                    builder.Append(current);
+                    break;
+            }
+        }
+
+        return builder.ToString();
     }
 }
