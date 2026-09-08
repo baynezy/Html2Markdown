@@ -119,6 +119,41 @@ public class CustomTagRendererTests
             .WithParameterName("node");
     }
 
+    [Fact]
+    public void Convert_WhenACustomRendererOverridesADefaultTag_ThenOtherConvertersStillUseTheDefaultRenderer()
+    {
+        // arrange
+        ConverterOptions options = new();
+        options.TagRenderers.Add(new StrongTagRenderer());
+        Converter customConverter = new(options);
+        Converter defaultConverter = new();
+
+        // act
+        _ = customConverter.Convert("<p>This is <strong>important</strong>.</p>");
+        var markdown = defaultConverter.Convert("<p>This is <strong>important</strong>.</p>");
+
+        // assert
+        markdown.Should()
+            .Be("This is **important**.");
+    }
+
+    [Fact]
+    public void Convert_WhenTableConversionIsEnabled_ThenOtherConvertersStillLeaveTablesAsHtml()
+    {
+        // arrange
+        Converter tableConverter = new(new ConverterOptions {ConvertTables = true});
+        Converter defaultConverter = new();
+        const string html = "<table><tr><th>Name</th></tr><tr><td>Bob</td></tr></table>";
+
+        // act
+        _ = tableConverter.Convert(html);
+        var markdown = defaultConverter.Convert(html);
+
+        // assert
+        markdown.Should()
+            .Contain("<table>");
+    }
+
     private sealed class MarkTagRenderer : IHtmlTagRenderer
     {
         public string TagName => "mark";

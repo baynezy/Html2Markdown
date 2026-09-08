@@ -1,23 +1,23 @@
+using System.Collections.Frozen;
 using Html2Markdown.Observability;
 
 namespace Html2Markdown.Renderers;
 
 internal sealed class MarkdownRenderer
 {
-    private readonly Dictionary<string, IHtmlTagRenderer> _tagRenderers;
+    private static readonly FrozenDictionary<string, IHtmlTagRenderer> DefaultTagRenderers = BuildDefaults(false);
+
+    private static readonly FrozenDictionary<string, IHtmlTagRenderer> DefaultTagRenderersWithTables =
+        BuildDefaults(true);
+
+    private readonly IReadOnlyDictionary<string, IHtmlTagRenderer> _tagRenderers;
 
     internal MarkdownRenderer(IEnumerable<IHtmlTagRenderer> customTagRenderers, bool convertTables)
     {
         ArgumentNullException.ThrowIfNull(customTagRenderers);
 
-        _tagRenderers = HtmlTagRenderers.Defaults.ToDictionary(
-            renderer => renderer.TagName,
-            StringComparer.OrdinalIgnoreCase);
-
-        if (convertTables)
-        {
-            _tagRenderers["table"] = new MarkdownTableTagRenderer();
-        }
+        var defaults = convertTables ? DefaultTagRenderersWithTables : DefaultTagRenderers;
+        Dictionary<string, IHtmlTagRenderer> overriddenTagRenderers = null;
 
         foreach (var renderer in customTagRenderers)
         {
@@ -28,8 +28,27 @@ internal sealed class MarkdownRenderer
                 throw new ArgumentException("Tag renderer names cannot be empty.", nameof(customTagRenderers));
             }
 
-            _tagRenderers[renderer.TagName] = renderer;
+            overriddenTagRenderers ??= new Dictionary<string, IHtmlTagRenderer>(
+                defaults,
+                StringComparer.OrdinalIgnoreCase);
+            overriddenTagRenderers[renderer.TagName] = renderer;
         }
+
+        _tagRenderers = overriddenTagRenderers ?? (IReadOnlyDictionary<string, IHtmlTagRenderer>)defaults;
+    }
+
+    private static FrozenDictionary<string, IHtmlTagRenderer> BuildDefaults(bool convertTables)
+    {
+        var renderers = HtmlTagRenderers.Defaults.ToDictionary(
+            renderer => renderer.TagName,
+            StringComparer.OrdinalIgnoreCase);
+
+        if (convertTables)
+        {
+            renderers["table"] = new MarkdownTableTagRenderer();
+        }
+
+        return renderers.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
     }
 
     internal string RenderChildren(INode parent, ConversionContext context)

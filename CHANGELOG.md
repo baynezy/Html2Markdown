@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Reuse a shared `HtmlParser` instance and pre-build the default tag renderer lookups to reduce allocations and CPU overhead when converting many documents (#807)
+
 ## [8.0.0.21] - 2026-09-04
 
 ### Added
