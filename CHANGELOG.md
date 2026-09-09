@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed the LINQ `Where` filter from `MarkdownFormatting.NormaliseBlockWhitespace` to avoid allocating an enumerable and enumerator on every conversion (#809)
 - Removed LINQ from `MarkdownFormatting.Wrap` to reduce allocations when rendering inline formatting (#806)
 - Reuse a shared `HtmlParser` instance and pre-build the default tag renderer lookups to reduce allocations and CPU overhead when converting many documents (#807)
+- To slnx format (#821)
 
 ## [8.0.0.21] - 2026-09-04
 

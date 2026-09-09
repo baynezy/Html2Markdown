@@ -1,6 +1,6 @@
 {
     "stryker-config": {
-        "solution": "Html2Markdown.sln",
+        "solution": "Html2Markdown.slnx",
         "project": "Html2Markdown.csproj",
         "thresholds": {
             "high": 95,
