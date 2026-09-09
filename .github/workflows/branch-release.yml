@@ -9,7 +9,7 @@ on:
     paths:
       - 'src/**'
       - 'test/**'
-      - '**.sln'
+      - '**.slnx'
       - '**.cake'
       - '.github/workflows/branch-release.yml'
       - '.github/workflows/step-*.yml'
