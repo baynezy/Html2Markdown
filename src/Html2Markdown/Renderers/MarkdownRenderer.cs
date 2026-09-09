@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using Html2Markdown.Observability;
+using Html2Markdown.Renderers.Utils;
 
 namespace Html2Markdown.Renderers;
 
@@ -53,13 +54,13 @@ internal sealed class MarkdownRenderer
 
     internal string RenderChildren(INode parent, ConversionContext context)
     {
-        StringBuilder builder = new();
+        var builder = StringBuilderPool.Rent();
         foreach (var child in parent.ChildNodes)
         {
             builder.Append(Render(child, context));
         }
 
-        return builder.ToString();
+        return StringBuilderPool.ReturnAndToString(builder);
     }
 
     internal string Render(INode node, ConversionContext context)

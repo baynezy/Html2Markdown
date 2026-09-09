@@ -178,6 +178,22 @@ public class MarkdownRendererTests
             .Be(2);
     }
 
+    [Fact]
+    public void RenderChildren_WhenCalledWithNestedUnknownElements_ThenRendersAllDescendantsWithoutChangingOutput()
+    {
+        // arrange
+        MarkdownRenderer sut = new([], false);
+        const string html = "<article><section>Hello <strong>World</strong></section></article>";
+        var document = _parser.ParseDocument(html);
+
+        // act
+        var result = sut.RenderChildren(document.Body, ConversionContext.Default);
+
+        // assert
+        result.Should()
+            .Be("Hello **World**");
+    }
+
     private static ActivityListener CreateMessagingActivityListener(List<Activity> exportedActivities)
     {
         var listener = new ActivityListener
