@@ -76,6 +76,20 @@ public class MarkdownFormattingTests
     }
 
     [Fact]
+    public void Wrap_WhenTheContentHasInnerWhitespace_ThenPreservesTheInnerWhitespace()
+    {
+        // arrange
+        const string content = "  bold  text  ";
+
+        // act
+        var result = MarkdownFormatting.Wrap(content, "**");
+
+        // assert
+        result.Should()
+            .Be(" **bold  text** ");
+    }
+
+    [Fact]
     public void Block_WhenGivenContent_ThenSurroundsItWithTwoBlankLines()
     {
         // arrange

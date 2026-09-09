@@ -9,14 +9,16 @@ internal static class MarkdownFormatting
             return string.Empty;
         }
 
-        var leadingWhitespace = content.TakeWhile(char.IsWhiteSpace)
-            .Count();
-        var trailingWhitespace = content.Reverse()
-            .TakeWhile(char.IsWhiteSpace)
-            .Count();
-        var leading = leadingWhitespace > 0 ? " " : string.Empty;
-        var core = content[leadingWhitespace..^trailingWhitespace];
-        var trailing = trailingWhitespace > 0 ? " " : string.Empty;
+        var span = content.AsSpan();
+        var core = span.Trim();
+
+        if (core.IsEmpty)
+        {
+            return " ";
+        }
+
+        var leading = char.IsWhiteSpace(span[0]) ? " " : string.Empty;
+        var trailing = char.IsWhiteSpace(span[^1]) ? " " : string.Empty;
 
         return $"{leading}{marker}{core}{marker}{trailing}";
     }
@@ -29,28 +31,40 @@ internal static class MarkdownFormatting
 
     internal static string NormaliseBlockWhitespace(string markdown)
     {
+        // This is here to reduce the number of allocations for strings that don't contain any newlines, which is a
+        // common case.
+        if (markdown.AsSpan()
+                .IndexOfAny('\r', '\n') == -1)
+        {
+            return markdown;
+        }
+
         StringBuilder builder = new();
         var consecutiveNewLines = 0;
+
+        // Not using LINQ here to avoid creating an intermediate collection of characters, which would be inefficient
+        // for large strings.
         foreach (var character in markdown)
         {
-            if (character == '\r')
+            switch (character)
             {
-                continue;
-            }
-
-            if (character == '\n')
-            {
-                consecutiveNewLines++;
-                if (consecutiveNewLines <= 2)
+                case '\r':
+                    continue;
+                case '\n':
                 {
-                    builder.Append(Environment.NewLine);
+                    consecutiveNewLines++;
+                    if (consecutiveNewLines <= 2)
+                    {
+                        builder.Append(Environment.NewLine);
+                    }
+
+                    continue;
                 }
-
-                continue;
+                default:
+                    consecutiveNewLines = 0;
+                    builder.Append(character);
+                    break;
             }
-
-            consecutiveNewLines = 0;
-            builder.Append(character);
         }
 
         return builder.ToString();
