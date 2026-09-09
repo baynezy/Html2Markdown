@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Pooled `StringBuilder` instances in `MarkdownRenderer.RenderChildren` to reduce short-lived allocations when rendering deeply nested HTML trees (#810)
 - Optimised `MarkdownFormatting.CollapseWhitespace` to collapse whitespace without `string.Split`, reducing heap allocations on a hot rendering path (#818)
 - Optimised `Converter.StandardiseWhitespace` to normalise line endings in a single pass instead of three sequential `string.Replace` calls, reducing allocations when converting large HTML files (#808)
 - Removed the LINQ `Where` filter from `MarkdownFormatting.NormaliseBlockWhitespace` to avoid allocating an enumerable and enumerator on every conversion (#809)
