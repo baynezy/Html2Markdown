@@ -1,0 +1,2 @@
+﻿# Allow Gemini CLI to access the copilot-instructions file inside .github
+!.github/

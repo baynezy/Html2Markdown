@@ -178,6 +178,22 @@ public class MarkdownRendererTests
             .Be(2);
     }
 
+    [Fact]
+    public void RenderChildren_WhenCalledWithNestedUnknownElements_ThenRendersAllDescendantsWithoutChangingOutput()
+    {
+        // arrange
+        MarkdownRenderer sut = new([], false);
+        const string html = "<article><section>Hello <strong>World</strong></section></article>";
+        var document = _parser.ParseDocument(html);
+
+        // act
+        var result = sut.RenderChildren(document.Body, ConversionContext.Default);
+
+        // assert
+        result.Should()
+            .Be("Hello **World**");
+    }
+
     private static ActivityListener CreateMessagingActivityListener(List<Activity> exportedActivities)
     {
         var listener = new ActivityListener
@@ -200,5 +216,37 @@ public class MarkdownRendererTests
         activity.SetIdFormat(ActivityIdFormat.W3C);
         activity.Start();
         return activity;
+    }
+
+    [Fact]
+    public void MarkdownRenderer_Constructor_WhenCustomTagRenderersIsNull_ThenThrowsArgumentNullException()
+    {
+        System.Action action = () => _ = new MarkdownRenderer(null, false);
+        action.Should().Throw<System.ArgumentNullException>().WithParameterName("customTagRenderers");
+    }
+
+    [Fact]
+    public void MarkdownRenderer_Constructor_WhenCustomTagRenderersContainsNull_ThenThrowsArgumentNullException()
+    {
+        System.Action action = () => _ = new MarkdownRenderer([null], false);
+        action.Should().Throw<System.ArgumentNullException>().WithParameterName("renderer");
+    }
+
+    [Fact]
+    public void RenderChildren_WhenCalled_ThenCounterShouldRecordCorrectTags()
+    {
+        // arrange
+        MarkdownRenderer sut = new([], false);
+        var document = _parser.ParseDocument("<strong>Hello</strong>");
+        using var collector = new MetricCollector<int>(ActivityConfig.RenderedElementsCounter);
+
+        // act
+        sut.RenderChildren(document.Body, ConversionContext.Default);
+
+        // assert
+        var measurements = collector.GetMeasurementSnapshot();
+        measurements.Should().HaveCount(1);
+        measurements[0].Value.Should().Be(1);
+        measurements[0].Tags["tag"].Should().Be("strong");
     }
 }

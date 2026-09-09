@@ -1,0 +1,8 @@
+{
+  "context": {
+    "fileFiltering": {
+      "respectGitIgnore": false,
+      "respectGeminiIgnore": true
+    }
+  }
+}

@@ -12,6 +12,14 @@ updates:
     labels:
       - "dependencies"
     open-pull-requests-limit: 10
+    groups:
+      open-telemetry:
+        patterns:
+          - "OpenTelemetry.*"
+      microsoft:
+        patterns:
+          - "Microsoft.AspNetCore.*"
+          - "Microsoft.Extensions.*"
 
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests

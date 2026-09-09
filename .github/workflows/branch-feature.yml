@@ -8,7 +8,7 @@ on:
     paths:
       - 'src/**'
       - 'test/**'
-      - '**.sln'
+      - '**.slnx'
       - '**.cake'
       - '.github/workflows/branch-feature.yml'
       - '.github/workflows/step-*.yml'

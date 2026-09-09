@@ -36,7 +36,7 @@ jobs:
 
       - name: Update changelog
         id: changelog
-        uses: baynezy/ChangeLogger.Action@6e3ad430f08e13698bb01027a13ba4349b0143cc # 1.2.4.10
+        uses: baynezy/ChangeLogger.Action@a2e1ff9fe5789c7def3cc48db302e192d2896442 # 1.2.6.12
         with:
           tag: ${{ github.event.inputs.major_version }}.${{ github.event.inputs.minor_version }}.${{ github.event.inputs.patch_version }}.${{ github.run_number }}
 

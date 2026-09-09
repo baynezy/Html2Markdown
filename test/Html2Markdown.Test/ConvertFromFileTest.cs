@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Html2Markdown.Test;
 
 public class ConvertFromFileTest {
@@ -9,6 +11,36 @@ public class ConvertFromFileTest {
 		var sourcePath = _testPath + "TestHtml.txt";
 
 		return CheckFileConversion(sourcePath);
+	}
+
+	[Fact]
+	public Task ConvertFile_WhenFileHasMixedLineEndings_ThenStandardiseThemBeforeConverting()
+	{
+		var sourcePath = _testPath + "TestHtmlMixedLineEndings.txt";
+
+		return CheckFileConversion(sourcePath);
+	}
+
+	[Fact]
+	public void ConvertFile_WhenFileEndsWithCarriageReturn_ThenStandardisesAndConvertsSuccessfully()
+	{
+		var tempPath = Path.GetTempFileName();
+		try
+		{
+			File.WriteAllText(tempPath, "<strong>Hello</strong>\r");
+
+			var converter = new Converter();
+			var result = converter.ConvertFile(tempPath);
+
+			result.Should().Be("**Hello**");
+		}
+		finally
+		{
+			if (File.Exists(tempPath))
+			{
+				File.Delete(tempPath);
+			}
+		}
 	}
 
 	private static string TestPath()

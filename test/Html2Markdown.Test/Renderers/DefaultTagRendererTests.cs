@@ -210,4 +210,46 @@ public class DefaultTagRendererTests
         markdown.Should()
             .Be($"> Line 1  {Environment.NewLine}> Line 2  {Environment.NewLine}> Line 3");
     }
+
+    [Fact]
+    public void Convert_WhenBlockquoteParagraphHasMultipleLineBreaksAndStyles_ThenRendersCorrectly()
+    {
+        // arrange
+        Converter converter = new();
+
+        // act
+        var markdown = converter.Convert("<blockquote><p>Line 1 <em>italic</em><br />Line 2 <strong>bold</strong><br />Line 3</p></blockquote>");
+
+        // assert
+        markdown.Should()
+            .Be($"> Line 1 _italic_  {Environment.NewLine}> Line 2 **bold**  {Environment.NewLine}> Line 3");
+    }
+
+    [Fact]
+    public void Convert_WhenBlockquoteParagraphHasSingleLineBreak_ThenRendersWithSwappedParts()
+    {
+        // arrange
+        Converter converter = new();
+
+        // act
+        var markdown = converter.Convert("<blockquote><p>Line 1<br />Line 2</p></blockquote>");
+
+        // assert
+        markdown.Should()
+            .Be($"> Line 2{Environment.NewLine}> {Environment.NewLine}{Environment.NewLine}> Line 1");
+    }
+
+    [Fact]
+    public void Convert_WhenMultilineBlockquoteHasLinesWithoutParagraphTag_ThenTrimsLinesCorrectly()
+    {
+        // arrange
+        Converter converter = new();
+
+        // act
+        var markdown = converter.Convert("<blockquote>Line 1\r\nLine 2\nLine 3</blockquote>");
+
+        // assert
+        markdown.Should()
+            .Be($"> Line 1{Environment.NewLine}> Line 2{Environment.NewLine}> Line 3");
+    }
 }

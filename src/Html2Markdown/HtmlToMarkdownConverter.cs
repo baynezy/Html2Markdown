@@ -5,10 +5,11 @@ namespace Html2Markdown;
 
 internal static class HtmlToMarkdownConverter
 {
+    private static readonly HtmlParser Parser = new();
+
     internal static string Convert(string html, IReadOnlyCollection<IHtmlTagRenderer> tagRenderers, bool convertTables)
     {
-        HtmlParser parser = new();
-        var document = parser.ParseDocument(html);
+        var document = Parser.ParseDocument(html);
         var markdown = new MarkdownRenderer(tagRenderers, convertTables).RenderChildren(document.Body, ConversionContext.Default);
 
         return MarkdownFormatting.NormaliseBlockWhitespace(markdown)
