@@ -123,6 +123,20 @@ public class MarkdownFormattingTests
     }
 
     [Fact]
+    public void CollapseWhitespace_WhenTheValueIsAlreadyNormalised_ThenReturnsTheOriginalInstance()
+    {
+        // arrange
+        const string value = "one two three";
+
+        // act
+        var result = MarkdownFormatting.CollapseWhitespace(value);
+
+        // assert
+        result.Should()
+            .BeSameAs(value);
+    }
+
+    [Fact]
     public void NormaliseBlockWhitespace_WhenThereAreCarriageReturns_ThenRemovesThem()
     {
         // arrange
