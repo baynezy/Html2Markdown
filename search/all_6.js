@@ -25,5 +25,6 @@ var searchData=
   ['htmltagrenderingcontext_2ecs_22',['HtmlTagRenderingContext.cs',['../_html_tag_rendering_context_8cs.html',1,'']]],
   ['htmltomarkdownconverter_2ecs_23',['HtmlToMarkdownConverter.cs',['../_html_to_markdown_converter_8cs.html',1,'']]],
   ['observability_24',['Observability',['../namespace_html2_markdown_1_1_observability.html',1,'Html2Markdown']]],
-  ['renderers_25',['Renderers',['../namespace_html2_markdown_1_1_renderers.html',1,'Html2Markdown']]]
+  ['renderers_25',['Renderers',['../namespace_html2_markdown_1_1_renderers.html',1,'Html2Markdown']]],
+  ['utils_26',['Utils',['../namespace_html2_markdown_1_1_renderers_1_1_utils.html',1,'Html2Markdown::Renderers']]]
 ];
