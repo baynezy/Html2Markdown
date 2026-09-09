@@ -1,4 +1,4 @@
-# GitHub Copilot Instructions
+﻿# GitHub Copilot Instructions
 
 This document contains guidelines that GitHub Copilot should follow when assisting with this repository.
 
@@ -27,11 +27,11 @@ This document contains guidelines that GitHub Copilot should follow when assisti
 * Write unit tests for all new features and bug fixes.
 * Add `arrange`, `act`, and `assert` comments to unit tests to clarify the structure.
 * We use the following testing frameworks:
-  - xUnit for unit tests
-  - NSubstitute for mocking dependencies
-  - AwesomeAssertions for assertions
-  - Verify for snapshot testing
-  - FsCheck for Property-based testing
+    - xUnit for unit tests
+    - NSubstitute for mocking dependencies
+    - AwesomeAssertions for assertions
+    - Verify for snapshot testing
+    - FsCheck for Property-based testing
 * Copy existing style in nearby files for test method names and capitalisation.
 
 ## Running Tests
@@ -45,7 +45,7 @@ This document contains guidelines that GitHub Copilot should follow when assisti
 
 All changes must maintain a mutation score of at least 80% (the break threshold in `stryker-config.json`). This is enforced by the `step-mutation-testing.yml` workflow, so it must be verified locally before opening a Pull Request.
 
-1. Install Stryker `dotnet tool install -g dotnet-stryker --version 4.8.1`.
+1. Install Stryker `dotnet tool install -g dotnet-stryker --version 4.16.0`.
 2. Run mutation testing against the target branch with `dotnet stryker --since:develop` (use the branch the work will be merged into).
 3. If the score is below the break threshold, open the generated report in `StrykerOutput/<timestamp>/reports/mutation-report.html` and review the surviving mutants.
 4. Add or improve unit tests to kill the surviving mutants. Never weaken the thresholds or exclude code to pass the check.
@@ -60,12 +60,12 @@ For all Pull Requests created:
 1. **An entry must be added to CHANGELOG.md** under the `[Unreleased]` section.
 2. Entries should follow the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
 3. Group changes under the appropriate headings:
-   - `Added` for new features
-   - `Changed` for changes in existing functionality
-   - `Deprecated` for soon-to-be removed features
-   - `Removed` for now removed features
-   - `Fixed` for any bug fixes
-   - `Security` in case of vulnerabilities
+    - `Added` for new features
+    - `Changed` for changes in existing functionality
+    - `Deprecated` for soon-to-be removed features
+    - `Removed` for now removed features
+    - `Fixed` for any bug fixes
+    - `Security` in case of vulnerabilities
 4. Be concise but descriptive in the changelog entries.
 5. Make sure the entry clearly communicates the purpose and impact of the change.
 6. Add a reference to the issue number if applicable.
