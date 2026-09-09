@@ -201,4 +201,36 @@ public class MarkdownRendererTests
         activity.Start();
         return activity;
     }
+
+    [Fact]
+    public void MarkdownRenderer_Constructor_WhenCustomTagRenderersIsNull_ThenThrowsArgumentNullException()
+    {
+        System.Action action = () => _ = new MarkdownRenderer(null, false);
+        action.Should().Throw<System.ArgumentNullException>().WithParameterName("customTagRenderers");
+    }
+
+    [Fact]
+    public void MarkdownRenderer_Constructor_WhenCustomTagRenderersContainsNull_ThenThrowsArgumentNullException()
+    {
+        System.Action action = () => _ = new MarkdownRenderer([null], false);
+        action.Should().Throw<System.ArgumentNullException>().WithParameterName("renderer");
+    }
+
+    [Fact]
+    public void RenderChildren_WhenCalled_ThenCounterShouldRecordCorrectTags()
+    {
+        // arrange
+        MarkdownRenderer sut = new([], false);
+        var document = _parser.ParseDocument("<strong>Hello</strong>");
+        using var collector = new MetricCollector<int>(ActivityConfig.RenderedElementsCounter);
+
+        // act
+        sut.RenderChildren(document.Body, ConversionContext.Default);
+
+        // assert
+        var measurements = collector.GetMeasurementSnapshot();
+        measurements.Should().HaveCount(1);
+        measurements[0].Value.Should().Be(1);
+        measurements[0].Tags["tag"].Should().Be("strong");
+    }
 }

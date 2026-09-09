@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added targeted unit tests to kill surviving mutants in Stryker mutation testing, covering `ConversionContext` state logic, `ActivityConfig` observability metadata, trailing carriage return line ending standardisation, multiple custom tag renderers, and edge cases in list and blockquote rendering. (#820)
+
 ### Changed
 
 - Optimised `Converter.StandardiseWhitespace` to normalise line endings in a single pass instead of three sequential `string.Replace` calls, reducing allocations when converting large HTML files (#808)

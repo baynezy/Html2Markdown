@@ -204,6 +204,20 @@ public class MarkdownFormattingTests
 
         // assert
         result.Should()
-            .Be(markdown);
+            .BeSameAs(markdown);
+    }
+
+    [Fact]
+    public void NormaliseBlockWhitespace_WhenNewLineIsAtIndexOne_ThenReplacesItWithEnvironmentNewLine()
+    {
+        // arrange
+        const string markdown = "o\nt";
+
+        // act
+        var result = MarkdownFormatting.NormaliseBlockWhitespace(markdown);
+
+        // assert
+        result.Should()
+            .Be($"o{Environment.NewLine}t");
     }
 }

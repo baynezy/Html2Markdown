@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		stryker-config.json = stryker-config.json
 		.editorconfig = .editorconfig
 		global.json = global.json
+		CLAUDE.md = CLAUDE.md
+		.geminiignore = .geminiignore
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost", "test\AppHost\AppHost.csproj", "{B4E023C1-CDD9-4B4C-9E62-0BBFB9FEE81B}"
