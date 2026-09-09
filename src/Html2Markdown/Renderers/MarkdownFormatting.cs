@@ -118,7 +118,7 @@ internal static class MarkdownFormatting
             return markdown;
         }
 
-        StringBuilder builder = new();
+        StringBuilder builder = new(markdown.Length);
         var consecutiveNewLines = 0;
 
         // Not using LINQ here to avoid creating an intermediate collection of characters, which would be inefficient

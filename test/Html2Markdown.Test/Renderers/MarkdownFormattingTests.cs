@@ -234,4 +234,34 @@ public class MarkdownFormattingTests
         result.Should()
             .Be($"o{Environment.NewLine}t");
     }
+
+    [Fact]
+    public void NormaliseBlockWhitespace_WhenThereIsALargeBlockOfMultilineContent_ThenPreservesTheExpectedOutput()
+    {
+        // arrange
+        var markdown = string.Concat(
+            "one\r\n",
+            new string('a', 256),
+            "\n\n\n",
+            new string('b', 256),
+            "\r\n",
+            "three");
+
+        var expected = string.Concat(
+            "one",
+            Environment.NewLine,
+            new string('a', 256),
+            Environment.NewLine,
+            Environment.NewLine,
+            new string('b', 256),
+            Environment.NewLine,
+            "three");
+
+        // act
+        var result = MarkdownFormatting.NormaliseBlockWhitespace(markdown);
+
+        // assert
+        result.Should()
+            .Be(expected);
+    }
 }
