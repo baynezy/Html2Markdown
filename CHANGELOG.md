@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [8.1.0.22] - 2026-09-09
+
 ### Added
 
 - Added targeted unit tests to kill surviving mutants in Stryker mutation testing, covering `ConversionContext` state logic, `ActivityConfig` observability metadata, trailing carriage return line ending standardisation, multiple custom tag renderers, and edge cases in list and blockquote rendering. (#820)
@@ -575,7 +577,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2013-07-04
 
-[unreleased]: https://github.com/baynezy/Html2Markdown/compare/8.0.0.21...HEAD
+[unreleased]: https://github.com/baynezy/Html2Markdown/compare/8.1.0.22...HEAD
+[8.1.0.22]: https://github.com/baynezy/Html2Markdown/compare/8.0.0.21...8.1.0.22
 [8.0.0.21]: https://github.com/baynezy/Html2Markdown/compare/7.1.2.20...8.0.0.21
 [7.1.2.20]: https://github.com/baynezy/Html2Markdown/compare/7.1.1.19...7.1.2.20
 [7.1.1.19]: https://github.com/baynezy/Html2Markdown/compare/7.1.0.18...7.1.1.19
