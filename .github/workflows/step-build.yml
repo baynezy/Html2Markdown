@@ -43,7 +43,7 @@ jobs:
         target: Test
     - name: Publish Unit Test Results
       if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: EnricoMi/publish-unit-test-result-action/linux@d0a4676d0e0b938bc201470d88276b7c74c712b3 # v2
+      uses: EnricoMi/publish-unit-test-result-action/linux@7622c5bf3d112a72ab4fa3951c2aa5723d8ab92d # v2
       with:
         files: "**/TestResults/*.xml"
     - name: Build NuGet Package
@@ -54,7 +54,7 @@ jobs:
           versionNumber: ${{inputs.version}}
     - name: Upload Package
       if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v5
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v5
       with:
         name: Html2Markdown
         path: ./src/Html2Markdown/bin/Release/*.nupkg
